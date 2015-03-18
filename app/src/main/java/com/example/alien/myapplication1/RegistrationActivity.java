@@ -75,7 +75,7 @@ public class RegistrationActivity extends ActionBarActivity {
                     String dateOfBirth = etDateOfBirth.getText().toString();
                     String city = etCity.getText().toString();
 
-                    new SigninActivity(getApplicationContext(),1).execute(email,password, user_name);
+                    new SigninActivity(getApplicationContext(),1).execute(email, password, user_name);
 
                 }
                 else{
