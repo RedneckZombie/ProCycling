@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ProCycling</string>
+    <string name="title_activity_logowanie">Login</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_mail">example@gmail.com</string>
+    <string name="text_password">password</string>
+    <string name="button_login">Log in</string>
+    <string name="text_or">or</string>
+    <string name="button_login_guest">Log in as guest</string>
+    <string name="button_registration">Registration</string>
+    <string name="checkbox_remember">Remember</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="signUp">Rejestracja</string>
+    <string name="email">email</string>
+    <string name="password">hasło</string>
+    <string name="repeatPassword">powtórz hasło</string>
+    <string name="userName">nazwa użytkownika</string>
+    <string name="optional">Poniższe dane nie są wymagane, \nmożesz je zmienić później</string>
+    <string name="dateOfBirth">data urodzenia dd-mm-rrrr</string>
+    <string name="sex">Płeć</string>
+    <string name="female">Kobieta</string>
+    <string name="male">Mężczyzna</string>
+    <string name="city">Miasto</string>
+    <string name="saveSignUp">Rejestruj</string>
+    <string name="clear">Wyczyść</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_map">MapActivity</string>
+
+</resources>
