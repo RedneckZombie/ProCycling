@@ -2,6 +2,7 @@ package com.example.alien.myapplication1;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,8 +76,10 @@ public class RegistrationActivity extends ActionBarActivity {
                     String dateOfBirth = etDateOfBirth.getText().toString();
                     String city = etCity.getText().toString();
 
-                    new SigninActivity(getApplicationContext(),1).execute(email, password, user_name);
+                    String sex = female.isChecked() ? "K" : "M";
 
+                    //new SigninActivity(getApplicationContext(),1).execute(email, password, user_name);
+                    new SigninActivity(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Hasło i potwierdzenie hasła nie są takie same !", Toast.LENGTH_SHORT).show();
