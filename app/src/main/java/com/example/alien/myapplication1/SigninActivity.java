@@ -18,13 +18,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SigninActivity  extends AsyncTask<String,Void,String>{
 
-    private TextView statusField,roleField;
     private Context context;
     private int byGetOrPost = 0;
     //flag 0 means get and 1 means post.(By default it is get.)
@@ -99,16 +99,18 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
 
                 InputStreamReader isr = new InputStreamReader(conn.getInputStream());
                 BufferedReader reader = new BufferedReader(isr);
-                /*
+
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 // Read Server Response
                 while((line = reader.readLine()) != null)
                 {
-                    sb.append(line);
-                    break;
-                }*/
-                return "ds";//sb.toString();
+                    if(line.contains("QUERY RESULT: ")) {
+                        line = line.substring(14,15);
+                        sb.append(line);
+                    }
+                }
+                return sb.toString();
             }catch(UnsupportedEncodingException e){
                 return new String("UEEException: " + e.getMessage());
             }
@@ -121,8 +123,18 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
     }
     @Override
     protected void onPostExecute(String result){
-        System.out.println("OK! -> " + result);
-        //this.statusField.setText("Login Successful");
-        //this.roleField.setText(result);
+        if(result.equals("1")){
+            Toast.makeText(context,"Zarejestrowano!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+        else if(result.equals("2")){
+            Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(context, "Ten adres email jest już zajęty!", Toast.LENGTH_SHORT).show();
+        }
+        System.out.println(result);
     }
 }
