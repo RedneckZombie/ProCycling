@@ -44,7 +44,7 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
                 String password = (String)arg0[1];
                 String user_name = (String)arg0[2];
                 //String link = "http://85.17.73.180/android_connect/get_accounts.php";
-                String link = "http://rommam.cba.pl/get_accounts.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
+                String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -72,14 +72,23 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
                 String user_name = (String)arg0[2];
+                String dateOfBirth = (String)arg0[3];
+                String sex = (String)arg0[4];
+                String city = (String)arg0[5];
                 //String link="http://85.17.73.180/android_connect/get_accounts.php";
-                String link = "http://rommam.cba.pl/get_accounts.php";
+                String link = "http://rommam.cba.pl/registration.php";
                 String data  = "email"
                         + "=" + email;
                 data += "&" + "password"
                         + "=" + password;
                 data += "&" + "user_name"
                         + "=" + user_name;
+                data += "&" + "dateOfBirth"
+                        + "=" + dateOfBirth;
+                data += "&" + "sex"
+                        + "=" + sex;
+                data += "&" + "city"
+                        + "=" + city;
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
                 conn.setDoOutput(true);
