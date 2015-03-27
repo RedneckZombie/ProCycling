@@ -86,7 +86,6 @@ public class RegistrationActivity extends ActionBarActivity {
                     else if(!isDateCorrect(dateOfBirth))
                         Toast.makeText(getApplicationContext(),"Nieprawidłowy format daty", Toast.LENGTH_SHORT).show();
                     else if(!isCityCorrect(city))
-                        /////////////////////////////kuuuuuuuurwa!!!!kod do poprawy!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery.", Toast.LENGTH_SHORT).show();
                     else
                         new Registration(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
