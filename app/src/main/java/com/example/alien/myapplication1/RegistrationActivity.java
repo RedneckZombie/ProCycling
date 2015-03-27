@@ -80,13 +80,14 @@ public class RegistrationActivity extends ActionBarActivity {
 
                     if(!isEmailCorrect(email))
                         Toast.makeText(getApplicationContext(),"Email nieprawidłowy!", Toast.LENGTH_SHORT).show();
-                    else if(!isPasswordUserNameCityCorrect(password))
+                    else if(!isPasswordCorrect(password))
                         Toast.makeText(getApplicationContext(),"Hasło nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
-                    else if(!isPasswordUserNameCityCorrect(user_name))
+                    else if(!isUserNameCorrect(user_name))
                         Toast.makeText(getApplicationContext(),"Nazwa użytkownika nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
                     else if(!isDateCorrect(dateOfBirth))
                         Toast.makeText(getApplicationContext(),"Nieprawidłowy format daty", Toast.LENGTH_SHORT).show();
-                    else if(!isPasswordUserNameCityCorrect(city))
+                    else if(!isCityCorrect(city))
+                        /////////////////////////////kuuuuuuuurwa!!!!kod do poprawy!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
                     else
                         new SigninActivity(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
@@ -116,49 +117,69 @@ public class RegistrationActivity extends ActionBarActivity {
 
     public boolean isEmailCorrect(String email)
     {
-        boolean correct = true;
-
         if(!email.contains("@"))
-            correct = false;
+            return false;
         if(!email.contains("."))
-            correct = false;
-
+            return false;
         if(email.charAt(0) == '@' || email.charAt(0) == '.' || email.charAt(email.length()-1) == '@' || email.charAt(email.length()-1) == '.')
-            correct = false;
-
+            return false;
         if(email.lastIndexOf(".") < email.indexOf("@"))
-            correct = false;
+            return false;
 
-        for(int i = 0 ; i < email.length() ; i++)
-        {
-            //if( Character.getNumericValue(email.charAt(i)) < 64 && Character.getNumericValue(email.charAt(i)) != 46 || Character.getNumericValue(email.charAt(i)) > 122)
-            //    correct = false;
-
-            if( Character.getNumericValue(email.charAt(i)) == 46 || Character.getNumericValue(email.charAt(i)) >= 48 && Character.getNumericValue(email.charAt(i)) <= 57 ||  Character.getNumericValue(email.charAt(i)) >= 64 && Character.getNumericValue(email.charAt(i)) <= 90 ||  Character.getNumericValue(email.charAt(i)) >= 97 && Character.getNumericValue(email.charAt(i)) <= 122)
-            {}
-            else
-                correct = false;
+        for(int i = 0 ; i < email.length() ; i++) {
+            if ((Character.getNumericValue(email.charAt(i)) == 46 || Character.getNumericValue(email.charAt(i)) >= 48 && Character.getNumericValue(email.charAt(i)) <= 57 || Character.getNumericValue(email.charAt(i)) >= 64 && Character.getNumericValue(email.charAt(i)) <= 90 || Character.getNumericValue(email.charAt(i)) >= 97 && Character.getNumericValue(email.charAt(i)) <= 122)) {
+                {
+                    return false;
+                }
+            }
         }
-
-        return correct;
+        return true;
     }
 
-    public boolean isPasswordUserNameCityCorrect(String password)
+    public boolean isPasswordCorrect(String password)
     {
-        boolean correct = true;
-
+        if(password.length()>16||password.length()<6)
+            return false;
         for(int i = 0 ; i < password.length() ; i++)
         {
             if( Character.getNumericValue(password.charAt(i)) >= 48 && Character.getNumericValue(password.charAt(i)) <= 57 ||  Character.getNumericValue(password.charAt(i)) >= 65 && Character.getNumericValue(password.charAt(i)) <= 90 ||  Character.getNumericValue(password.charAt(i)) >= 97 && Character.getNumericValue(password.charAt(i)) <= 122)
-            {}
-            else
-                correct = false;
+            {
+                return false;
+            }
         }
-        return correct;
+        return true;
+    }
+    public boolean isUserNameCorrect(String name)
+    {
+        if(name.length()>16||name.length()<6)
+            return false;
+        for(int i = 0 ; i < name.length() ; i++)
+        {
+            if( Character.getNumericValue(name.charAt(i)) >= 48 && Character.getNumericValue(name.charAt(i)) <= 57 ||  Character.getNumericValue(name.charAt(i)) >= 65 && Character.getNumericValue(name.charAt(i)) <= 90 ||  Character.getNumericValue(name.charAt(i)) >= 97 && Character.getNumericValue(name.charAt(i)) <= 122)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isCityCorrect(String city)
+    {
+        if(city.length()>30)
+            return false;
+        for(int i = 0 ; i < city.length() ; i++)
+        {
+            if( Character.getNumericValue(city.charAt(i)) >= 48 && Character.getNumericValue(city.charAt(i)) <= 57 ||  Character.getNumericValue(city.charAt(i)) >= 65 && Character.getNumericValue(city.charAt(i)) <= 90 ||  Character.getNumericValue(city.charAt(i)) >= 97 && Character.getNumericValue(city.charAt(i)) <= 122)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isSexCorrect(String sex)
     {
+        if(sex.equals(""))
+            return true;
         if(sex.length() == 1 && (sex.charAt(0) == 'K' || sex.charAt(0) == 'M'))
             return true;
         else
@@ -167,6 +188,8 @@ public class RegistrationActivity extends ActionBarActivity {
 
     public boolean isDateCorrect(String date)
     {
+        if(date.equals(""))
+            return true;
         if(date.length() == 10 && date.charAt(2) == '-' && date.charAt(5) == '-' && isNumber(date.charAt(0)) && isNumber(date.charAt(1)) && isNumber(date.charAt(3)) && isNumber(date.charAt(4)) && isNumber(date.charAt(6)) && isNumber(date.charAt(7)) && isNumber(date.charAt(8)) && isNumber(date.charAt(9)))
             return true;
         else

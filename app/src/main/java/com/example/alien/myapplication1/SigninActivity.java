@@ -117,6 +117,7 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
             catch(MalformedURLException e){
                 return new String("MUException: " + e.getMessage());
             }catch(IOException e){
+                Toast.makeText(context, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
                 return new String("IOException: " + e.getStackTrace().toString());
             }
         }

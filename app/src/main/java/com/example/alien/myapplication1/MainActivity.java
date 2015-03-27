@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         login_mail = (EditText) findViewById(R.id.email);
         login_password = (EditText) findViewById(R.id.password);
         checkbox_remember = (CheckBox) findViewById(R.id.checkBox_remember);
