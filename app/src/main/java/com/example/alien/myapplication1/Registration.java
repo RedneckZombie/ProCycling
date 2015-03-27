@@ -23,12 +23,12 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SigninActivity  extends AsyncTask<String,Void,String>{
+public class Registration extends AsyncTask<String,Void,String>{
 
     private Context context;
     private int byGetOrPost = 0;
     //flag 0 means get and 1 means post.(By default it is get.)
-    public SigninActivity(Context context,int flag) {
+    public Registration(Context context, int flag) {
         this.context = context;
         byGetOrPost = flag;
     }

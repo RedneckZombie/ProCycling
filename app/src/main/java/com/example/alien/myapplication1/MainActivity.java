@@ -90,14 +90,14 @@ public class MainActivity extends Activity {
         //String username = usernameField.getText().toString();
         //String password = passwordField.getText().toString();
         //method.setText("Get Method");
-        //new SigninActivity(this,status,role,0).execute(username,password);
+        //new Registration(this,status,role,0).execute(username,password);
 
     }
     public void loginPost(View view){
         //String username = usernameField.getText().toString();
         //String password = passwordField.getText().toString();
         //method.setText("Post Method");
-        //new SigninActivity(this,status,role,1).execute(username,password);
+        //new Registration(this,status,role,1).execute(username,password);
 
     }
 

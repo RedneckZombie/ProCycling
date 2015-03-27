@@ -2,7 +2,6 @@ package com.example.alien.myapplication1;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,7 +89,7 @@ public class RegistrationActivity extends ActionBarActivity {
                         /////////////////////////////kuuuuuuuurwa!!!!kod do poprawy!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
                     else
-                        new SigninActivity(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
+                        new Registration(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
 
                 }
                 else{
