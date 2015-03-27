@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class RegistrationActivity extends ActionBarActivity {
 
+    //kupa
     private EditText etEmail, etPassword, etPasswordConfirm, etUserName, etDateOfBirth, etCity;
     private RadioButton female, male;
     private Button saveSignUp, clear;
