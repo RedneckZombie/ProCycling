@@ -76,6 +76,11 @@ public class MainActivity extends Activity {
                     pref.putBoolean("rem", false);
                 }
                 pref.commit();
+
+                String login = login_mail.getText().toString();
+                String password = login_password.getText().toString();
+
+                new LogIn(getApplicationContext(), 1).execute(login, password);
             }
         });
     }
