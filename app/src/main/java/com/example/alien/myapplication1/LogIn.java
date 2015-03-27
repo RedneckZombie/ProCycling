@@ -40,8 +40,6 @@ public class LogIn extends AsyncTask<String,Void,String> {
             try{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
-                String user_name = (String)arg0[2];
-                //String link = "http://85.17.73.180/android_connect/get_accounts.php";
                 String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
@@ -69,7 +67,6 @@ public class LogIn extends AsyncTask<String,Void,String> {
             try{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
-                //String link="http://85.17.73.180/android_connect/get_accounts.php";
                 String link = "http://rommam.cba.pl/login.php";
                 String data  = "email"
                         + "=" + email;

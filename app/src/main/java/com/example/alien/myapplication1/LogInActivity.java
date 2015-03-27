@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class LogInActivity extends Activity {
 
     private EditText login_mail;
     private EditText login_password;
@@ -64,10 +64,14 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor pref = preferences.edit();
+
+                String login = login_mail.getText().toString();
+                String password = login_password.getText().toString();
+
                 if(checkbox_remember.isChecked())
                 {
-                    pref.putString("mail", login_mail.getText().toString());
-                    pref.putString("pass", login_password.getText().toString());
+                    pref.putString("mail", login);
+                    pref.putString("pass", password);
                     pref.putBoolean("rem", checkbox_remember.isChecked());
                 }
                 else{
@@ -76,9 +80,6 @@ public class MainActivity extends Activity {
                     pref.putBoolean("rem", false);
                 }
                 pref.commit();
-
-                String login = login_mail.getText().toString();
-                String password = login_password.getText().toString();
 
                 new LogIn(getApplicationContext(), 1).execute(login, password);
             }
@@ -90,20 +91,6 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-    public void login(View view){
-        //String username = usernameField.getText().toString();
-        //String password = passwordField.getText().toString();
-        //method.setText("Get Method");
-        //new Registration(this,status,role,0).execute(username,password);
-
-    }
-    public void loginPost(View view){
-        //String username = usernameField.getText().toString();
-        //String password = passwordField.getText().toString();
-        //method.setText("Post Method");
-        //new Registration(this,status,role,1).execute(username,password);
-
     }
 
 }

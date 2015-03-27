@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,7 +19,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Registration extends AsyncTask<String,Void,String>{
@@ -43,7 +41,6 @@ public class Registration extends AsyncTask<String,Void,String>{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
                 String user_name = (String)arg0[2];
-                //String link = "http://85.17.73.180/android_connect/get_accounts.php";
                 String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
@@ -75,7 +72,6 @@ public class Registration extends AsyncTask<String,Void,String>{
                 String dateOfBirth = (String)arg0[3];
                 String sex = (String)arg0[4];
                 String city = (String)arg0[5];
-                //String link="http://85.17.73.180/android_connect/get_accounts.php";
                 String link = "http://rommam.cba.pl/registration.php";
                 String data  = "email"
                         + "=" + email;
@@ -125,7 +121,7 @@ public class Registration extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String result){
         if(result.equals("1")){
             Toast.makeText(context,"Zarejestrowano!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, MainActivity.class);
+            Intent intent = new Intent(context, LogInActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
