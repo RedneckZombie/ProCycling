@@ -1,5 +1,8 @@
 package com.example.alien.myapplication1;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,17 +10,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 
-public class RegistrationActivity extends ActionBarActivity {
 
-    private EditText etEmail, etPassword, etPasswordConfirm, etUserName, etDateOfBirth, etCity;
+public class RegistrationActivity extends Activity {
+
+    private EditText etEmail, etPassword, etPasswordConfirm, etUserName, etCity;
     private RadioButton female, male;
     private Button saveSignUp, clear;
+    private Button datePickerButton;
+    private TextView date;
 
+    private int year;
+    private int month;
+    private int day;
+    private boolean dateChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +41,6 @@ public class RegistrationActivity extends ActionBarActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         etPasswordConfirm = (EditText) findViewById(R.id.etPasswordConfirm);
         etUserName = (EditText) findViewById(R.id.etUserName);
-        etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
         etCity = (EditText) findViewById(R.id.etCity);
 
         female = (RadioButton) findViewById(R.id.female);
@@ -36,6 +48,11 @@ public class RegistrationActivity extends ActionBarActivity {
 
         saveSignUp = (Button) findViewById(R.id.saveSignUp);
         clear = (Button) findViewById(R.id.clear);
+
+        datePickerButton = (Button) findViewById(R.id.datePickerButton);
+        date = (TextView) findViewById(R.id.date);
+        dateChanged = false;
+        setCurrentDateOnView();
 
         listener();
     }
@@ -73,7 +90,6 @@ public class RegistrationActivity extends ActionBarActivity {
                     String email = etEmail.getText().toString();
                     String password = etPassword.getText().toString();
                     String user_name = etUserName.getText().toString();
-                    String dateOfBirth = etDateOfBirth.getText().toString();
                     String city = etCity.getText().toString();
 
                     String sex = female.isChecked() ? "K" : "M";
@@ -84,13 +100,14 @@ public class RegistrationActivity extends ActionBarActivity {
                         Toast.makeText(getApplicationContext(),"Hasło nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
                     else if(!isUserNameCorrect(user_name))
                         Toast.makeText(getApplicationContext(),"Nazwa użytkownika nie spełnia wymagań!\nDozwolone litery i cyfry", Toast.LENGTH_SHORT).show();
-                    else if(!isDateCorrect(dateOfBirth))
-                        Toast.makeText(getApplicationContext(),"Nieprawidłowy format daty", Toast.LENGTH_SHORT).show();
                     else if(!isCityCorrect(city))
-                        /////////////////////////////kuuuuuuuurwa!!!!kod do poprawy!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery.", Toast.LENGTH_SHORT).show();
+                    else if(dateChanged) {
+                        String date = day+"-"+month+"-"+year;
+                        new SigninActivity(getApplicationContext(), 1).execute(email, password, user_name, date, sex, city);
+                    }
                     else
-                        new SigninActivity(getApplicationContext(),1).execute(email, password, user_name, dateOfBirth, sex, city);
+                        new SigninActivity(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
 
                 }
                 else{
@@ -109,8 +126,18 @@ public class RegistrationActivity extends ActionBarActivity {
                 etPassword.setText("");
                 etPasswordConfirm.setText("");
                 etUserName.setText("");
-                etDateOfBirth.setText("");
+                setCurrentDateOnView();
                 etCity.setText("");
+                female.setChecked(false);
+                male.setChecked(false);
+
+            }
+        });
+
+        datePickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(1);
             }
         });
     }
@@ -203,4 +230,42 @@ public class RegistrationActivity extends ActionBarActivity {
         else
             return false;
     }
+
+    public void setCurrentDateOnView()
+    {
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH)+1;
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        // set current date into datepicker
+        //datePicker.init(year, month, day, null);
+        datePickerButton.setText(day+"-"+month+"-"+year);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+       return new DatePickerDialog(this, pickerListener, year, month,day);
+    }
+
+    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+
+            if(selectedDay != day || selectedMonth != month || selectedYear != year)
+                dateChanged = true;
+
+            year  = selectedYear;
+            month = selectedMonth;
+            day   = selectedDay;
+
+            datePickerButton.setText(new StringBuilder()
+                    // Month is 0 based, just add 1
+                    .append(day).append("-").append(month + 1).append("-")
+                    .append(year).append(" "));
+        }
+    };
 }

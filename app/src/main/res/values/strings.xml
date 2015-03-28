@@ -17,7 +17,7 @@
     <string name="password">hasło</string>
     <string name="repeatPassword">powtórz hasło</string>
     <string name="userName">nazwa użytkownika</string>
-    <string name="optional">Poniższe dane nie są wymagane, \nmożesz je zmienić później</string>
+    <string name="optional">Poniższe dane nie są wymagane</string>
     <string name="dateOfBirth">data urodzenia dd-mm-rrrr</string>
     <string name="sex">Płeć</string>
     <string name="female">Kobieta</string>
