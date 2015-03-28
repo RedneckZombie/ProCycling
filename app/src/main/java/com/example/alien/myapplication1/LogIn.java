@@ -1,5 +1,15 @@
 package com.example.alien.myapplication1;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,25 +20,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.widget.TextView;
-import android.widget.Toast;
-
-public class SigninActivity  extends AsyncTask<String,Void,String>{
-
+public class LogIn extends AsyncTask<String,Void,String> {
     private Context context;
     private int byGetOrPost = 0;
-    //flag 0 means get and 1 means post.(By default it is get.)
-    public SigninActivity(Context context,int flag) {
+
+    public LogIn(Context context, int flag) {
         this.context = context;
         byGetOrPost = flag;
     }
@@ -36,14 +33,13 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
     protected void onPreExecute(){
 
     }
+
     @Override
     protected String doInBackground(String... arg0) {
         if(byGetOrPost == 0){ //means by Get Method
             try{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
-                String user_name = (String)arg0[2];
-                //String link = "http://85.17.73.180/android_connect/get_accounts.php";
                 String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
@@ -71,24 +67,11 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
             try{
                 String email = (String)arg0[0];
                 String password = (String)arg0[1];
-                String user_name = (String)arg0[2];
-                String dateOfBirth = (String)arg0[3];
-                String sex = (String)arg0[4];
-                String city = (String)arg0[5];
-                //String link="http://85.17.73.180/android_connect/get_accounts.php";
-                String link = "http://rommam.cba.pl/registration.php";
+                String link = "http://rommam.cba.pl/login.php";
                 String data  = "email"
                         + "=" + email;
                 data += "&" + "password"
                         + "=" + password;
-                data += "&" + "user_name"
-                        + "=" + user_name;
-                data += "&" + "dateOfBirth"
-                        + "=" + dateOfBirth;
-                data += "&" + "sex"
-                        + "=" + sex;
-                data += "&" + "city"
-                        + "=" + city;
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
                 conn.setDoOutput(true);
@@ -121,11 +104,12 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
             }
         }
     }
+
     @Override
     protected void onPostExecute(String result){
         if(result.equals("1")){
-            Toast.makeText(context,"Zarejestrowano!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, MainActivity.class);
+            Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, MapActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
@@ -133,7 +117,7 @@ public class SigninActivity  extends AsyncTask<String,Void,String>{
             Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(context, "Ten adres email jest już zajęty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Nie poprawny email lub hasło!", Toast.LENGTH_SHORT).show();
         }
         System.out.println(result);
     }
