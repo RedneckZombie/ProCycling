@@ -2,22 +2,34 @@ package com.example.alien.myapplication1;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class MapActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Marker here;
+    private Button backBtn, refreshPosBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        backBtn = (Button) findViewById(R.id.back);
+        refreshPosBtn = (Button) findViewById(R.id.refresh);
+        if(backBtn == null || refreshPosBtn ==null)
+            Toast.makeText(getApplicationContext(), "back null", Toast.LENGTH_SHORT).show();
+        else
+            buttonListener();
         setUpMapIfNeeded();
     }
 
@@ -42,8 +54,40 @@ public class MapActivity extends FragmentActivity {
 
     private void setUpMap() {
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setRotateGesturesEnabled(true);
+        mMap.getUiSettings().setScrollGesturesEnabled(true);
+        mMap.getUiSettings().setTiltGesturesEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(51, 17)).title("Tu jesteś"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(51, 17)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51, 17), 13));
+        here = mMap.addMarker(new MarkerOptions().position(new LatLng(51, 17)).title("Tu jesteś"));
+
+
     }
+
+    private void updatePosition(LatLng locat)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(locat));
+        here.setPosition(locat);
+    }
+
+    private void buttonListener()
+    {
+        refreshPosBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng ll = new LatLng(Math.random()*10+45, Math.random()*10+10);
+                updatePosition(ll);
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
 }
