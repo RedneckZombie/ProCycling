@@ -1,4 +1,4 @@
-package com.example.alien.myapplication1;
+package com.example.alien.myapplication1.map;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;

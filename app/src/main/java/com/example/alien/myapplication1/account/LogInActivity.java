@@ -1,4 +1,4 @@
-package com.example.alien.myapplication1;
+package com.example.alien.myapplication1.account;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.alien.myapplication1.RegistrationActivity;
+import com.example.alien.myapplication1.map.MapActivity;
+import com.example.alien.myapplication1.R;
 
 public class LogInActivity extends Activity {
 

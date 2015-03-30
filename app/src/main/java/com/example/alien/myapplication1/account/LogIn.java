@@ -1,9 +1,11 @@
-package com.example.alien.myapplication1;
+package com.example.alien.myapplication1.account;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.example.alien.myapplication1.map.MapActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

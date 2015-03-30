@@ -16,6 +16,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.account.LogIn;
+import com.example.alien.myapplication1.account.Registration;
+
 import java.util.Calendar;
 
 
@@ -103,11 +106,11 @@ public class RegistrationActivity extends Activity {
                     else if(!isCityCorrect(city))
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery.", Toast.LENGTH_SHORT).show();
                     else if(dateChanged) {
-                        String date = year+"-"+month+"-"+day;
+                        String date = day+"-"+month+"-"+year;
                         new Registration(getApplicationContext(), 1).execute(email, password, user_name, date, sex, city);
                     }
                     else
-                        new Registration(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
+                        new LogIn(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
 
                 }
                 else{

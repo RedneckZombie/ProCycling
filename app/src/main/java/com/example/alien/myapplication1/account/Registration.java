@@ -1,4 +1,4 @@
-package com.example.alien.myapplication1;
+package com.example.alien.myapplication1.account;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.example.alien.myapplication1.account.LogInActivity;
 
 public class Registration extends AsyncTask<String,Void,String>{
 
