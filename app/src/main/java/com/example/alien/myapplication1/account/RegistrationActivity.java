@@ -1,4 +1,4 @@
-package com.example.alien.myapplication1;
+package com.example.alien.myapplication1.account;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogIn;
 import com.example.alien.myapplication1.account.Registration;
 

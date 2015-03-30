@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.alien.myapplication1.RegistrationActivity;
 import com.example.alien.myapplication1.map.MapActivity;
 import com.example.alien.myapplication1.R;
 
