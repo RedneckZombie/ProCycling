@@ -118,8 +118,11 @@ public class LogIn extends AsyncTask<String,Void,String> {
         else if(result.equals("2")){
             Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
         }
-        else{
+        else if (result.equals("0")){
             Toast.makeText(context, "Nie poprawny email lub hasło!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(context, "Brak połączenia z internetem!", Toast.LENGTH_SHORT).show();
         }
         System.out.println(result);
     }
