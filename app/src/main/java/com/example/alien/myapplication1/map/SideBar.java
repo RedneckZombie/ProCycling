@@ -1,27 +1,19 @@
 package com.example.alien.myapplication1.map;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.alien.myapplication1.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
@@ -44,7 +36,7 @@ public class SideBar extends ActionBarActivity {
     public void mapa()
     {
         Fragment fr = new Map();
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
     public void drawer()
@@ -72,7 +64,7 @@ public class SideBar extends ActionBarActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getBaseContext(),
                 R.layout.element_menu ,
                 getResources().getStringArray(R.array.options)

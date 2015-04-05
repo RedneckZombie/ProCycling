@@ -1,6 +1,6 @@
 package com.example.alien.myapplication1.map;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.example.alien.myapplication1.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -17,11 +18,12 @@ public class Map extends Fragment
 {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Marker here;
+
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        setUpMapIfNeeded();
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
+        setUpMapIfNeeded();
         return rootView;
     }
     public void onResume() {
@@ -30,17 +32,17 @@ public class Map extends Fragment
     }
 
     private void setUpMapIfNeeded() {
-            /*
+
             // Do a null check to confirm that we have not already instantiated the map.
             if (mMap == null) {
                 // Try to obtain the map from the SupportMapFragment.
-                mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                        .getMap();
+                mMap = ((SupportMapFragment) getChildFragmentManager()
+                         .findFragmentById(R.id.map)).getMap();
                 // Check if we were successful in obtaining the map.
                 if (mMap != null) {
                     setUpMap();
                 }
-            }*/
+            }
     }
 
     private void setUpMap() {
