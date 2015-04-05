@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.alien.myapplication1.map.MapActivity;
+import com.example.alien.myapplication1.map.SideBar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -111,7 +111,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result){
         if(result.equals("1")){
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, MapActivity.class);
+            Intent intent = new Intent(context, SideBar.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }

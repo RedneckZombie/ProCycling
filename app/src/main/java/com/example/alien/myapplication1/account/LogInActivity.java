@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.alien.myapplication1.map.MapActivity;
+import com.example.alien.myapplication1.map.SideBar;
 import com.example.alien.myapplication1.R;
 
 public class LogInActivity extends Activity {
@@ -47,11 +47,11 @@ public class LogInActivity extends Activity {
     public void addListeners()
     {
         button_guest.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(intent);
+                @Override
+                public void onClick(View v)
+                {
+                    Intent intent = new Intent(getApplicationContext(), SideBar.class);///////////////////
+                    startActivity(intent);
             }
         });
         button_register.setOnClickListener(new View.OnClickListener(){

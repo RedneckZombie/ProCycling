@@ -35,7 +35,7 @@
             android:label="@string/title_activity_registration" >
         </activity>
         <activity
-            android:name=".map.MapActivity"
+            android:name=".map.SideBar"
             android:label="@string/title_activity_map" >
         </activity>
     </application>

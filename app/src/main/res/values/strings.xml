@@ -3,14 +3,14 @@
 
     <string name="app_name">ProCycling</string>
     <string name="title_activity_logowanie">Login</string>
-    <string name="action_settings">Settings</string>
-    <string name="text_mail">example@gmail.com</string>
-    <string name="text_password">password</string>
-    <string name="button_login">Log in</string>
-    <string name="text_or">or</string>
-    <string name="button_login_guest">Log in as guest</string>
-    <string name="button_registration">Registration</string>
-    <string name="checkbox_remember">Remember</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="text_mail">przyklad@gmail.com</string>
+    <string name="text_password">hasło</string>
+    <string name="button_login">zaloguj</string>
+    <string name="text_or">lub</string>
+    <string name="button_login_guest">Zaloguj jako gość</string>
+    <string name="button_registration">Registracja</string>
+    <string name="checkbox_remember">Zapamiętaj</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="signUp">Rejestracja</string>
     <string name="email">email</string>
@@ -26,6 +26,16 @@
     <string name="saveSignUp">Rejestruj</string>
     <string name="clear">Wyczyść</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="drawer_open">Otwórz</string>
+    <string name="drawer_close">Zamknij</string>
+    <string name="menu">Menu</string>
+    <string name="guest">Gość</string>
+
+    <string-array name="options">
+        <item >np. Nowa trasa</item>
+        <item >inna możliwość, którą dodamy...</item>
+    </string-array>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>
