@@ -1,6 +1,7 @@
 package com.example.alien.myapplication1.tracks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,16 +10,40 @@ import android.os.Bundle;
 /**
  * Created by kamilos on 2015-03-28.
  */
+
+
+//po wybraniu z menu opcji nagrywaj, odpalić tą klasę w nowym wątku
+// dodać do onLocationChanged wywołanie metody statycznej z MapActivity
+
+
 public class RecordRoute
 {
     // Acquire a reference to the system Location Manager
-    // LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    LocationManager locationManager ;
+    double longitude = -1, latitude = -1, altitude = -1;
+    Context context;
+
+    public RecordRoute(Context context)
+    {
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6, 10, locationListener);
+
+        this.context = context;
+    }
 
     // Define a listener that responds to location updates
     LocationListener locationListener = new LocationListener() {
+
+        // Called when a new location is found by the network location provider.
         public void onLocationChanged(Location location) {
-            // Called when a new location is found by the network location provider.
-            //TODO
+
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            altitude = location.getAltitude();
+
+            //Start MyIntentService
+            Intent intentMyIntentService = new Intent(context, MyIntentService.class);
+            context.startService(intentMyIntentService);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -27,9 +52,4 @@ public class RecordRoute
 
         public void onProviderDisabled(String provider) {}
     };
-
-    // Register the listener with the Location Manager to receive location updates
-    // przy prędkości 30km/h w 6sekund przejedzie 50 metrów
-
-    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6, 10, locationListener);
 }

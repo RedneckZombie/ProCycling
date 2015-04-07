@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.map;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -18,12 +20,38 @@ public class Map extends Fragment
 {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Marker here;
+    private Context context;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
         setUpMapIfNeeded();
+
+        context = getActivity();
+
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                RecordRoute rr = new RecordRoute(context);
+            }
+        });
+
+        /*
+        Runnable myRunnable = new Runnable(){
+
+            public void run(){
+                RecordRoute rr = new RecordRoute(context);
+                try {
+                    wait();
+                }
+                catch(InterruptedException ie){}
+            }
+        };
+
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+        */
+
         return rootView;
     }
     public void onResume() {
