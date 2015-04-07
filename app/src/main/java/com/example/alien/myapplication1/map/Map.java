@@ -1,6 +1,9 @@
 package com.example.alien.myapplication1.map;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.MyIntentService;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +25,14 @@ public class Map extends Fragment
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Marker here;
     private Context context;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           double lng = intent.getDoubleExtra("longitude", 0);
+           double lat = intent.getDoubleExtra("latitude", 0);
+           updatePosition(new LatLng(lat,lng));
+        }
+    };
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -54,9 +66,18 @@ public class Map extends Fragment
 
         return rootView;
     }
+
     public void onResume() {
         super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MyIntentService.ACTION_MyUpdate);
+        getActivity().registerReceiver(receiver, filter);
         setUpMapIfNeeded();
+    }
+
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
     }
 
     private void setUpMapIfNeeded() {
@@ -87,9 +108,9 @@ public class Map extends Fragment
 
     }
 
-    private void updatePosition(LatLng locat)
+    private void updatePosition(LatLng location)
     {
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(locat));
-        here.setPosition(locat);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        here.setPosition(location);
     }
 }

@@ -8,7 +8,7 @@ import android.content.Intent;
  */
 public class MyIntentService extends IntentService {
 
-    public String ACTION_MyUpdate = "com.example.androidintentservice.UPDATE";
+    public static String ACTION_MyUpdate = "com.example.androidintentservice.UPDATE";
     public double lon = -1, lat = -1, alt = -1;
 
     public MyIntentService() {
@@ -25,6 +25,8 @@ public class MyIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         //send update
+        lon = Math.random()*10+10;      //randomy na razie żeby było widać co sie dzieje
+        lat = Math.random()*10+45;
         Intent intentUpdate = new Intent();
         intentUpdate.setAction(ACTION_MyUpdate);
         intentUpdate.addCategory(Intent.CATEGORY_DEFAULT);
