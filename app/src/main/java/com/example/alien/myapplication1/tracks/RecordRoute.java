@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -27,9 +28,10 @@ public class RecordRoute
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000, 20, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 10, locationListener);
 
         this.context = context;
+        Log.i("testing", "RecordRoute konstruktor");
     }
 
     // Define a listener that responds to location updates
@@ -42,6 +44,7 @@ public class RecordRoute
             latitude = location.getLatitude();
             altitude = location.getAltitude();
             Toast.makeText(context, "GPS", Toast.LENGTH_LONG).show();
+            Log.i("testing", "ReordRoute onLocationChanged "+ longitude + "  "+latitude+ "  "+ altitude);
             //Start MyIntentService
             Intent intentMyIntentService = new Intent(context, MyIntentService.class);
             context.startService(intentMyIntentService);

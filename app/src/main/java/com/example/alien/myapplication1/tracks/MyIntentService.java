@@ -2,6 +2,9 @@ package com.example.alien.myapplication1.tracks;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
+
+import com.example.alien.myapplication1.map.Map;
 
 /**
  * Created by kamilos on 2015-04-07.
@@ -23,6 +26,8 @@ public class MyIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("testing", "onHandleIntent");
+        Map.upd(lat, lon);
 
         //send update
         lon = Math.random()*10+10;      //randomy na razie żeby było widać co sie dzieje

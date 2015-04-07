@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +25,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Map extends Fragment
 {
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private Marker here;
+    private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static Marker here;
     private Context context;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+           Log.i("testing", "onReceive");
            double lng = intent.getDoubleExtra("longitude", 0);
            double lat = intent.getDoubleExtra("latitude", 0);
            updatePosition(new LatLng(lat,lng));
@@ -42,6 +46,7 @@ public class Map extends Fragment
 
         context = getActivity();
 
+        Log.i("testing", "onCreate (Map)");
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 RecordRoute rr = new RecordRoute(context);
@@ -112,5 +117,21 @@ public class Map extends Fragment
     {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         here.setPosition(location);
+    }
+
+    public static void upd(double lat, double lng)
+    {
+        //updatePosition(new LatLng(lat, lng));
+        Log.i("testing", "Map upd");
+        new UpdateMarker(here, lat,lng).execute();
+
+        /*
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
+            here.setPosition(new LatLng(lat, lng));
+        }
+        */
+
     }
 }
