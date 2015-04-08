@@ -1,3 +1,4 @@
+/*
 package com.example.alien.myapplication1.tracks;
 
 import android.app.IntentService;
@@ -6,9 +7,11 @@ import android.util.Log;
 
 import com.example.alien.myapplication1.map.Map;
 
+*/
 /**
  * Created by kamilos on 2015-04-07.
- */
+ *//*
+
 public class MyIntentService extends IntentService {
 
     public static String ACTION_MyUpdate = "com.example.androidintentservice.UPDATE";
@@ -34,10 +37,11 @@ public class MyIntentService extends IntentService {
         lat = Math.random()*10+45;
         Intent intentUpdate = new Intent();
         intentUpdate.setAction(ACTION_MyUpdate);
-        intentUpdate.addCategory(Intent.CATEGORY_DEFAULT);
+        intentUpdate.addCategory(Intent.CATEGORY_DEFAULT);W
         intentUpdate.putExtra("longitude", lon);
         intentUpdate.putExtra("latitude", lat);
         intentUpdate.putExtra("altitude", alt);
         sendBroadcast(intentUpdate);
     }
 }
+*/

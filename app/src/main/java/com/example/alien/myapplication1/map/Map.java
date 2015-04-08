@@ -1,11 +1,6 @@
 package com.example.alien.myapplication1.map;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.MyIntentService;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +22,7 @@ public class Map extends Fragment
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static Marker here;
     private Context context;
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+   /* private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
            Log.i("testing", "onReceive");
@@ -36,7 +30,7 @@ public class Map extends Fragment
            double lat = intent.getDoubleExtra("latitude", 0);
            updatePosition(new LatLng(lat,lng));
         }
-    };
+    };*/
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -68,21 +62,23 @@ public class Map extends Fragment
         Thread thread = new Thread(myRunnable);
         thread.start();
         */
-
         return rootView;
     }
 
     public void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter();
+
+/*        IntentFilter filter = new IntentFilter();
         filter.addAction(MyIntentService.ACTION_MyUpdate);
-        getActivity().registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);*/
         setUpMapIfNeeded();
+        super.onResume();
+
     }
 
     public void onPause() {
+
+   //     getActivity().unregisterReceiver(receiver);
         super.onPause();
-        getActivity().unregisterReceiver(receiver);
     }
 
     private void setUpMapIfNeeded() {
@@ -113,25 +109,11 @@ public class Map extends Fragment
 
     }
 
-    private void updatePosition(LatLng location)
+    public static void updatePosition(double lat, double lng)
     {
+        LatLng location = new LatLng(lat, lng);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         here.setPosition(location);
     }
 
-    public static void upd(double lat, double lng)
-    {
-        //updatePosition(new LatLng(lat, lng));
-        Log.i("testing", "Map upd");
-        new UpdateMarker(here, lat,lng).execute();
-
-        /*
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
-            here.setPosition(new LatLng(lat, lng));
-        }
-        */
-
-    }
 }

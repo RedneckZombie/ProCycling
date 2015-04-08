@@ -38,7 +38,6 @@
             android:name=".map.SideBar"
             android:label="@string/title_activity_map" >
         </activity>
-        <service android:name="com.example.alien.myapplication1.tracks.MyIntentService"></service>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
