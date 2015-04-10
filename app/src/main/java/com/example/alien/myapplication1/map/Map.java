@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.tracks.RecordRoute;
@@ -22,20 +23,17 @@ public class Map extends Fragment
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static Marker here;
     private Context context;
-   /* private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-           Log.i("testing", "onReceive");
-           double lng = intent.getDoubleExtra("longitude", 0);
-           double lat = intent.getDoubleExtra("latitude", 0);
-           updatePosition(new LatLng(lat,lng));
-        }
-    };*/
+    private static boolean visible = false;
+    private static double latitude = 51;
+    private static double longitude = 17;
+    private static RecordRoute rr;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
+        mMap = null;
+        here = null;
         setUpMapIfNeeded();
 
         context = getActivity();
@@ -43,10 +41,10 @@ public class Map extends Fragment
         Log.i("testing", "onCreate (Map)");
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                RecordRoute rr = new RecordRoute(context);
+                if(rr == null)
+                    rr = new RecordRoute(context);
             }
         });
-
         /*
         Runnable myRunnable = new Runnable(){
 
@@ -66,20 +64,15 @@ public class Map extends Fragment
     }
 
     public void onResume() {
-
-/*        IntentFilter filter = new IntentFilter();
-        filter.addAction(MyIntentService.ACTION_MyUpdate);
-        getActivity().registerReceiver(receiver, filter);*/
-        setUpMapIfNeeded();
+        visible = true;
         super.onResume();
-
     }
 
     public void onPause() {
-
-   //     getActivity().unregisterReceiver(receiver);
+        visible = false;
         super.onPause();
     }
+
 
     private void setUpMapIfNeeded() {
 
@@ -102,18 +95,23 @@ public class Map extends Fragment
         mMap.getUiSettings().setTiltGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51, 17), 13));
-        here = mMap.addMarker(new MarkerOptions().position(new LatLng(51, 17)).title("Tu jesteś"));
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+        here = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Tu jesteś"));
 
     }
 
     public static void updatePosition(double lat, double lng)
     {
+        latitude = lat;
+        longitude = lng;
         LatLng location = new LatLng(lat, lng);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         here.setPosition(location);
+    }
+
+    public static boolean isMapVisible()
+    {
+        return visible;
     }
 
 }

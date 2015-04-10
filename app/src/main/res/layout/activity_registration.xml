@@ -74,7 +74,8 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
                 android:textSize="18sp"
-                android:id="@+id/tvOptional"  />
+                android:id="@+id/tvOptional"
+                android:inputType="text" />
 
 
             <LinearLayout

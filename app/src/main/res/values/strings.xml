@@ -9,7 +9,7 @@
     <string name="button_login">zaloguj</string>
     <string name="text_or">lub</string>
     <string name="button_login_guest">Zaloguj jako gość</string>
-    <string name="button_registration">Registracja</string>
+    <string name="button_registration">Rejestracja</string>
     <string name="checkbox_remember">Zapamiętaj</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="signUp">Rejestracja</string>

@@ -29,10 +29,9 @@ public class RecordRoute
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
-
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 15, locationListener);
         this.context = context;
-        Log.i("testing", "RecordRoute konstruktor");
+        Log.e("testing", "RecordRoute konstruktor");
     }
 
     // Define a listener that responds to location updates
@@ -44,13 +43,12 @@ public class RecordRoute
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             altitude = location.getAltitude();
-            Toast.makeText(context, "GPS", Toast.LENGTH_LONG).show();
-            Log.i("testing", "ReordRoute onLocationChanged " + longitude + "  " + latitude + "  " + altitude);
-            //Start MyIntentService
-            Map.updatePosition(latitude, longitude);
-//            Intent intentMyIntentService = new Intent(context, MyIntentService.class);
-//            context.startService(intentMyIntentService);
 
+            Log.i("testing", "ReordRoute onLocationChanged " + longitude + "  " + latitude + "  " + altitude);
+            if(Map.isMapVisible()) {
+                Toast.makeText(context, "GPS" + longitude + " " + latitude, Toast.LENGTH_LONG).show();
+                Map.updatePosition(latitude, longitude);
+            }
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
