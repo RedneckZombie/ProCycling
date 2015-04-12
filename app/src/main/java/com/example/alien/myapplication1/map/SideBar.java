@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.map;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ public class SideBar extends ActionBarActivity {
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
+    String mail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +33,16 @@ public class SideBar extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawer();
         mapa();
+
+        extra();
     }
 
+    public void extra()
+    {
+        Intent intent = getIntent();
+        mail = intent.getStringExtra("mail");
+        getSupportActionBar().setTitle("Witaj w ProCycling");
+    }
     public void mapa()
     {
         Fragment fr = new Map();
@@ -57,7 +67,11 @@ public class SideBar extends ActionBarActivity {
 
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(R.string.guest);
+                if(mail==null) {
+                    getSupportActionBar().setTitle(R.string.guest);
+                }else{
+                    getSupportActionBar().setTitle(mail);
+                }
                 invalidateOptionsMenu();
             }
         };

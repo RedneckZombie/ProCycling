@@ -111,7 +111,7 @@ public class RegistrationActivity extends Activity {
                         new Registration(getApplicationContext(), 1).execute(email, password, user_name, date, sex, city);
                     }
                     else
-                        new LogIn(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
+                        new Registration(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
 
                 }
                 else{

@@ -27,6 +27,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
     private Context context;
     private int byGetOrPost = 0;
 
+    private String mail="";
     public LogIn(Context context, int flag) {
         this.context = context;
         byGetOrPost = flag;
@@ -38,6 +39,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... arg0) {
+        mail = (String)arg0[0];
         if(byGetOrPost == 0){ //means by Get Method
             try{
                 String email = (String)arg0[0];
@@ -112,6 +114,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
         if(result.equals("1")){
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, SideBar.class);
+            intent.putExtra("mail", mail);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
