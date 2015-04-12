@@ -26,7 +26,6 @@ public class Map extends Fragment
     private static boolean visible = false;
     private static double latitude = 51;
     private static double longitude = 17;
-    private static RecordRoute rr;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,28 +37,6 @@ public class Map extends Fragment
 
         context = getActivity();
 
-        Log.i("testing", "onCreate (Map)");
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                if(rr == null)
-                    rr = new RecordRoute(context);
-            }
-        });
-        /*
-        Runnable myRunnable = new Runnable(){
-
-            public void run(){
-                RecordRoute rr = new RecordRoute(context);
-                try {
-                    wait();
-                }
-                catch(InterruptedException ie){}
-            }
-        };
-
-        Thread thread = new Thread(myRunnable);
-        thread.start();
-        */
         return rootView;
     }
 

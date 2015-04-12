@@ -7,15 +7,17 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
-
+import com.example.alien.myapplication1.tracks.RecordRoute;
 
 
 public class SideBar extends ActionBarActivity {
@@ -25,6 +27,8 @@ public class SideBar extends ActionBarActivity {
     ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
     String mail;
+    private static RecordRoute rr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,14 @@ public class SideBar extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawer();
         mapa();
+
+        Log.i("testing", "onCreate (Map)");
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                if (rr == null)
+                    rr = new RecordRoute(getApplicationContext());
+            }
+        });
 
         extra();
     }
@@ -90,6 +102,18 @@ public class SideBar extends ActionBarActivity {
                                     int position,
                                     long id) {
 
+                switch(position){
+                    case 0:
+                        if(!rr.isRecording()) {
+                            rr.startRecording();
+                            Toast.makeText(getApplicationContext(), "rejestruję trasę", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            rr.stopRecording();
+                            Toast.makeText(getApplicationContext(), "koniec rejestrowania trasy", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                }
                 /*
                 // Getting an array of rivers
                 String[] rivers = getResources().getStringArray(R.array.rivers);

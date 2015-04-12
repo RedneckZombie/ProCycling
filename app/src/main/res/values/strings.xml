@@ -33,7 +33,7 @@
     <string name="guest">Gość</string>
 
     <string-array name="options">
-        <item >np. Nowa trasa</item>
+        <item >Rejestruj trasę</item>
         <item >inna możliwość, którą dodamy...</item>
     </string-array>
 
