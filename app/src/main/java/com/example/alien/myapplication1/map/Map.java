@@ -1,16 +1,12 @@
 package com.example.alien.myapplication1.map;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -22,7 +18,6 @@ public class Map extends Fragment
 {
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static Marker here;
-    private Context context;
     private static boolean visible = false;
     private static double latitude = 51;
     private static double longitude = 17;
@@ -34,9 +29,6 @@ public class Map extends Fragment
         mMap = null;
         here = null;
         setUpMapIfNeeded();
-
-        context = getActivity();
-
         return rootView;
     }
 
