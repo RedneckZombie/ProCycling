@@ -93,7 +93,11 @@ public class LogIn extends AsyncTask<String,Void,String> {
                 while((line = reader.readLine()) != null)
                 {
                     if(line.contains("QUERY RESULT: ")) {
-                        line = line.substring(14,15);
+                        line = line.substring(14,15) + ";";
+                        sb.append(line);
+                    }
+                    else if(line.contains("USERNAME: ")) {
+                        line = line.substring(10) + ";";
                         sb.append(line);
                     }
                 }
@@ -111,22 +115,32 @@ public class LogIn extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result){
-        if(result.equals("1")){
+        System.out.println("Result: " + result);
+        String[] results = result.split(";");
+        String status = results[0];
+        String username = "";
+
+        if(results.length >= 2) {
+            username = results[1];
+        }
+
+        if(status.equals("1")){
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, SideBar.class);
-            intent.putExtra("mail", mail);
+            intent.putExtra("username", username);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
-        else if(result.equals("2")){
+        else if(status.equals("2")){
             Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
         }
-        else if (result.equals("0")){
+        else if (status.equals("0")){
             Toast.makeText(context, "Nie poprawny email lub hasło!", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(context, "Brak połączenia z internetem!", Toast.LENGTH_SHORT).show();
         }
-        System.out.println(result);
+        System.out.println("Status: " + status);
+        System.out.println("Username: " + username);
     }
 }
