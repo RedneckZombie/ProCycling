@@ -32,12 +32,20 @@
     <string name="menu">Menu</string>
     <string name="guest">Gość</string>
 
+
+
     <string-array name="options">
         <item >Rejestruj trasę</item>
+        <item >inna możliwość, którą dodamy...</item>
+    </string-array>
+    <string-array name="options2">
+        <item >Zakoncz rejestracje trasy</item>
         <item >inna możliwość, którą dodamy...</item>
     </string-array>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="rejestruj_trase">Rozpoczecie rejestrowania trasy!</string>
+    <string name="zakoncz_trase">Koniec rejestrowania trasy!</string>
 
 </resources>
