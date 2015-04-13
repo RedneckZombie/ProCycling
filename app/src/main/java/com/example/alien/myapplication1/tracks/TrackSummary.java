@@ -87,7 +87,7 @@ public class TrackSummary extends Fragment {
         JSONArray jPoints = jsonObj.getJSONArray("points");
         for(int i=0; i<jPoints.length(); i++)
         {
-            arrLatLng.add(new LatLng((Double) jPoints.get(0), (Double) jPoints.get(1)));
+            arrLatLng.add(new LatLng((Double) jPoints.get(1), (Double) jPoints.get(0)));
         }
     }
 
