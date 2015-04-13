@@ -84,7 +84,7 @@ public class SideBar extends ActionBarActivity {
                 }else{
                     getSupportActionBar().setTitle(mail);
                 }
-                invalidateOptionsMenu();
+                invalidateOptionsMenu();///
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
