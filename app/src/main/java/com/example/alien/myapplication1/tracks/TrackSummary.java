@@ -30,7 +30,7 @@ public class TrackSummary extends Fragment {
         mMap = null;
         setUpMapIfNeeded();
         getArguments();
-//        context = getActivity();
+//        context = getActivity();///
 
         /////JSONObject obj = new JSONObject(getIntent().getStringExtra("json"));
         return rootView;

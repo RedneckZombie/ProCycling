@@ -157,7 +157,7 @@ public class SideBar extends ActionBarActivity {
         Bundle b = new Bundle();
         b.putString("json", rr.getJSON().toString());
         fr.setArguments(b);
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();//
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
 
