@@ -15,7 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Created by kamilos on 2015-03-28.
@@ -41,15 +45,18 @@ public class RecordRoute
 
     private boolean recording = false;
 
+    public JSONObject getJSON()
+    {
+        return obj;
+    }
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         this.context = context;
         Log.e("testing", "RecordRoute konstruktor");
-
+        obj  = new JSONObject();
         today = new Time(Time.getCurrentTimezone());
-        obj = new JSONObject();
         points = new JSONArray();
         times = new JSONArray();
 
@@ -128,6 +135,7 @@ public class RecordRoute
     public void startRecording()
     {
         recording = true;
+        start += formatDate(year, month, day)+formatTime(hour, minute, second);
 
         try{
             obj.put("start", formatDate(year, month, day)+formatTime(hour, minute, second));
@@ -137,15 +145,63 @@ public class RecordRoute
     public void stopRecording()
     {
         recording = false;
+        finish += formatDate(year, month, day)+formatTime(hour, minute, second);
 
         try{
             obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
+            obj.put("points", points);
+            obj.put("times", times);
+
+            saveTrackInInternalStorage("test");
+            readTrackFromInternalStorage("test");
         }catch(JSONException e){}
     }
 
     public boolean isRecording()
     {
         return recording;
+    }
+
+    public void saveTrackInInternalStorage(String fileName)
+    {
+        String js = obj.toString();
+        byte [] jarray = js.getBytes();
+        try {
+
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            fos.write(jarray);
+            fos.close();
+        }catch(IOException e){Toast.makeText(context,  "RecordRoute: an error occurred when write to file", Toast.LENGTH_LONG).show();}
+
+        //Log.i("testing", obj);
+        System.out.println(obj);
+    }
+
+    public void readTrackFromInternalStorage(String fileName)
+    {
+        byte [] bytes;
+        obj.toString();
+
+        try {
+
+            FileInputStream fis = context.openFileInput(fileName);
+            Scanner sc = new Scanner(fis);
+            String linia="";
+            while(sc.hasNext())
+            {
+                linia+=sc.next();
+            }
+            //bytes = new byte[(int)fis.getChannel().size()];
+            //fis.read(bytes);
+
+            JSONObject jsonobj = new JSONObject(linia);
+            System.out.println("odczytany "+jsonobj);
+            //jsonobj.put(bytes);
+
+            System.out.println("read try");
+        }catch(FileNotFoundException e){Toast.makeText(context, "RecordRoute: an error occurred when read from file", Toast.LENGTH_LONG).show();}
+        catch(IOException e){Toast.makeText(context, "RecordRoute: error at getChannel().size()", Toast.LENGTH_LONG).show();}
+        catch(JSONException e){Toast.makeText(context, "RecordRoute: error at new JSONObject(bytes.toString())", Toast.LENGTH_LONG).show();}
     }
 }
 

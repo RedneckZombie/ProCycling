@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.tracks.RecordRoute;
+import com.example.alien.myapplication1.tracks.TrackSummary;
 
 
 public class SideBar extends ActionBarActivity {
@@ -116,6 +117,8 @@ public class SideBar extends ActionBarActivity {
                             rr.stopRecording();
                             Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
                             aktualizujAdapter(1);
+                            podsumowanie();
+
                         }
                         mDrawerLayout.closeDrawer(mDrawerList);
                         break;
@@ -146,6 +149,16 @@ public class SideBar extends ActionBarActivity {
 
 
 
+    }
+
+    public void podsumowanie()
+    {
+        Fragment fr = new TrackSummary();
+        Bundle b = new Bundle();
+        b.putString("json", rr.getJSON().toString());
+        fr.setArguments(b);
+        FragmentManager fm = getSupportFragmentManager();//
+        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
 
     public void aktualizujAdapter(int n)
