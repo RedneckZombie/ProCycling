@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.tracks;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,31 +9,43 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class TrackSummary extends Fragment {
     private GoogleMap mMap;
 //    private Context context;
     private JSONObject jsonObj;
-    RecordRoute rr;
+    private ArrayList<LatLng> arrLatLng;
 
     public TrackSummary() {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.map_fragment, container, false);
-        mMap = null;
+        View rootView = inflater.inflate(R.layout.fragment_track_summary, container, false);
+        //mMap = null;
         setUpMapIfNeeded();
-        getArguments();
-//        context = getActivity();///
+        arrLatLng = new ArrayList<>();
+        try {
+            jsonObj = new JSONObject(getArguments().getString("json"));
+            parse();
+        } catch (JSONException e) {
+            e.printStackTrace();
+    }
 
-        /////JSONObject obj = new JSONObject(getIntent().getStringExtra("json"));
+//        context = getActivity();
+
         return rootView;
     }
 
@@ -66,8 +79,25 @@ public class TrackSummary extends Fragment {
         mMap.getUiSettings().setTiltGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1,1),10));
+    }
 
+    private void parse() throws JSONException {
+        JSONArray jPoints = jsonObj.getJSONArray("points");
+        for(int i=0; i<jPoints.length(); i++)
+        {
+            arrLatLng.add(new LatLng((Double) jPoints.get(0), (Double) jPoints.get(1)));
+        }
+    }
+
+    private void drawRoute()
+    {
+        PolylineOptions polyLineOptions = new PolylineOptions();
+        polyLineOptions.addAll(arrLatLng);
+        polyLineOptions.width(3);
+        polyLineOptions.color(Color.BLUE);
+        mMap.addPolyline(polyLineOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0),10));
     }
 
 }
