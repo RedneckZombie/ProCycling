@@ -27,7 +27,7 @@ public class SideBar extends ActionBarActivity {
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
-    String mail;
+    String username;
     private static RecordRoute rr;
 
     @Override
@@ -53,7 +53,7 @@ public class SideBar extends ActionBarActivity {
     public void extra()
     {
         Intent intent = getIntent();
-        mail = intent.getStringExtra("mail");
+        username = intent.getStringExtra("username");
         getSupportActionBar().setTitle("Witaj w ProCycling");
     }
     public void mapa()
@@ -80,10 +80,10 @@ public class SideBar extends ActionBarActivity {
 
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
-                if(mail==null) {
+                if(username==null) {
                     getSupportActionBar().setTitle(R.string.guest);
                 }else{
-                    getSupportActionBar().setTitle(mail);
+                    getSupportActionBar().setTitle(username);
                 }
                 invalidateOptionsMenu();///
             }
