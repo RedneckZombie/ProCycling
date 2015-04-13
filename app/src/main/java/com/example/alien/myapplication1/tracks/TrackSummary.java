@@ -40,6 +40,7 @@ public class TrackSummary extends Fragment {
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
             parse();
+            drawRoute();
         } catch (JSONException e) {
             e.printStackTrace();
     }
