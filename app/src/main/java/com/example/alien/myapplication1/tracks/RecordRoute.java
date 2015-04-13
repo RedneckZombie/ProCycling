@@ -41,15 +41,18 @@ public class RecordRoute
 
     private boolean recording = false;
 
+    public JSONObject getJSON()
+    {
+        return obj;
+    }
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         this.context = context;
         Log.e("testing", "RecordRoute konstruktor");
-
+        obj  = new JSONObject();
         today = new Time(Time.getCurrentTimezone());
-        obj = new JSONObject();
         points = new JSONArray();
         times = new JSONArray();
 

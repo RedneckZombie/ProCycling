@@ -20,6 +20,7 @@ public class TrackSummary extends Fragment {
     private GoogleMap mMap;
 //    private Context context;
     private JSONObject jsonObj;
+    RecordRoute rr;
 
     public TrackSummary() {
     }
@@ -29,9 +30,9 @@ public class TrackSummary extends Fragment {
         mMap = null;
         setUpMapIfNeeded();
         getArguments();
-
 //        context = getActivity();
 
+        /////JSONObject obj = new JSONObject(getIntent().getStringExtra("json"));
         return rootView;
     }
 
