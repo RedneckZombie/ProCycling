@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.tracks.RecordRoute;
+import com.example.alien.myapplication1.tracks.TrackSummary;
 
 
 public class SideBar extends ActionBarActivity {
@@ -26,7 +27,7 @@ public class SideBar extends ActionBarActivity {
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
-    String mail;
+    String username;
     private static RecordRoute rr;
 
     @Override
@@ -52,7 +53,7 @@ public class SideBar extends ActionBarActivity {
     public void extra()
     {
         Intent intent = getIntent();
-        mail = intent.getStringExtra("mail");
+        username = intent.getStringExtra("username");
         getSupportActionBar().setTitle("Witaj w ProCycling");
     }
     public void mapa()
@@ -79,10 +80,10 @@ public class SideBar extends ActionBarActivity {
 
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
-                if(mail==null) {
+                if(username==null) {
                     getSupportActionBar().setTitle(R.string.guest);
                 }else{
-                    getSupportActionBar().setTitle(mail);
+                    getSupportActionBar().setTitle(username);
                 }
                 invalidateOptionsMenu();///
             }
@@ -116,6 +117,8 @@ public class SideBar extends ActionBarActivity {
                             rr.stopRecording();
                             Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
                             aktualizujAdapter(1);
+                            podsumowanie();
+
                         }
                         mDrawerLayout.closeDrawer(mDrawerList);
                         break;
@@ -146,6 +149,16 @@ public class SideBar extends ActionBarActivity {
 
 
 
+    }
+
+    public void podsumowanie()
+    {
+        Fragment fr = new TrackSummary();
+        Bundle b = new Bundle();
+        b.putString("json", rr.getJSON().toString());
+        fr.setArguments(b);
+        FragmentManager fm = getSupportFragmentManager();//
+        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
 
     public void aktualizujAdapter(int n)
