@@ -84,7 +84,7 @@ public class SideBar extends ActionBarActivity {
                 }else{
                     getSupportActionBar().setTitle(username);
                 }
-                invalidateOptionsMenu();
+                invalidateOptionsMenu();///
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -94,6 +94,9 @@ public class SideBar extends ActionBarActivity {
                 R.layout.element_menu ,
                 getResources().getStringArray(R.array.options)
         );
+
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setSelector(android.R.color.holo_blue_dark);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,12 +109,15 @@ public class SideBar extends ActionBarActivity {
                     case 0:
                         if(!rr.isRecording()) {
                             rr.startRecording();
-                            Toast.makeText(getApplicationContext(), "rejestruję trasę", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),  R.string.rejestruj_trase , Toast.LENGTH_LONG).show();
+                            aktualizujAdapter(0);
                         }
                         else{
                             rr.stopRecording();
-                            Toast.makeText(getApplicationContext(), "koniec rejestrowania trasy", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
+                            aktualizujAdapter(1);
                         }
+                        mDrawerLayout.closeDrawer(mDrawerList);
                         break;
                 }
                 /*
@@ -138,9 +144,25 @@ public class SideBar extends ActionBarActivity {
             }
         });
 
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setSelector(android.R.color.holo_blue_dark);
 
+
+    }
+
+    public void aktualizujAdapter(int n)
+    {
+        String[] array;
+        if(n==0) {
+            array= getResources().getStringArray(R.array.options2);
+        }
+        else{
+            array= getResources().getStringArray(R.array.options);
+        }
+        ArrayAdapter<String> a = new ArrayAdapter<>(
+                getBaseContext(),
+                R.layout.element_menu,
+                array
+        );
+        mDrawerList.setAdapter(a);
     }
 
 
