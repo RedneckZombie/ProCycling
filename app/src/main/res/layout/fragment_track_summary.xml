@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="250dp" />
+        android:layout_marginBottom="150dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +24,16 @@
         android:textSize="18sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="190dp" />
+        android:layout_marginBottom="111dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zapisz"
+        android:id="@+id/btn_save"
+        android:layout_alignTop="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp" />
 
 
 </RelativeLayout>
