@@ -108,15 +108,14 @@ public class RegistrationActivity extends Activity {
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery.", Toast.LENGTH_SHORT).show();
                     else if(dateChanged) {
                         String date = day+"-"+month+"-"+year;
-                        new Registration(getApplicationContext(), 1).execute(email, password, user_name, date, sex, city);
+                        new Registration(getApplicationContext()).execute(email, password, user_name, date, sex, city);
                     }
                     else
-                        new Registration(getApplicationContext(),1).execute(email, password, user_name, "", sex, city);
+                        new Registration(getApplicationContext()).execute(email, password, user_name, "", sex, city);
 
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Hasło i potwierdzenie hasła nie są takie same !", Toast.LENGTH_SHORT).show();
-                    //WYWALIĆ POWIADOMINEIE
                     etPassword.setText("");
                     etPasswordConfirm.setText("");
                 }

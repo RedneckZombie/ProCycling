@@ -83,7 +83,7 @@ public class LogInActivity extends Activity {
                 }
                 pref.commit();
 
-                new LogIn(getApplicationContext(), 1).execute(login, password);
+                new LogIn(getApplicationContext()).execute(login, password);
             }
         });
     }
