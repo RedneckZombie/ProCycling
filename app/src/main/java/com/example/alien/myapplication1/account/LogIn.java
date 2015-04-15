@@ -2,6 +2,8 @@ package com.example.alien.myapplication1.account;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,80 +39,105 @@ public class LogIn extends AsyncTask<String,Void,String> {
     protected void onPreExecute(){
 
     }
+    public boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL("http://www.google.com/");
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000); // mTimeout is in seconds
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (IOException e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
     @Override
     protected String doInBackground(String... arg0) {
-        mail = (String)arg0[0];
-        if(byGetOrPost == 0){ //means by Get Method
-            try{
-                String email = (String)arg0[0];
-                String password = (String)arg0[1];
-                String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
-                URL url = new URL(link);
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(link));
-                HttpResponse response = client.execute(request);
-                BufferedReader in = new BufferedReader
-                        (new InputStreamReader(response.getEntity().getContent()));
+        if(isConnected(context)) {
+            mail = (String) arg0[0];
+            if (byGetOrPost == 0) { //means by Get Method
+                try {
+                    String email = (String) arg0[0];
+                    String password = (String) arg0[1];
+                    String link = "http://rommam.cba.pl/registration.php?email=zibi@gmail.com&password=ania&user_name=zbychu";
+                    URL url = new URL(link);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpGet request = new HttpGet();
+                    request.setURI(new URI(link));
+                    HttpResponse response = client.execute(request);
+                    BufferedReader in = new BufferedReader
+                            (new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer sb = new StringBuffer("");
-                String line="";
-                while ((line = in.readLine()) != null) {
-                    sb.append(line);
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+                    while ((line = in.readLine()) != null) {
+                        sb.append(line);
 
+                    }
+                    in.close();
+                    return sb.toString();
+                } catch (IOException e) {
+                    return new String("IOException: " + e.getMessage());
+                } catch (URISyntaxException e) {
+                    return new String("URIException: " + e.getMessage());
                 }
-                in.close();
-                return sb.toString();
-            }catch(IOException e){
-                return new String("IOException: " + e.getMessage());
-            }catch(URISyntaxException e){
-                return new String("URIException: " + e.getMessage());
+            } else {
+                try {
+                    String email = (String) arg0[0];
+                    String password = (String) arg0[1];
+                    String link = "http://rommam.cba.pl/login.php";
+                    String data = "email"
+                            + "=" + email;
+                    data += "&" + "password"
+                            + "=" + password;
+                    URL url = new URL(link);
+                    URLConnection conn = url.openConnection();
+                    conn.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter
+                            (conn.getOutputStream());
+                    wr.write(data);
+                    wr.flush();
+
+                    InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+                    BufferedReader reader = new BufferedReader(isr);
+
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+                    // Read Server Response
+                    while ((line = reader.readLine()) != null) {
+                        if (line.contains("QUERY RESULT: ")) {
+                            line = line.substring(14, 15) + ";";
+                            sb.append(line);
+                        } else if (line.contains("USERNAME: ")) {
+                            line = line.substring(10) + ";";
+                            sb.append(line);
+                        }
+                    }
+                    return sb.toString();
+                } catch (UnsupportedEncodingException e) {
+                    return new String("UEEException: " + e.getMessage());
+                } catch (MalformedURLException e) {
+                    return new String("MUException: " + e.getMessage());
+                } catch (IOException e) {
+                    return new String("IOException: " + e.getStackTrace().toString());
+                }
             }
         }
         else{
-            try{
-                String email = (String)arg0[0];
-                String password = (String)arg0[1];
-                String link = "http://rommam.cba.pl/login.php";
-                String data  = "email"
-                        + "=" + email;
-                data += "&" + "password"
-                        + "=" + password;
-                URL url = new URL(link);
-                URLConnection conn = url.openConnection();
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter
-                        (conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-                BufferedReader reader = new BufferedReader(isr);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                // Read Server Response
-                while((line = reader.readLine()) != null)
-                {
-                    if(line.contains("QUERY RESULT: ")) {
-                        line = line.substring(14,15) + ";";
-                        sb.append(line);
-                    }
-                    else if(line.contains("USERNAME: ")) {
-                        line = line.substring(10) + ";";
-                        sb.append(line);
-                    }
-                }
-                return sb.toString();
-            }catch(UnsupportedEncodingException e){
-                return new String("UEEException: " + e.getMessage());
-            }
-            catch(MalformedURLException e){
-                return new String("MUException: " + e.getMessage());
-            }catch(IOException e){
-                return new String("IOException: " + e.getStackTrace().toString());
-            }
+            return new String("Brak internetu");
         }
     }
 
