@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
@@ -28,6 +29,7 @@ public class TrackSummary extends Fragment {
 //    private Context context;
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
+    private Button buttonSave;
 
     public TrackSummary() {
     }
@@ -37,6 +39,16 @@ public class TrackSummary extends Fragment {
         //mMap = null;
         setUpMapIfNeeded();
         arrLatLng = new ArrayList<>();
+        buttonSave = (Button) rootView.findViewById(R.id.btn_save);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(jsonObj != null)
+                    new SaveTrack(getActivity().getApplicationContext()).execute("44","tour de Frącz", jsonObj.toString());
+                else
+                    Toast.makeText(getActivity().getApplicationContext(), "brak danych trasy", Toast.LENGTH_LONG).show();
+            }
+        });
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
             parse();
@@ -85,9 +97,10 @@ public class TrackSummary extends Fragment {
 
     private void parse() throws JSONException {
         JSONArray jPoints = jsonObj.getJSONArray("points");
-        for(int i=0; i<jPoints.length(); i++)
+        Toast.makeText(getActivity().getApplicationContext(), jPoints.getString(0), Toast.LENGTH_LONG).show();
+        for(int i=0; i<jPoints.length(); i+=3)
         {
-            arrLatLng.add(new LatLng((Double) jPoints.get(1), (Double) jPoints.get(0)));
+            arrLatLng.add(new LatLng((Double) jPoints.get(i+1), (Double) jPoints.get(i)));
         }
     }
 
@@ -95,7 +108,7 @@ public class TrackSummary extends Fragment {
     {
         PolylineOptions polyLineOptions = new PolylineOptions();
         polyLineOptions.addAll(arrLatLng);
-        polyLineOptions.width(3);
+        polyLineOptions.width(2);
         polyLineOptions.color(Color.BLUE);
         mMap.addPolyline(polyLineOptions);
 
