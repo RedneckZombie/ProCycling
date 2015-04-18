@@ -98,7 +98,9 @@ public class TrackSummary extends Fragment {
         polyLineOptions.width(3);
         polyLineOptions.color(Color.BLUE);
         mMap.addPolyline(polyLineOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0),10));
+
+        if(!arrLatLng.isEmpty())
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0),10));
     }
 
 }

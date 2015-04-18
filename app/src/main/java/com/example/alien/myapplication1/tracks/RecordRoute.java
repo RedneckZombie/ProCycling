@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,10 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
 /**
@@ -26,8 +30,8 @@ import java.util.Scanner;
  */
 
 
-//po wybraniu z menu opcji nagrywaj, odpalić tą klasę w nowym wątku
-// dodać do onLocationChanged wywołanie metody statycznej z MapActivity
+
+// plik z nazmami zarejestrowanych tras nazywa się tracksNames
 
 
 public class RecordRoute
@@ -45,10 +49,7 @@ public class RecordRoute
 
     private boolean recording = false;
 
-    public JSONObject getJSON()
-    {
-        return obj;
-    }
+
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -60,6 +61,11 @@ public class RecordRoute
         points = new JSONArray();
         times = new JSONArray();
 
+        if(!fileExistance("tracksNames"))
+        {
+            createFileWithTracksNames();
+            Toast.makeText(context, "utworzono plik z nazwami tras", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -102,6 +108,11 @@ public class RecordRoute
         public void onProviderDisabled(String provider) {}
     };
 
+    public JSONObject getJSON()
+    {
+        return obj;
+    }
+
     public void updateTimeAndDate()
     {
         today.setToNow();
@@ -134,8 +145,11 @@ public class RecordRoute
 
     public void startRecording()
     {
+        System.out.println("start recoding");
+        Log.i("testing", "log  w start recording");
+
         recording = true;
-        start += formatDate(year, month, day)+formatTime(hour, minute, second);
+        start = formatDate(year, month, day)+formatTime(hour, minute, second);
 
         try{
             obj.put("start", formatDate(year, month, day)+formatTime(hour, minute, second));
@@ -145,15 +159,14 @@ public class RecordRoute
     public void stopRecording()
     {
         recording = false;
-        finish += formatDate(year, month, day)+formatTime(hour, minute, second);
+        finish = formatDate(year, month, day)+formatTime(hour, minute, second);
 
         try{
             obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
             obj.put("points", points);
             obj.put("times", times);
 
-            saveTrackInInternalStorage("test");
-            readTrackFromInternalStorage("test");
+            saveTrackInInternalStorage(finish);
         }catch(JSONException e){}
     }
 
@@ -164,19 +177,110 @@ public class RecordRoute
 
     public void saveTrackInInternalStorage(String fileName)
     {
-        String js = obj.toString();
-        byte [] jarray = js.getBytes();
-        try {
 
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        try {
+            // load tracks names
+            FileInputStream fis = context.openFileInput("tracksNames");
+            Scanner sc = new Scanner(fis);
+            String content="";
+            while(sc.hasNext())
+            {
+                content+=sc.next();
+            }
+            fis.close();
+
+            //content = content.replace("null", "");
+
+            System.out.println("tracks names: " + content);
+
+            String fn = fileName;
+            int counter = 2;
+
+            //look for file name which not exists
+            while(content.contains(fn))
+            {
+                fn = fileName + counter;
+                counter++;
+            }
+
+            String js = obj.toString();
+            byte [] jarray = js.getBytes();
+
+            FileOutputStream fos = context.openFileOutput(fn, Context.MODE_PRIVATE);
             fos.write(jarray);
             fos.close();
+
+            FileOutputStream fos2 = context.openFileOutput("tracksNames", Context.MODE_PRIVATE);
+            System.out.println("cont: "+content);
+            System.out.println("fn: "+fn);
+            content += fn + ";";
+            //fn +=";";
+            fos2.write(content.getBytes());
+            fos2.close();
+
+            //create new objects to not append old ones
+            obj    = new JSONObject();
+            points = new JSONArray();
+            times  = new JSONArray();
+
         }catch(IOException e){Toast.makeText(context,  "RecordRoute: an error occurred when write to file", Toast.LENGTH_LONG).show();}
+
 
         //Log.i("testing", obj);
         System.out.println(obj);
     }
 
+    public boolean fileExistance(String fname){
+        File file = context.getFileStreamPath(fname);
+        return file.exists();
+    }
+
+    public void createFileWithTracksNames()
+    {
+        try {
+
+            FileOutputStream fos = context.openFileOutput("tracksNames", Context.MODE_PRIVATE);
+            fos.close();
+        }catch(IOException e){Toast.makeText(context,  "RecordRoute: error in CreateFileWithTracksNames", Toast.LENGTH_LONG).show();}
+    }
+
+    public boolean deleteTrackNamesFile()
+    {
+        File dir = context.getFilesDir();
+        File file = new File(dir, "tracksNames");
+        return file.delete();
+    }
+
+    //lipa chyba, nie używane
+    public void saveTrackPublic(String fileName)
+    {
+
+        FileOutputStream fos;
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            Scanner sc = new Scanner(fis);
+            String text="";
+            while(sc.hasNext())
+            {
+                text+=sc.next();
+            }
+            System.out.println("1");
+            File myFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "other/"+"trasa 1");
+
+            myFile.createNewFile();
+            System.out.println("2");
+            FileOutputStream fOut = new FileOutputStream(myFile);
+            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+            System.out.println("3");
+            myOutWriter.append(text);
+            myOutWriter.close();
+            fOut.close();
+            System.out.println("4");
+        } catch (FileNotFoundException e) {e.printStackTrace();}
+          catch (IOException e) {e.printStackTrace();}
+    }
+
+    // metodka na potrzeby testowania
     public void readTrackFromInternalStorage(String fileName)
     {
         byte [] bytes;
@@ -191,18 +295,29 @@ public class RecordRoute
             {
                 linia+=sc.next();
             }
-            //bytes = new byte[(int)fis.getChannel().size()];
-            //fis.read(bytes);
-
             JSONObject jsonobj = new JSONObject(linia);
-            System.out.println("odczytany "+jsonobj);
-            //jsonobj.put(bytes);
 
-            System.out.println("read try");
+
+            System.out.println("read from internal");
+            String temp = jsonobj.toString();
+            int index = 0;
+            while(index < temp.length())
+            {
+                if(index + 1000 < temp.length())
+                    System.out.println(temp.substring(index, index+1000));
+                else
+                    System.out.println(temp.substring(index));
+
+                index += 1000;
+            }
+
+            System.out.println("odczytany "+jsonobj);
+
         }catch(FileNotFoundException e){Toast.makeText(context, "RecordRoute: an error occurred when read from file", Toast.LENGTH_LONG).show();}
         catch(IOException e){Toast.makeText(context, "RecordRoute: error at getChannel().size()", Toast.LENGTH_LONG).show();}
         catch(JSONException e){Toast.makeText(context, "RecordRoute: error at new JSONObject(bytes.toString())", Toast.LENGTH_LONG).show();}
     }
+
 }
 
 /*
