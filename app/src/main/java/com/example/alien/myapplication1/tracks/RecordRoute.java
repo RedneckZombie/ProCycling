@@ -148,6 +148,11 @@ public class RecordRoute
         System.out.println("start recoding");
         Log.i("testing", "log  w start recording");
 
+        //create new objects to not append old ones
+        obj    = new JSONObject();
+        points = new JSONArray();
+        times  = new JSONArray();
+
         recording = true;
         start = formatDate(year, month, day)+formatTime(hour, minute, second);
 
@@ -217,11 +222,6 @@ public class RecordRoute
             //fn +=";";
             fos2.write(content.getBytes());
             fos2.close();
-
-            //create new objects to not append old ones
-            obj    = new JSONObject();
-            points = new JSONArray();
-            times  = new JSONArray();
 
         }catch(IOException e){Toast.makeText(context,  "RecordRoute: an error occurred when write to file", Toast.LENGTH_LONG).show();}
 
