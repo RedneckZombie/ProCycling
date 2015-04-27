@@ -68,7 +68,7 @@ public class TrackDetails extends Fragment {
 
                     try {
                         if(jsonObj.getJSONArray("points").length()>0) {
-                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString());
+                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), "1003", "02:14:50", "38.88");
                             Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
                         }
                         else
