@@ -1,9 +1,9 @@
 package com.example.alien.myapplication1.tracks;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
@@ -27,40 +28,74 @@ import java.util.ArrayList;
 
 public class TrackSummary extends Fragment {
     private GoogleMap mMap;
-//    private Context context;
+    //    private Context context;
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
     private Button buttonSave;
-    private RecordRoute recordRoute;
-    private Context context;
+    private Button buttonDetails;
+    private boolean isSaved;
+    private boolean correctTrack;
 
-    public TrackSummary(Context context) {
-        this.context = context;
+    public TrackSummary() {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_track_summary, container, false);
         //mMap = null;
         setUpMapIfNeeded();
         arrLatLng = new ArrayList<>();
         buttonSave = (Button) rootView.findViewById(R.id.btn_save);
-        recordRoute = new RecordRoute(context);
+        isSaved = getArguments().getBoolean("isSaved");
+        buttonSave.setEnabled(!isSaved);
+        buttonDetails  = (Button) rootView.findViewById(R.id.btn_details);
+        correctTrack = false;
+        try {
+            jsonObj = new JSONObject(getArguments().getString("json"));
+            if(jsonObj != null)
+                if(jsonObj.getJSONArray("points").length()>0)
+                    correctTrack = true;
+            if(correctTrack)
+            {
+                parse();
+                drawRoute();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jsonObj != null)
-                    new SaveTrack(getActivity().getApplicationContext()).execute("44","tour de Frącz", jsonObj.toString(), "1000", "02:14:50", "38.88");
+                if(correctTrack)
+                {
+                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), "1003", "2:30:00", "23.0");
+                    Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
+                }
                 else
-                    Toast.makeText(getActivity().getApplicationContext(), "brak danych trasy", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Nie zarejestrowano trasy", Toast.LENGTH_LONG).show();
+                isSaved = true;
+                buttonSave.setEnabled(!isSaved);
             }
         });
-        try {
-            jsonObj = new JSONObject(getArguments().getString("json"));
-            parse();
-            drawRoute();
-        } catch (JSONException e) {
-            e.printStackTrace();
-    }
+
+        buttonDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(correctTrack) {
+                    TrackDetails detFragment = new TrackDetails();
+                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                    Bundle b = new Bundle();
+                    b.putString("json", jsonObj.toString());
+                    b.putBoolean("isSaved", isSaved);
+                    detFragment.setArguments(b);
+                    transaction.replace(R.id.summary_container, detFragment);
+                    //transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+
+            }
+        });
 
 //        context = getActivity();
 
@@ -68,7 +103,7 @@ public class TrackSummary extends Fragment {
     }
 
     public void onResume() {
-       super.onResume();
+        super.onResume();
     }
 
     public void onPause() {
@@ -116,7 +151,12 @@ public class TrackSummary extends Fragment {
         polyLineOptions.width(2);
         polyLineOptions.color(Color.BLUE);
         mMap.addPolyline(polyLineOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0),10));
+
+        if(!arrLatLng.isEmpty()) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0), 8));
+            mMap.addMarker(new MarkerOptions().position(arrLatLng.get(0)).title("Start"));
+            mMap.addMarker(new MarkerOptions().position(arrLatLng.get(arrLatLng.size() - 1)).title("Meta"));
+        }
     }
 
 }
