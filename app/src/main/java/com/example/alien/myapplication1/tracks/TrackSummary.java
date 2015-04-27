@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class TrackSummary extends Fragment {
     private GoogleMap mMap;
-//    private Context context;
+    //    private Context context;
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
     private Button buttonSave;
@@ -69,8 +69,8 @@ public class TrackSummary extends Fragment {
             public void onClick(View v) {
                 if(correctTrack)
                 {
-                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString());
-                    Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
+                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), "1003", "2:30:00", "23.0");
+                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getActivity().getApplicationContext(), "Nie zarejestrowano trasy", Toast.LENGTH_LONG).show();
@@ -103,7 +103,7 @@ public class TrackSummary extends Fragment {
     }
 
     public void onResume() {
-       super.onResume();
+        super.onResume();
     }
 
     public void onPause() {
