@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.example.alien.myapplication1.map.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +47,7 @@ public class RecordRoute
     private int second, minute, hour, day, month, year;
     private Time today;
     private String start, finish, pts = "";
+    private DateTime jodaStart, jodaFinish;
     private JSONObject obj;
     private JSONArray points, times;
 
@@ -148,6 +152,8 @@ public class RecordRoute
         System.out.println("start recoding");
         Log.i("testing", "log  w start recording");
 
+        updateTimeAndDate();
+
         //create new objects to not append old ones
         obj    = new JSONObject();
         points = new JSONArray();
@@ -155,6 +161,7 @@ public class RecordRoute
 
         recording = true;
         start = formatDate(year, month, day)+formatTime(hour, minute, second);
+        jodaStart = new DateTime(year, month,day, hour, minute, second);
 
         try{
             obj.put("start", formatDate(year, month, day)+formatTime(hour, minute, second));
@@ -164,7 +171,14 @@ public class RecordRoute
     public void stopRecording()
     {
         recording = false;
+        updateTimeAndDate();
         finish = formatDate(year, month, day)+formatTime(hour, minute, second);
+        jodaFinish = new DateTime(year, month, day, hour, minute, second);
+
+        Interval interval2 = new Interval(jodaStart, jodaFinish);
+        Period p2 = interval2.toPeriod();
+        Toast.makeText(context, p2.getYears()+" "+ p2.getMonths() + " " + p2.getDays() + " " + p2.getHours() + " " + p2.getMinutes() + " " + p2.getSeconds(), Toast.LENGTH_LONG).show();
+
 
         try{
             obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
@@ -249,6 +263,66 @@ public class RecordRoute
         File dir = context.getFilesDir();
         File file = new File(dir, "tracksNames");
         return file.delete();
+    }
+
+    //return distance in kilometers
+    public double getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
+    {
+        double d2r = 0.0174532925199433;  // pi / 180
+        double dlong = (long2 - long1) * d2r;
+        double dlat = (lat2 - lat1) * d2r;
+        double a = Math.pow(Math.sin(dlat / 2.0), 2) + Math.cos(lat1 * d2r) * Math.cos(lat2 * d2r) * Math.pow(Math.sin(dlong / 2.0), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = 6367 * c;
+
+        return d;
+    }
+
+    public double getDistance(String trackName)
+    {
+        double dist = 0;
+
+        byte [] bytes;
+        obj.toString();
+
+        try {
+
+            FileInputStream fis = context.openFileInput(trackName);
+            Scanner sc = new Scanner(fis);
+            String linia="";
+            while(sc.hasNext())
+            {
+                linia+=sc.next();
+            }
+            JSONObject jsonobj = new JSONObject(linia);
+
+            JSONArray pts = jsonobj.getJSONArray("points");
+
+            int i = 0;
+            while(i < pts.length()) {
+                dist += getDistanceBetweenPoints((double) pts.get(i), (double) pts.get(i + 1), (double) pts.get(i + 3), (double) pts.get(i + 4));
+                i += 6;
+            }
+
+        }catch(FileNotFoundException e){Toast.makeText(context, "RecordRoute: an error occurred when read from file", Toast.LENGTH_LONG).show();}
+        catch(IOException e){Toast.makeText(context, "RecordRoute: error at getChannel().size()", Toast.LENGTH_LONG).show();}
+        catch(JSONException e){Toast.makeText(context, "RecordRoute: error at new JSONObject(bytes.toString())", Toast.LENGTH_LONG).show();}
+
+        return dist;
+    }
+
+    // HHMMSS - 2 signs for hours, minutes and seconds
+    public Period getTravelTime(String trackName)
+    {
+        return new Interval(jodaStart, jodaFinish).toPeriod();
+    }
+
+    public double avarageSpeed(String trackName)
+    {
+        Period t = getTravelTime(trackName);
+        double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
+
+        return getDistance(trackName) / time;
     }
 
     //lipa chyba, nie używane
