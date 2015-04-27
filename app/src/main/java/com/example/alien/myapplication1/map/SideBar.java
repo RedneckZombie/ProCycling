@@ -153,7 +153,7 @@ public class SideBar extends ActionBarActivity {
 
     public void podsumowanie()
     {
-        Fragment fr = new TrackSummary();
+        Fragment fr = new TrackSummary(getApplicationContext());
         Bundle b = new Bundle();
         b.putString("json", rr.getJSON().toString());
         b.putBoolean("isSaved", false);

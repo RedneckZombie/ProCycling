@@ -29,9 +29,9 @@ public class SaveTrack extends AsyncTask<String,Void,String> {
             String account = (String)arg0[0];
             String track_name = (String)arg0[1];
             String gps_data = (String)arg0[2];
-            String distance = (String)arg0[3];
+            int distance = Integer.parseInt((String)arg0[3]);
             String time = (String)arg0[4];
-            String average = (String)arg0[5];
+            double average = Double.parseDouble((String)arg0[5]);
 
             String link = "http://rommam.cba.pl/save_track.php";
             String data  = "account"

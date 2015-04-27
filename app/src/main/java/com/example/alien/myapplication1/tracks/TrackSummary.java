@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.tracks;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -30,8 +31,11 @@ public class TrackSummary extends Fragment {
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
     private Button buttonSave;
+    private RecordRoute recordRoute;
+    private Context context;
 
-    public TrackSummary() {
+    public TrackSummary(Context context) {
+        this.context = context;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,11 +44,12 @@ public class TrackSummary extends Fragment {
         setUpMapIfNeeded();
         arrLatLng = new ArrayList<>();
         buttonSave = (Button) rootView.findViewById(R.id.btn_save);
+        recordRoute = new RecordRoute(context);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(jsonObj != null)
-                    new SaveTrack(getActivity().getApplicationContext()).execute("44","tour de Frącz", jsonObj.toString(), "1003", "02:14:50", "38.88");
+                    new SaveTrack(getActivity().getApplicationContext()).execute("44","tour de Frącz", jsonObj.toString(), "1000", "02:14:50", "38.88");
                 else
                     Toast.makeText(getActivity().getApplicationContext(), "brak danych trasy", Toast.LENGTH_LONG).show();
             }
