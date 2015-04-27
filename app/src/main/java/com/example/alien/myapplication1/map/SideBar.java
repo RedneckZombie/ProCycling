@@ -156,6 +156,7 @@ public class SideBar extends ActionBarActivity {
         Fragment fr = new TrackSummary();
         Bundle b = new Bundle();
         b.putString("json", rr.getJSON().toString());
+        b.putBoolean("isSaved", false);
         fr.setArguments(b);
         FragmentManager fm = getSupportFragmentManager();//
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
