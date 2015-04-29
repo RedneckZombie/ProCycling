@@ -21,17 +21,22 @@ public class TrackList extends Fragment {
     ListView lv;
     boolean isConnected;
     String username;
+    ViewGroup container;
 
     ArrayList<Track> lista;
     public TrackList(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_track_list, container, false);
+        this.container = container;
         isConnected = getArguments().getBoolean("isConnected");
         username = getArguments().getString("username");
-        if(isConnected)
+        if(isConnected) {
+            System.out.println("Jest net");
             lista = database();
+        }
         else
             lista = iStorage();
+        System.out.println(lista.size());
         TrackAdapter adapter = new TrackAdapter(container.getContext(), R.layout.track_list_row, lista);
         lv =  (ListView)rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);
@@ -45,8 +50,18 @@ public class TrackList extends Fragment {
     }
     public ArrayList<Track> database()
     {
-
-        return null;
+        GetTracks gt = new GetTracks(container.getContext());
+        gt.execute("44");
+        while(!gt.isFinished())
+        {
+            try{
+                Thread.sleep(100);
+            }catch(Exception e){}
+        }
+        ArrayList<Track> lista = gt.getList();
+        if(lista.isEmpty())
+            lista.add(new Track("Brak tras"));
+        return lista;
     }
 
     public void onResume() {

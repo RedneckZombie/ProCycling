@@ -18,11 +18,21 @@ import java.util.ArrayList;
  */
 public class GetTracks extends AsyncTask<String,Void,String> {
     private Context context;
+    private boolean isFinished=false;
+    private ArrayList<Track> list;
 
     public GetTracks(Context context) {
         this.context = context;
     }
 
+    public ArrayList<Track> getList()
+    {
+        return list;
+    }
+    public boolean isFinished()
+    {
+        return isFinished;
+    }
     @Override
     protected String doInBackground(String... arg0) {
         try{
@@ -65,13 +75,18 @@ public class GetTracks extends AsyncTask<String,Void,String> {
                     tracks.add(track);
                 }
             }
+            list = tracks;
+            isFinished = true;
             return sb.toString() + tracks.get(0).getTrackId()+" "+tracks.get(0).getTrackName()+" "+tracks.get(0).getDistance()+" "+tracks.get(0).getTime()+" "+tracks.get(0).getAverage();
         }catch(UnsupportedEncodingException e){
+            isFinished = true;
             return new String("UEEException: " + e.getMessage());
         }
         catch(MalformedURLException e){
+            isFinished = true;
             return new String("MUException: " + e.getMessage());
         }catch(IOException e){
+            isFinished = true;
             return new String("IOException: " + e.getStackTrace().toString());
         }
     }

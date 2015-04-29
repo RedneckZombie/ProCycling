@@ -312,7 +312,7 @@ public class SideBar extends ActionBarActivity {
                 } else {
                     return false;
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return false;
             }
         }
