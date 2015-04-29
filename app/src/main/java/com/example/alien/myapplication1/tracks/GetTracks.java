@@ -65,7 +65,7 @@ public class GetTracks extends AsyncTask<String,Void,String> {
                     tracks.add(track);
                 }
             }
-            return sb.toString() + tracks.size();
+            return sb.toString() + tracks.get(0).getTrackId()+" "+tracks.get(0).getTrackName()+" "+tracks.get(0).getDistance()+" "+tracks.get(0).getTime()+" "+tracks.get(0).getAverage();
         }catch(UnsupportedEncodingException e){
             return new String("UEEException: " + e.getMessage());
         }

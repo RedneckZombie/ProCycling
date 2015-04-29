@@ -144,6 +144,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, SideBar.class);
             intent.putExtra("username", username);
+           // intent.putExtra("id", id);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
 
@@ -155,7 +156,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
             Toast.makeText(context, "Nie poprawny email lub hasło!", Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(context, "Brak połączenia z internetem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Przeciążona baza, pliss spróbuj później!", Toast.LENGTH_SHORT).show();
         }
         System.out.println("Status: " + status);
         System.out.println("Username: " + username);

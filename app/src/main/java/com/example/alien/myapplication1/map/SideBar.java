@@ -1,6 +1,9 @@
 package com.example.alien.myapplication1.map;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -19,10 +22,17 @@ import android.widget.Toast;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.account.RegistrationActivity;
+import com.example.alien.myapplication1.tracks.GetTracks;
 import com.example.alien.myapplication1.tracks.RecordRoute;
+import com.example.alien.myapplication1.tracks.TrackDetails;
+import com.example.alien.myapplication1.tracks.TrackList;
 import com.example.alien.myapplication1.tracks.TrackSummary;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class SideBar extends ActionBarActivity {
@@ -141,6 +151,15 @@ public class SideBar extends ActionBarActivity {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:
+                            Fragment fr = new TrackList();
+                            Bundle b = new Bundle();
+                            b.putString("username", username);
+                            b.putBoolean("isConnected", isConnected(getApplicationContext()));
+                            fr.setArguments(b);
+                            FragmentManager fm = getSupportFragmentManager();
+                            fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+                            break;
+                        case 2:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivity(intent);
                             finish();
@@ -275,7 +294,30 @@ public class SideBar extends ActionBarActivity {
     }
 
 
+    public boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL("http://www.google.com/");
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000); // mTimeout is in seconds
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return false;
+    }
 
 
 
