@@ -99,8 +99,4 @@ public class TrackDetails extends Fragment {
         super.onPause();
     }
 
-
-
-
-
 }

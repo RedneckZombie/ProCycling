@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.account;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -28,12 +29,19 @@ import java.net.URLConnection;
 
 public class LogIn extends AsyncTask<String,Void,String> {
     private Context context;
+    private String res;
+    private boolean isFinished=false;
 
     private String mail="";
+
     public LogIn(Context context) {
         this.context = context;
     }
 
+    public boolean isFinished()
+    {
+        return isFinished;
+    }
     protected void onPreExecute(){
     }
 
@@ -98,37 +106,47 @@ public class LogIn extends AsyncTask<String,Void,String> {
                         sb.append(line);
                     }
                 }
+                res=sb.toString().substring(0,1);
+                isFinished=true;
                 return sb.toString();
             } catch (UnsupportedEncodingException e) {
+                isFinished=true;
                 return new String("UEEException: " + e.getMessage());
             } catch (MalformedURLException e) {
+                isFinished=true;
                 return new String("MUException: " + e.getMessage());
             } catch (IOException e) {
+                isFinished=true;
                 return new String("IOException: " + e.getStackTrace().toString());
             }
         }
         else{
+            isFinished=true;
             return new String("Brak internetu");
         }
+
     }
 
+    public String getRes()
+    {
+        return res;
+    }
     @Override
     protected void onPostExecute(String result){
         System.out.println("Result: " + result);
         String[] results = result.split(";");
         String status = results[0];
         String username = "";
-
         if(results.length >= 2) {
             username = results[1];
         }
-
         if(status.equals("1")){
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, SideBar.class);
             intent.putExtra("username", username);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+
         }
         else if(status.equals("2")){
             Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();

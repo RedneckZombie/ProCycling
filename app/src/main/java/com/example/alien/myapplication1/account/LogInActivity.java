@@ -3,6 +3,7 @@ package com.example.alien.myapplication1.account;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -52,6 +53,7 @@ public class LogInActivity extends Activity {
                 {
                     Intent intent = new Intent(getApplicationContext(), SideBar.class);///////////////////
                     startActivity(intent);
+                    finish();
             }
         });
         button_register.setOnClickListener(new View.OnClickListener(){
@@ -83,10 +85,27 @@ public class LogInActivity extends Activity {
                 }
                 pref.commit();
 
-                new LogIn(getApplicationContext()).execute(login, password);
+                LogIn li = new  LogIn(getApplicationContext());
+                li.execute(login, password);
+
+
+                while(!li.isFinished()){
+                    System.out.println(li.isFinished());
+                    try{
+                        Thread.sleep(100);
+                    }catch(Exception e){}
+                }
+                String res = li.getRes();
+                if(res!=null) {
+                    if (res.equals("1")) {
+                        finish();
+                    }
+                }
+
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

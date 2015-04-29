@@ -82,6 +82,7 @@ public class RecordRoute
         // Called when a new location is found by the network location provider.
         public void onLocationChanged(Location location) {
 
+            System.out.println("Zmieniam sie :D");
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             altitude = location.getAltitude();

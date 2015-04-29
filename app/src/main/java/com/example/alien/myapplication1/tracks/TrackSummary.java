@@ -52,14 +52,8 @@ public class TrackSummary extends Fragment {
         correctTrack = false;
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
-            if(jsonObj != null)
-                if(jsonObj.getJSONArray("points").length()>0)
-                    correctTrack = true;
-            if(correctTrack)
-            {
-                parse();
-                drawRoute();
-            }
+            parse();
+            drawRoute();
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -17,8 +17,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.account.LogInActivity;
+import com.example.alien.myapplication1.account.RegistrationActivity;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.example.alien.myapplication1.tracks.TrackSummary;
+
+import org.json.JSONObject;
 
 
 public class SideBar extends ActionBarActivity {
@@ -36,18 +40,24 @@ public class SideBar extends ActionBarActivity {
         setContentView(R.layout.side_bar_activity);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        extra();
         drawer();
         mapa();
+        rejestrujTrase();
 
-        Log.i("testing", "onCreate (Map)");
+    }
+
+    public void rejestrujTrase()
+    {
         this.runOnUiThread(new Runnable() {
             public void run() {
                 if (rr == null)
+                {
                     rr = new RecordRoute(getApplicationContext());
+                    rr.createListener();
+                }
             }
         });
-
-        extra();
     }
 
     public void extra()
@@ -90,10 +100,18 @@ public class SideBar extends ActionBarActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+        int usedArray;
+        if(username==null)
+        {
+            usedArray = R.array.guest;
+        }
+        else{
+            usedArray = R.array.options;
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getBaseContext(),
                 R.layout.element_menu ,
-                getResources().getStringArray(R.array.options)
+                getResources().getStringArray(usedArray)
         );
 
         mDrawerList.setAdapter(adapter);
@@ -106,22 +124,52 @@ public class SideBar extends ActionBarActivity {
                                     int position,
                                     long id) {
 
-                switch(position){
-                    case 0:
-                        if(!rr.isRecording()) {
-                            rr.startRecording();
-                            Toast.makeText(getApplicationContext(),  R.string.rejestruj_trase , Toast.LENGTH_LONG).show();
-                            aktualizujAdapter(0);
-                        }
-                        else{
-                            rr.stopRecording();
-                            Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
-                            aktualizujAdapter(1);
-                            podsumowanie();
+                if(username!=null) {//dla uzytkownika
+                    switch (position) {
+                        case 0:
+                            if (!rr.isRecording()) {
+                                rr.startRecording();
+                                Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
+                                aktualizujAdapter(0);
+                            } else {
+                                rr.stopRecording();
+                                Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
+                                aktualizujAdapter(1);
+                                podsumowanie();
 
-                        }
-                        mDrawerLayout.closeDrawer(mDrawerList);
-                        break;
+                            }
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            break;
+                        case 1:
+                            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                    }
+                }
+                else{//dla gościa
+                    switch(position)
+                    {
+                        case 0:
+                            if (!rr.isRecording()) {
+                                rr.startRecording();
+                                Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
+                                aktualizujAdapter(0);
+                            } else {
+                                rr.stopRecording();
+                                Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
+                                aktualizujAdapter(1);
+                                podsumowanie();
+
+                            }
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            break;
+                        case 1:
+                            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                    }
                 }
                 /*
                 // Getting an array of rivers
@@ -153,23 +201,37 @@ public class SideBar extends ActionBarActivity {
 
     public void podsumowanie()
     {
-        Fragment fr = new TrackSummary();
-        Bundle b = new Bundle();
-        b.putString("json", rr.getJSON().toString());
-        b.putBoolean("isSaved", false);
-        fr.setArguments(b);
-        FragmentManager fm = getSupportFragmentManager();//
-        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+        JSONObject ob = rr.getJSON();
+        if(ob != null)
+            try {
+                if (ob.getJSONArray("points").length() > 0) {
+                    Fragment fr = new TrackSummary();
+                    Bundle b = new Bundle();
+                    b.putString("json", ob.toString());
+                    b.putBoolean("isSaved", false);
+                    fr.setArguments(b);
+                    FragmentManager fm = getSupportFragmentManager();//
+                    fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+                }
+            }catch(Exception e){}
     }
+
 
     public void aktualizujAdapter(int n)
     {
         String[] array;
-        if(n==0) {
-            array= getResources().getStringArray(R.array.options2);
-        }
-        else{
-            array= getResources().getStringArray(R.array.options);
+        if(username!=null) {
+            if (n == 0) {
+                array = getResources().getStringArray(R.array.options2);
+            } else {
+                array = getResources().getStringArray(R.array.options);
+            }
+        }else{
+            if (n == 0) {
+                array = getResources().getStringArray(R.array.guest2);
+            } else {
+                array = getResources().getStringArray(R.array.guest);
+            }
         }
         ArrayAdapter<String> a = new ArrayAdapter<>(
                 getBaseContext(),
@@ -211,6 +273,7 @@ public class SideBar extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_map, menu);
         return true;
     }
+
 
 
 

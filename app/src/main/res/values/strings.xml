@@ -36,13 +36,21 @@
 
     <string-array name="options">
         <item >Rejestruj trasę</item>
-        <item >inna możliwość, którą dodamy...</item>
+        <item >Wyloguj</item>
     </string-array>
     <string-array name="options2">
         <item >Zakoncz rejestracje trasy</item>
-        <item >inna możliwość, którą dodamy...</item>
+        <item >Wyloguj</item>
     </string-array>
 
+    <string-array name="guest">
+        <item >Rejestruj trasę</item>
+        <item >Zaloguj</item>
+    </string-array>
+    <string-array name="guest2">
+        <item >Zakoncz rejestracje trasy</item>
+        <item >Zaloguj</item>
+    </string-array>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="rejestruj_trase">Rozpoczecie rejestrowania trasy!</string>
