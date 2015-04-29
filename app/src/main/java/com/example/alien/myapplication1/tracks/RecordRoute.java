@@ -57,7 +57,6 @@ public class RecordRoute
     public RecordRoute(Context context)
     {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         this.context = context;
         Log.e("testing", "RecordRoute konstruktor");
         obj  = new JSONObject();
@@ -71,6 +70,10 @@ public class RecordRoute
             Toast.makeText(context, "utworzono plik z nazwami tras", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void createListener(){
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
     }
 
     // Define a listener that responds to location updates
