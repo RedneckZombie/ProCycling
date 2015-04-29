@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 /**
  * Created by Alien on 2015-04-29.
@@ -42,6 +43,7 @@ public class GetTracks extends AsyncTask<String,Void,String> {
 
             StringBuilder sb = new StringBuilder();
             String line = null;
+            ArrayList<Track> tracks = new ArrayList<Track>();
             // Read Server Response
             while((line = reader.readLine()) != null)
             {
@@ -56,9 +58,14 @@ public class GetTracks extends AsyncTask<String,Void,String> {
                     String track_dist = lineParts[2].substring(11);
                     String track_time = lineParts[3].substring(11);
                     String track_avg = lineParts[4].substring(14);
+
+                    Track track = new Track(Integer.parseInt(track_id), track_name, Integer.parseInt(track_dist), track_time,
+                                            Double.parseDouble(track_avg));
+
+                    tracks.add(track);
                 }
             }
-            return sb.toString();
+            return sb.toString() + tracks.size();
         }catch(UnsupportedEncodingException e){
             return new String("UEEException: " + e.getMessage());
         }
