@@ -35,6 +35,7 @@ public class TrackSummary extends Fragment {
     private Button buttonDetails;
     private boolean isSaved;
     private boolean correctTrack;
+    private StatisticsCalculator calc;
 
     public TrackSummary() {
     }
@@ -63,7 +64,8 @@ public class TrackSummary extends Fragment {
             public void onClick(View v) {
                 if(correctTrack)
                 {
-                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), "1003", "2:30:00", "23.0");
+                    calc = new StatisticsCalculator(jsonObj);
+                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.avarageSpeed()));
                     Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
                 }
                 else

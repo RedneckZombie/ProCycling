@@ -25,6 +25,7 @@ public class TrackDetails extends Fragment {
     private Button buttonSave;
     private JSONObject jsonObj;
     private Boolean isSaved;
+    private StatisticsCalculator calc;
 
     public TrackDetails() {
     }
@@ -32,6 +33,7 @@ public class TrackDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_track_details, container, false);
+
         //arrLatLng = new ArrayList<>();
 
         buttonMap = (Button) rootView.findViewById(R.id.btn_map);
@@ -65,10 +67,10 @@ public class TrackDetails extends Fragment {
             @Override
             public void onClick(View v) {
                 if(jsonObj != null) {
-
+                    calc = new StatisticsCalculator(jsonObj);
                     try {
                         if(jsonObj.getJSONArray("points").length()>0) {
-                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), "1003", "02:14:50", "38.88");
+                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.avarageSpeed()));
                             Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
                         }
                         else

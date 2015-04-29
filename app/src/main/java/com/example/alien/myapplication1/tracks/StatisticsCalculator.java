@@ -23,12 +23,10 @@ public class StatisticsCalculator {
     JSONObject obj;
     JSONArray pts;
     JSONArray times;
-    Context context;
 
-    StatisticsCalculator(JSONObject jsonobj, Context context)
+    StatisticsCalculator(JSONObject jsonobj)
     {
         obj = jsonobj;
-        context = context;
 
         try {
             pts = obj.getJSONArray("points");

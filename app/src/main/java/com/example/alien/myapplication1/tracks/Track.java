@@ -10,6 +10,10 @@ public class Track {
     private String _time;
     private double _average;
 
+    Track(String track_name){
+        _track_name = track_name;
+    }
+
     Track(int track_id, String track_name, int distance, String time, double average){
         _track_id = track_id;
         _track_name = track_name;
