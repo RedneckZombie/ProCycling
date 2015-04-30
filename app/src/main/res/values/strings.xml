@@ -37,20 +37,24 @@
     <string-array name="options">
         <item >Rejestruj trasę</item>
         <item >Moje trasy</item>
+        <item >Mapa</item>
         <item >Wyloguj</item>
     </string-array>
     <string-array name="options2">
         <item >Zakoncz rejestracje trasy</item>
         <item >Moje trasy</item>
+        <item >Mapa</item>
         <item >Wyloguj</item>
     </string-array>
 
     <string-array name="guest">
         <item >Rejestruj trasę</item>
+        <item >Mapa</item>
         <item >Zaloguj</item>
     </string-array>
     <string-array name="guest2">
         <item >Zakoncz rejestracje trasy</item>
+        <item >Mapa</item>
         <item >Zaloguj</item>
     </string-array>
     <string name="hello_world">Hello world!</string>

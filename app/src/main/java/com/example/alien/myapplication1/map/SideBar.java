@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.account.RegistrationActivity;
@@ -43,6 +44,7 @@ public class SideBar extends ActionBarActivity {
     ActionBarDrawerToggle mDrawerToggle;
     String username;
     private static RecordRoute rr;
+    Fragment fr= new Map();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,6 @@ public class SideBar extends ActionBarActivity {
     }
     public void mapa()
     {
-        Fragment fr = new Map();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
@@ -151,15 +152,33 @@ public class SideBar extends ActionBarActivity {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:
-                            Fragment fr = new TrackList();
+                            //////////do refaktoryzacji- kod działa ale wygląda ch... nie ładnie////
+                            CheckingConnection cc = new CheckingConnection(getApplicationContext());
+                            cc.execute();
+                            Fragment tl = new TrackList();
                             Bundle b = new Bundle();
                             b.putString("username", username);
-                            b.putBoolean("isConnected", isConnected(getApplicationContext()));
-                            fr.setArguments(b);
+                            while(!cc.isFinished()){
+                                try{
+                                    Thread.sleep(100);
+                                }catch(Exception e){}
+                            }
+                            b.putBoolean("isConnected", cc.isConnected());
+                            tl.setArguments(b);
                             FragmentManager fm = getSupportFragmentManager();
-                            fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+                            fm.beginTransaction().replace(R.id.content_frame, tl).commit();
+
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
                             break;
                         case 2:
+                            if(!fr.isVisible()) {
+                                mapa();
+                            }
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
+                            break;
+                        case 3:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivity(intent);
                             finish();
@@ -184,38 +203,21 @@ public class SideBar extends ActionBarActivity {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:
+                            if(!fr.isVisible()) {
+                                mapa();
+                            }
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
+                            break;
+                        case 2:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivity(intent);
                             finish();
                             break;
                     }
                 }
-                /*
-                // Getting an array of rivers
-                String[] rivers = getResources().getStringArray(R.array.rivers);
-
-               // Creating a fragment object
-                Map rFragment = new Map();
-
-
-                FragmentManager fragmentManager = getFragmentManager();
-
-                // Creating a fragment transaction
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-
-                // Adding a fragment to the fragment transaction
-                ft.replace(R.id.content_frame, rFragment);
-
-                // Committing the transaction
-                ft.commit();
-
-                // Closing the drawer
-                mDrawerLayout.closeDrawer(mDrawerList);*/
             }
         });
-
-
-
     }
 
     public void podsumowanie()
@@ -235,6 +237,12 @@ public class SideBar extends ActionBarActivity {
             }catch(Exception e){}
     }
 
+
+    public void updateAdapter()
+    {
+       ArrayAdapter aa = (ArrayAdapter) mDrawerList.getAdapter();
+
+    }
 
     public void aktualizujAdapter(int n)
     {
@@ -292,33 +300,6 @@ public class SideBar extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_map, menu);
         return true;
     }
-
-
-    public boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            try {
-                URL url = new URL("http://www.google.com/");
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                urlc.setRequestProperty("User-Agent", "test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1000); // mTimeout is in seconds
-                urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
 
 
 }

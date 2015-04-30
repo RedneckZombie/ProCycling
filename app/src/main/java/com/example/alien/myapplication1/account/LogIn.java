@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.map.SideBar;
 
 import org.apache.http.HttpResponse;
@@ -31,11 +32,14 @@ public class LogIn extends AsyncTask<String,Void,String> {
     private Context context;
     private String res;
     private boolean isFinished=false;
+    CheckingConnection isConnected;
 
     private String mail="";
 
     public LogIn(Context context) {
+
         this.context = context;
+        isConnected = new CheckingConnection(context);
     }
 
     public boolean isFinished()
@@ -43,37 +47,14 @@ public class LogIn extends AsyncTask<String,Void,String> {
         return isFinished;
     }
     protected void onPreExecute(){
+        isConnected.execute();
     }
 
-    public boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            try {
-                URL url = new URL("http://www.google.com/");
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                urlc.setRequestProperty("User-Agent", "test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1000); // mTimeout is in seconds
-                urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (IOException e) {
-                return false;
-            }
-        }
-
-        return false;
-    }
 
     @Override
     protected String doInBackground(String... arg0) {
-        if(isConnected(context)) {
+        if(isConnected.isConnected()) {
             mail = (String) arg0[0];
             try {
                 String email = (String) arg0[0];
@@ -133,6 +114,10 @@ public class LogIn extends AsyncTask<String,Void,String> {
     }
     @Override
     protected void onPostExecute(String result){
+        if(result.equals("Brak internetu"))
+        {
+            result = "3;";
+        }
         System.out.println("Result: " + result);
         String[] results = result.split(";");
         String status = results[0];
@@ -156,7 +141,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
             Toast.makeText(context, "Nie poprawny email lub hasło!", Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(context, "Przeciążona baza, pliss spróbuj później!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Brak internetu!", Toast.LENGTH_SHORT).show();
         }
         System.out.println("Status: " + status);
         System.out.println("Username: " + username);

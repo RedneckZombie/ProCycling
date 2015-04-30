@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.alien.myapplication1.R;
@@ -30,19 +31,27 @@ public class TrackList extends Fragment {
         this.container = container;
         isConnected = getArguments().getBoolean("isConnected");
         username = getArguments().getString("username");
-        if(isConnected) {
+        if(isConnected) {//
             System.out.println("Jest net");
             lista = database();
         }
-        else
+        else {
+            System.out.println("Ni ma net");
             lista = iStorage();
-        System.out.println(lista.size());
+        }
         TrackAdapter adapter = new TrackAdapter(container.getContext(), R.layout.track_list_row, lista);
         lv =  (ListView)rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);
+        lv.setOnItemClickListener(listener);
         return rootView;
     }
 
+    AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+    };
     public ArrayList<Track> iStorage()
     {
         ///////////prezent dla Kamila
