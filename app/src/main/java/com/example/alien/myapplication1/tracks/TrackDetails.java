@@ -70,7 +70,7 @@ public class TrackDetails extends Fragment {
                     calc = new StatisticsCalculator(jsonObj);
                     try {
                         if(jsonObj.getJSONArray("points").length()>0) {
-                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.avarageSpeed()));
+                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
                             Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
                         }
                         else
