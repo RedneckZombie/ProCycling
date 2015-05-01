@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -269,72 +270,7 @@ public class RecordRoute
         return file.delete();
     }
 
-    //lipa chyba, nie używane
-    public void saveTrackPublic(String fileName)
-    {
 
-        FileOutputStream fos;
-        try {
-            FileInputStream fis = context.openFileInput(fileName);
-            Scanner sc = new Scanner(fis);
-            String text="";
-            while(sc.hasNext())
-            {
-                text+=sc.next();
-            }
-            System.out.println("1");
-            File myFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "other/"+"trasa 1");
-
-            myFile.createNewFile();
-            System.out.println("2");
-            FileOutputStream fOut = new FileOutputStream(myFile);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            System.out.println("3");
-            myOutWriter.append(text);
-            myOutWriter.close();
-            fOut.close();
-            System.out.println("4");
-        } catch (FileNotFoundException e) {e.printStackTrace();}
-          catch (IOException e) {e.printStackTrace();}
-    }
-
-    // metodka na potrzeby testowania
-    public void readTrackFromInternalStorage(String fileName)
-    {
-        byte [] bytes;
-        obj.toString();
-
-        try {
-
-            FileInputStream fis = context.openFileInput(fileName);
-            Scanner sc = new Scanner(fis);
-            String linia="";
-            while(sc.hasNext())
-            {
-                linia+=sc.next();
-            }
-            JSONObject jsonobj = new JSONObject(linia);
-
-
-            System.out.println("read from internal");
-            String temp = jsonobj.toString();
-            int index = 0;
-            while(index < temp.length())
-            {
-                if(index + 1000 < temp.length())
-                    System.out.println(temp.substring(index, index+1000));
-                else
-                    System.out.println(temp.substring(index));
-
-                index += 1000;
-            }
-
-            System.out.println("odczytany "+jsonobj);
-
-        }catch(FileNotFoundException e){Toast.makeText(context, "RecordRoute: an error occurred when read from file", Toast.LENGTH_LONG).show();}
-        catch(IOException e){Toast.makeText(context, "RecordRoute: error at getChannel().size()", Toast.LENGTH_LONG).show();}
-        catch(JSONException e){Toast.makeText(context, "RecordRoute: error at new JSONObject(bytes.toString())", Toast.LENGTH_LONG).show();}
-    }
 
 }
 

@@ -80,7 +80,7 @@ public class StatisticsCalculator {
         return new Interval(jodaStart, jodaFinish).toPeriod();
     }
 
-    public double avarageSpeed()
+    public double getAvarageSpeed()
     {
         Period t = getTravelTime();
         double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
