@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 
 public class TrackDetails extends Fragment {
-    //    private Context context;
     private Button buttonMap;
     private Button buttonSave;
     private JSONObject jsonObj;
@@ -66,29 +65,14 @@ public class TrackDetails extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jsonObj != null) {
-                    calc = new StatisticsCalculator(jsonObj);
-                    try {
-                        if(jsonObj.getJSONArray("points").length()>0) {
-                            new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                            Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                            Toast.makeText(getActivity().getApplicationContext(), "Nie zarejestrowano trasy", Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-                else
-                    Toast.makeText(getActivity().getApplicationContext(), "Brak danych trasy", Toast.LENGTH_LONG).show();
+                calc = new StatisticsCalculator(jsonObj);
+                new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+                Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
                 isSaved = true;
                 buttonSave.setEnabled(!isSaved);
             }
         });
 
-//        context = getActivity();
 
         return rootView;
     }
