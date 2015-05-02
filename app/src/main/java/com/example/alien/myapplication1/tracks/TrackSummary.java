@@ -28,13 +28,11 @@ import java.util.ArrayList;
 
 public class TrackSummary extends Fragment {
     private GoogleMap mMap;
-    //    private Context context;
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
     private Button buttonSave;
     private Button buttonDetails;
     private boolean isSaved;
-    private boolean correctTrack;
     private StatisticsCalculator calc;
 
     public TrackSummary() {
@@ -50,7 +48,7 @@ public class TrackSummary extends Fragment {
         isSaved = getArguments().getBoolean("isSaved");
         buttonSave.setEnabled(!isSaved);
         buttonDetails  = (Button) rootView.findViewById(R.id.btn_details);
-        correctTrack = false;
+
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
             parse();
@@ -62,14 +60,9 @@ public class TrackSummary extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(correctTrack)
-                {
-                    calc = new StatisticsCalculator(jsonObj);
-                    new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
-                }
-                else
-                    Toast.makeText(getActivity().getApplicationContext(), "Nie zarejestrowano trasy", Toast.LENGTH_LONG).show();
+                calc = new StatisticsCalculator(jsonObj);
+                new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+                Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
                 isSaved = true;
                 buttonSave.setEnabled(!isSaved);
             }
@@ -78,22 +71,19 @@ public class TrackSummary extends Fragment {
         buttonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(correctTrack) {
-                    TrackDetails detFragment = new TrackDetails();
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                    Bundle b = new Bundle();
-                    b.putString("json", jsonObj.toString());
-                    b.putBoolean("isSaved", isSaved);
-                    detFragment.setArguments(b);
-                    transaction.replace(R.id.summary_container, detFragment);
-                    //transaction.addToBackStack(null);
-                    transaction.commit();
-                }
+                TrackDetails detFragment = new TrackDetails();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                Bundle b = new Bundle();
+                b.putString("json", jsonObj.toString());
+                b.putBoolean("isSaved", isSaved);
+                detFragment.setArguments(b);
+                transaction.replace(R.id.summary_container, detFragment);
+                //transaction.addToBackStack(null);
+                transaction.commit();
 
             }
         });
 
-//        context = getActivity();
 
         return rootView;
     }
