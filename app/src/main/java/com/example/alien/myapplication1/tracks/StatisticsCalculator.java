@@ -35,7 +35,7 @@ public class StatisticsCalculator {
         catch(JSONException e){}
     }
 
-    //return distance in kilometers
+    //return distance in meters
     public double getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
     {
         double d2r = 0.0174532925199433;  // pi / 180
@@ -45,10 +45,11 @@ public class StatisticsCalculator {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = 6367 * c;
 
-        return d;
+        return (int)(d*1000);
     }
 
-    public double getDistance()
+    //return distance in meters
+    public int getDistance()
     {
         double dist = 0;
 
@@ -61,7 +62,7 @@ public class StatisticsCalculator {
             }
         }catch(JSONException e){}
 
-        return dist;
+        return (int)dist;
     }
 
     // HHMMSS - 2 signs for hours, minutes and seconds
@@ -85,6 +86,6 @@ public class StatisticsCalculator {
         Period t = getTravelTime();
         double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
 
-        return getDistance() / time;
+        return getDistance()/1000 / time;
     }
 }

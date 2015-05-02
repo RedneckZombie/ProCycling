@@ -100,14 +100,14 @@ public class TrackList extends Fragment {
                     p = stat.getTravelTime();
                     time = p.getYears()+""+p.getMonths()+p.getDays()+p.getHours()+p.getMinutes()+p.getSeconds();
 
-                    tracks.add(new Track(counter,name, tempName.substring(index2+1), (int)(stat.getDistance()*1000), time, stat.getAvarageSpeed()));
+                    tracks.add(new Track(counter,name, tempName.substring(index2+1), stat.getDistance(), time, stat.getAvarageSpeed()));
                 }
                 else{
                     stat = new StatisticsCalculator(readTrackFromInternalStorage(tempName));
                     p = stat.getTravelTime();
                     time = p.getYears()+""+p.getMonths()+p.getDays()+p.getHours()+p.getMinutes()+p.getSeconds();
 
-                    tracks.add(new Track(counter,tempName, (int)(stat.getDistance()*1000), time, stat.getAvarageSpeed()));
+                    tracks.add(new Track(counter,tempName, stat.getDistance(), time, stat.getAvarageSpeed()));
                 }
                 counter++;
                 i = index+1;
