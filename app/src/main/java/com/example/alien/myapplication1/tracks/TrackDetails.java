@@ -1,6 +1,5 @@
 package com.example.alien.myapplication1.tracks;
 
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -14,12 +13,11 @@ import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 
-import org.json.JSONArray;
+import org.joda.time.Period;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 
 public class TrackDetails extends Fragment {
@@ -47,11 +45,14 @@ public class TrackDetails extends Fragment {
         buttonMap = (Button) rootView.findViewById(R.id.btn_map);
         buttonSave = (Button) rootView.findViewById(R.id.btn_save);
         TextView distTxt = (TextView) rootView.findViewById(R.id.txtDist);
-        distTxt.setText(new DecimalFormat("#0.00").format(calc.getDistance()) + " km");
+        double dist = calc.getDistance();
+        dist /= 1000.0;
+        distTxt.setText(new DecimalFormat("#0.00").format(dist) + " km");
         TextView spdTxt = (TextView) rootView.findViewById(R.id.txtSpd);
         spdTxt.setText(new DecimalFormat("#0.00").format(calc.getAvarageSpeed()) + " km/h");
         TextView timeTxt = (TextView) rootView.findViewById(R.id.txtTime);
-        timeTxt.setText(calc.getTravelTime() + "");
+        Period trTime = calc.getTravelTime();
+        timeTxt.setText(String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()) + "");
 
         isSaved = getArguments().getBoolean("isSaved");
 
@@ -76,9 +77,13 @@ public class TrackDetails extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                Toast.makeText(getActivity().getApplicationContext(), "zapisano w bazie", Toast.LENGTH_LONG).show();
+                try {
+                    String trackname = jsonObj.getJSONObject("finish").toString();
+                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 isSaved = true;
                 buttonSave.setEnabled(!isSaved);
             }

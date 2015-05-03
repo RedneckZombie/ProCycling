@@ -59,9 +59,14 @@ public class TrackSummary extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calc = new StatisticsCalculator(jsonObj);
-                new SaveTrack(getActivity().getApplicationContext()).execute("44", "tour de Frącz", jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
+                try {
+                    String trackname = jsonObj.getJSONObject("finish").toString();
+                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 isSaved = true;
                 buttonSave.setEnabled(!isSaved);
             }
@@ -125,7 +130,7 @@ public class TrackSummary extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), jPoints.getString(0), Toast.LENGTH_LONG).show();
         for(int i=0; i<jPoints.length(); i+=3)
         {
-            arrLatLng.add(new LatLng(jPoints.getDouble(i+1), jPoints.getDouble(i)));
+            arrLatLng.add(new LatLng(jPoints.getDouble(i + 1), jPoints.getDouble(i)));
         }
     }
 
