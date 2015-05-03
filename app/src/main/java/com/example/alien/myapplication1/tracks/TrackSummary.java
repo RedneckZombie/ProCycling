@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -126,7 +125,7 @@ public class TrackSummary extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), jPoints.getString(0), Toast.LENGTH_LONG).show();
         for(int i=0; i<jPoints.length(); i+=3)
         {
-            arrLatLng.add(new LatLng((Double) jPoints.get(i+1), (Double) jPoints.get(i)));
+            arrLatLng.add(new LatLng(jPoints.getDouble(i+1), jPoints.getDouble(i)));
         }
     }
 
