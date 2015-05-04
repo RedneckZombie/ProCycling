@@ -61,7 +61,7 @@ public class TrackList extends Fragment {
         lv.setOnItemClickListener(listener);
         return rootView;
     }
-
+///
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -129,6 +129,8 @@ public class TrackList extends Fragment {
         }catch(IOException e){e.printStackTrace();}
 
         ///////////prezent dla Kamila <- jak miło, dziękuję :D
+        if(tracks.isEmpty())
+            tracks.add(new Track("Brak tras"));
         return tracks;
     }
     public ArrayList<Track> database()
