@@ -84,7 +84,7 @@ public class TrackList extends Fragment {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             Bundle b = new Bundle();
             b.putString("json", json.toString());
-            b.putBoolean("isSaved", true);
+            //b.putBoolean("isSaved", true);
             summFragment.setArguments(b);
             transaction.replace(R.id.track_list_container, summFragment);
             transaction.addToBackStack(null);

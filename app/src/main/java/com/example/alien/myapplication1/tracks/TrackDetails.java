@@ -22,9 +22,9 @@ import java.text.DecimalFormat;
 
 public class TrackDetails extends Fragment {
     private Button buttonMap;
-    private Button buttonSave;
+    //private Button buttonSave;
     private JSONObject jsonObj;
-    private Boolean isSaved;
+    //private Boolean isSaved;
     private StatisticsCalculator calc;
 
     public TrackDetails() {
@@ -43,7 +43,7 @@ public class TrackDetails extends Fragment {
         calc = new StatisticsCalculator(jsonObj);
 
         buttonMap = (Button) rootView.findViewById(R.id.btn_map);
-        buttonSave = (Button) rootView.findViewById(R.id.btn_save);
+        //buttonSave = (Button) rootView.findViewById(R.id.btn_save);
         TextView distTxt = (TextView) rootView.findViewById(R.id.txtDist);
         double dist = calc.getDistance();
         dist /= 1000.0;
@@ -54,10 +54,10 @@ public class TrackDetails extends Fragment {
         Period trTime = calc.getTravelTime();
         timeTxt.setText(String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()) + "");
 
-        isSaved = getArguments().getBoolean("isSaved");
+        //isSaved = getArguments().getBoolean("isSaved");
 
 
-        buttonSave.setEnabled(!isSaved);
+        //buttonSave.setEnabled(!isSaved);
 
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class TrackDetails extends Fragment {
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 Bundle b = new Bundle();
                 b.putString("json", jsonObj.toString());
-                b.putBoolean("isSaved", isSaved);
+                //b.putBoolean("isSaved", isSaved);
                 summFragment.setArguments(b);
                 transaction.replace(R.id.details_container, summFragment);
                 transaction.addToBackStack(null);
@@ -74,20 +74,14 @@ public class TrackDetails extends Fragment {
             }
         });
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String trackname = jsonObj.getJSONObject("finish").toString();
-                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                isSaved = true;
-                buttonSave.setEnabled(!isSaved);
-            }
-        });
+//        buttonSave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//               isSaved = true;
+//               buttonSave.setEnabled(!isSaved);
+//            }
+//        });
 
 
         return rootView;

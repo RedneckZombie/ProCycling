@@ -19,15 +19,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zapisz"
-        android:id="@+id/btn_save"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Szczegóły"
         android:id="@+id/btn_details"
         android:layout_alignParentBottom="true"

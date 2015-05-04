@@ -45,7 +45,7 @@ public class GetTracks extends AsyncTask<String,Void,String> {
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter
                     (conn.getOutputStream());
-            wr.write( data );
+            wr.write(data);
             wr.flush();
 
             InputStreamReader isr = new InputStreamReader(conn.getInputStream());

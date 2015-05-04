@@ -25,7 +25,7 @@ public class StatisticsCalculator {
     JSONArray pts;
     JSONArray times;
 
-    StatisticsCalculator(JSONObject jsonobj)
+    public StatisticsCalculator(JSONObject jsonobj)
     {
         obj = jsonobj;
 

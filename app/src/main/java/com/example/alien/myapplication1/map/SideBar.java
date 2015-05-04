@@ -25,10 +25,14 @@ import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.account.RegistrationActivity;
 import com.example.alien.myapplication1.tracks.GetTracks;
 import com.example.alien.myapplication1.tracks.RecordRoute;
+import com.example.alien.myapplication1.tracks.SaveTrack;
+import com.example.alien.myapplication1.tracks.StatisticsCalculator;
 import com.example.alien.myapplication1.tracks.TrackDetails;
 import com.example.alien.myapplication1.tracks.TrackList;
 import com.example.alien.myapplication1.tracks.TrackSummary;
 
+import org.joda.time.Period;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -226,15 +230,38 @@ public class SideBar extends ActionBarActivity {
         if(ob != null)
             try {
                 if (ob.getJSONArray("points").length() > 0) {
+                    CheckingConnection cc = new CheckingConnection(getApplicationContext());
+                    cc.execute();
                     Fragment fr = new TrackSummary();
                     Bundle b = new Bundle();
                     b.putString("json", ob.toString());
-                    b.putBoolean("isSaved", false);
+                    //b.putBoolean("isSaved", false);
                     fr.setArguments(b);
                     FragmentManager fm = getSupportFragmentManager();//
                     fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+                    while(!cc.isFinished()){
+                        try{
+                            Thread.sleep(100);
+                        }catch(Exception e){}
+                    }
+                    if(cc.isConnected())
+                        zapisz(ob);
                 }
             }catch(Exception e){}
+    }
+
+    public void zapisz(JSONObject jsonObj)
+    {
+        try {
+            StatisticsCalculator calc = new StatisticsCalculator(jsonObj);
+            String trackname = jsonObj.getString("finish");
+            Period trTime = calc.getTravelTime();
+            new SaveTrack(getApplicationContext()).execute("44", trackname, jsonObj.toString(),
+                    String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()), String.valueOf(calc.getAvarageSpeed()));
+            Toast.makeText(getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
