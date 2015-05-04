@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -73,8 +74,11 @@ public class StatisticsCalculator {
         try {
             String start = obj.getString("start");
             String finish = obj.getString("finish");
+
+
             jodaStart  = new DateTime(Integer.parseInt(start.substring(0,4)), Integer.parseInt(start.substring(4,6)), Integer.parseInt(start.substring(6,8)), Integer.parseInt(start.substring(8,10)), Integer.parseInt(start.substring(10,12)), Integer.parseInt(start.substring(12,14)));
             jodaFinish = new DateTime(Integer.parseInt(finish.substring(0,4)), Integer.parseInt(finish.substring(4,6)), Integer.parseInt(finish.substring(6,8)), Integer.parseInt(finish.substring(8,10)), Integer.parseInt(finish.substring(10,12)), Integer.parseInt(finish.substring(12,14)));
+
 
         }catch(JSONException e){}
 

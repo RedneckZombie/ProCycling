@@ -66,7 +66,19 @@ public class TrackList extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String src = lista.get(position).getTrackName();    //sprawdz czy nazwa to nie brak tras bo sie wysypio
-            JSONObject json = readTrackFromInternalStorage(src);
+            //JSONObject json = readTrackFromInternalStorage(src);
+
+            //new GetTrackDetails(container.getContext()).execute(String.valueOf(lista.get(position).getTrackId()));
+
+            GetTrackDetails trackDetails = new GetTrackDetails(container.getContext());
+            trackDetails.execute(String.valueOf(lista.get(position).getTrackId()));
+            while(!trackDetails.isFinished())
+            {
+                try{
+                    Thread.sleep(100);
+                }catch(Exception e){}
+            }
+            JSONObject json = trackDetails.getJSON();
 
             TrackSummary summFragment = new TrackSummary();
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -74,7 +86,7 @@ public class TrackList extends Fragment {
             b.putString("json", json.toString());
             b.putBoolean("isSaved", true);
             summFragment.setArguments(b);
-            transaction.replace(R.id.details_container, summFragment);
+            transaction.replace(R.id.track_list_container, summFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
