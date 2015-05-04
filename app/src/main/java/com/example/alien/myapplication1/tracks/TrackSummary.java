@@ -61,7 +61,7 @@ public class TrackSummary extends Fragment {
 //            public void onClick(View v) {
 //                try {
 //                    String trackname = jsonObj.getJSONObject("finish").toString();
-//                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+//                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAverageSpeed()));
 //                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
 //                } catch (JSONException e) {
 //                    e.printStackTrace();

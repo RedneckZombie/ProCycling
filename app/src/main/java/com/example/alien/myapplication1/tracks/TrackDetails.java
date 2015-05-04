@@ -3,13 +3,11 @@ package com.example.alien.myapplication1.tracks;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 
@@ -49,7 +47,7 @@ public class TrackDetails extends Fragment {
         dist /= 1000.0;
         distTxt.setText(new DecimalFormat("#0.00").format(dist) + " km");
         TextView spdTxt = (TextView) rootView.findViewById(R.id.txtSpd);
-        spdTxt.setText(new DecimalFormat("#0.00").format(calc.getAvarageSpeed()) + " km/h");
+        spdTxt.setText(new DecimalFormat("#0.00").format(calc.getAverageSpeed()) + " km/h");
         TextView timeTxt = (TextView) rootView.findViewById(R.id.txtTime);
         Period trTime = calc.getTravelTime();
         timeTxt.setText(String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()) + "");

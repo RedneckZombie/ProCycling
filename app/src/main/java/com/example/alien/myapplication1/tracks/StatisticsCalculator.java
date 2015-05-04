@@ -85,11 +85,11 @@ public class StatisticsCalculator {
         return new Interval(jodaStart, jodaFinish).toPeriod();
     }
 
-    public double getAvarageSpeed()
+    public double getAverageSpeed()
     {
         Period t = getTravelTime();
         double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
 
-        return getDistance()/1000 / time;
+        return (double)getDistance()/1000.0 / time;
     }
 }
