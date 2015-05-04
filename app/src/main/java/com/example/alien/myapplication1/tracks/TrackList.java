@@ -86,7 +86,7 @@ public class TrackList extends Fragment {
             b.putString("json", json.toString());
             b.putBoolean("isSaved", true);
             summFragment.setArguments(b);
-            transaction.replace(R.id.details_container, summFragment);
+            transaction.replace(R.id.track_list_container, summFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
