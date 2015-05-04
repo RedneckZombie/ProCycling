@@ -65,26 +65,27 @@ public class TrackList extends Fragment {
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String src = lista.get(position).getTrackName();    //sprawdz czy nazwa to nie brak tras bo sie wysypio
-            //JSONObject json = readTrackFromInternalStorage(src);
-
-            //new GetTrackDetails(container.getContext()).execute(String.valueOf(lista.get(position).getTrackId()));
-
-            GetTrackDetails trackDetails = new GetTrackDetails(container.getContext());
-            trackDetails.execute(String.valueOf(lista.get(position).getTrackId()));
-            while(!trackDetails.isFinished())
-            {
-                try{
-                    Thread.sleep(100);
-                }catch(Exception e){}
+            String src = lista.get(position).getTrackName();
+            if(src.equals("Brak tras"))
+                return;
+            JSONObject json;//sprawdz czy nazwa to nie brak tras bo sie wysypio
+            if(!isConnected)
+                json = readTrackFromInternalStorage(src);
+            else {
+                GetTrackDetails trackDetails = new GetTrackDetails(container.getContext());
+                trackDetails.execute(String.valueOf(lista.get(position).getTrackId()));
+                while (!trackDetails.isFinished()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                    }
+                }
+                json = trackDetails.getJSON();
             }
-            JSONObject json = trackDetails.getJSON();
-
             TrackSummary summFragment = new TrackSummary();
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             Bundle b = new Bundle();
             b.putString("json", json.toString());
-            b.putBoolean("isSaved", true);
             summFragment.setArguments(b);
             transaction.replace(R.id.track_list_container, summFragment);
             transaction.addToBackStack(null);

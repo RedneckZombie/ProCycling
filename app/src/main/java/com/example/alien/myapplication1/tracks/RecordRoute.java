@@ -127,12 +127,13 @@ public class RecordRoute
         today.setToNow();
 
         year = today.year;
-        month = today.month;
+        month = today.month+1;
         day = today.monthDay;
 
         hour = today.hour;
         minute = today.minute;
         second = today.second;
+
     }
 
     public String formatTime(int h, int m, int s)

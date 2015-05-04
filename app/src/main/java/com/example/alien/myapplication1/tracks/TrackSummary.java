@@ -29,9 +29,9 @@ public class TrackSummary extends Fragment {
     private GoogleMap mMap;
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
-    private Button buttonSave;
+    //private Button buttonSave;
     private Button buttonDetails;
-    private boolean isSaved;
+    //private boolean isSaved;
     private StatisticsCalculator calc;
 
     public TrackSummary() {
@@ -43,9 +43,9 @@ public class TrackSummary extends Fragment {
         //mMap = null;
         setUpMapIfNeeded();
         arrLatLng = new ArrayList<>();
-        buttonSave = (Button) rootView.findViewById(R.id.btn_save);
-        isSaved = getArguments().getBoolean("isSaved");
-        buttonSave.setEnabled(!isSaved);
+       // buttonSave = (Button) rootView.findViewById(R.id.btn_save);
+       // isSaved = getArguments().getBoolean("isSaved");
+       // buttonSave.setEnabled(!isSaved);
         buttonDetails  = (Button) rootView.findViewById(R.id.btn_details);
 
         try {
@@ -56,21 +56,21 @@ public class TrackSummary extends Fragment {
             e.printStackTrace();
         }
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String trackname = jsonObj.getJSONObject("finish").toString();
-                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
-                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                isSaved = true;
-                buttonSave.setEnabled(!isSaved);
-            }
-        });
+//        buttonSave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    String trackname = jsonObj.getJSONObject("finish").toString();
+//                    new SaveTrack(getActivity().getApplicationContext()).execute("45", trackname, jsonObj.toString(), String.valueOf(calc.getDistance()), String.valueOf(calc.getTravelTime()), String.valueOf(calc.getAvarageSpeed()));
+//                    Toast.makeText(getActivity().getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                isSaved = true;
+//                buttonSave.setEnabled(!isSaved);
+//            }
+//        });
 
         buttonDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class TrackSummary extends Fragment {
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 Bundle b = new Bundle();
                 b.putString("json", jsonObj.toString());
-                b.putBoolean("isSaved", isSaved);
+                //b.putBoolean("isSaved", isSaved);
                 detFragment.setArguments(b);
                 transaction.replace(R.id.summary_container, detFragment);
                 //transaction.addToBackStack(null);
