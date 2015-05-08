@@ -1,16 +1,12 @@
 package com.example.alien.myapplication1.map;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,22 +18,15 @@ import android.widget.Toast;
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
-import com.example.alien.myapplication1.account.RegistrationActivity;
-import com.example.alien.myapplication1.tracks.GetTracks;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.example.alien.myapplication1.tracks.SaveTrack;
 import com.example.alien.myapplication1.tracks.StatisticsCalculator;
-import com.example.alien.myapplication1.tracks.TrackDetails;
 import com.example.alien.myapplication1.tracks.TrackList;
 import com.example.alien.myapplication1.tracks.TrackSummary;
 
 import org.joda.time.Period;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 
 public class SideBar extends ActionBarActivity {
@@ -257,7 +246,7 @@ public class SideBar extends ActionBarActivity {
             String trackname = jsonObj.getString("finish");
             Period trTime = calc.getTravelTime();
             new SaveTrack(getApplicationContext()).execute("44", trackname, jsonObj.toString(),
-                    String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()), String.valueOf(calc.getAvarageSpeed()));
+                    String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()), String.valueOf(calc.getAverageSpeed()));
             Toast.makeText(getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();

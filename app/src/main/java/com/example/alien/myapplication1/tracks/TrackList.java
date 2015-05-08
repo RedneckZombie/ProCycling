@@ -1,8 +1,6 @@
 package com.example.alien.myapplication1.tracks;
 
 
-import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import org.joda.time.Period;
 import org.json.JSONException;
@@ -126,14 +123,14 @@ public class TrackList extends Fragment {
                     p = stat.getTravelTime();
                     time = p.getYears()+""+p.getMonths()+p.getDays()+p.getHours()+p.getMinutes()+p.getSeconds();
 
-                    tracks.add(new Track(counter,name, tempName.substring(index2+1), stat.getDistance(), time, stat.getAvarageSpeed()));
+                    tracks.add(new Track(counter,name, tempName.substring(index2+1), stat.getDistance(), time, stat.getAverageSpeed()));
                 }
                 else{
                     stat = new StatisticsCalculator(readTrackFromInternalStorage(tempName));
                     p = stat.getTravelTime();
                     time = p.getYears()+""+p.getMonths()+p.getDays()+p.getHours()+p.getMinutes()+p.getSeconds();
 
-                    tracks.add(new Track(counter,tempName, stat.getDistance(), time, stat.getAvarageSpeed()));
+                    tracks.add(new Track(counter,tempName, stat.getDistance(), time, stat.getAverageSpeed()));
                 }
                 counter++;
                 i = index+1;
