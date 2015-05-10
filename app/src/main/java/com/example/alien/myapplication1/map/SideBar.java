@@ -21,6 +21,7 @@ import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.example.alien.myapplication1.tracks.SaveTrack;
 import com.example.alien.myapplication1.tracks.StatisticsCalculator;
+import com.example.alien.myapplication1.tracks.TrackFilesManager;
 import com.example.alien.myapplication1.tracks.TrackList;
 import com.example.alien.myapplication1.tracks.TrackSummary;
 
@@ -224,7 +225,6 @@ public class SideBar extends ActionBarActivity {
                     Fragment fr = new TrackSummary();
                     Bundle b = new Bundle();
                     b.putString("json", ob.toString());
-                    //b.putBoolean("isSaved", false);
                     fr.setArguments(b);
                     FragmentManager fm = getSupportFragmentManager();//
                     fm.beginTransaction().replace(R.id.content_frame, fr).commit();
@@ -246,7 +246,9 @@ public class SideBar extends ActionBarActivity {
             String trackname = jsonObj.getString("finish");
             Period trTime = calc.getTravelTime();
             new SaveTrack(getApplicationContext()).execute("44", trackname, jsonObj.toString(),
-                    String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()), String.valueOf(calc.getAverageSpeed()));
+                    String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()),
+                    String.valueOf(calc.getAverageSpeed()));
+            new TrackFilesManager(getApplicationContext());
             Toast.makeText(getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
