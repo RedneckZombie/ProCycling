@@ -121,14 +121,20 @@ public class LogIn extends AsyncTask<String,Void,String> {
         }
         System.out.println("Result: " + result);
         String[] results = result.split(";");
-        String status = results[0].substring(14,15);
+        String status = "";
+        if(results[0].length() > 4 ) {
+            status = results[0].substring(14, 15);
+        }
+        else{
+            status = result.substring(0,1);
+        }
         String username = "";
         String userID = "";
         if(results.length >= 3) {
             username = results[1].substring(10);
             userID = results[2].substring(11);
         }
-        System.out.println("Results: " + results[0] + ", " + results[1] + ", " + results[2]);
+        //System.out.println("Results: " + results[0] + ", " + results[1] + ", " + results[2]);
         System.out.println("Results2: " + status + ", " + username + ", " + userID);
 
         if(status.equals("1")){
