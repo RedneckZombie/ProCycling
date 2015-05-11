@@ -92,6 +92,7 @@ public class LogInActivity extends Activity {
             {
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +126,10 @@ public class LogInActivity extends Activity {
                         Thread.sleep(100);
                     }catch(Exception e){}
                 }
+                //kot artura chyba twoj
                 String res = li.getRes();
                 if(res!=null) {
-                    if (res.equals("1")) {
                         finish();
-                    }
                 }
 
             }
