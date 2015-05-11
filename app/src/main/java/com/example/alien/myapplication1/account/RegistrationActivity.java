@@ -107,7 +107,7 @@ public class RegistrationActivity extends Activity {
                     else if(!isCityCorrect(city))
                         Toast.makeText(getApplicationContext(),"Nazwa miasta nie spełnia wymagań!\nDozwolone litery.", Toast.LENGTH_SHORT).show();
                     else if(dateChanged) {
-                        String date = day+"-"+month+"-"+year;
+                        String date = year+"-"+month+"-"+day;
                         new Registration(getApplicationContext()).execute(email, password, user_name, date, sex, city);
                     }
                     else

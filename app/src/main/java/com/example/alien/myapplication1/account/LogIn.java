@@ -80,10 +80,10 @@ public class LogIn extends AsyncTask<String,Void,String> {
                 // Read Server Response
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("QUERY RESULT: ")) {
-                        line = line.substring(14, 15) + ";";
                         sb.append(line);
                     } else if (line.contains("USERNAME: ")) {
-                        line = line.substring(10) + ";";
+                        sb.append(line);
+                    } else if (line.contains("ACCOUNTID: ")) {
                         sb.append(line);
                     }
                 }
@@ -112,6 +112,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
     {
         return res;
     }
+
     @Override
     protected void onPostExecute(String result){
         if(result.equals("Brak internetu"))
@@ -120,16 +121,21 @@ public class LogIn extends AsyncTask<String,Void,String> {
         }
         System.out.println("Result: " + result);
         String[] results = result.split(";");
-        String status = results[0];
+        String status = results[0].substring(14,15);
         String username = "";
-        if(results.length >= 2) {
-            username = results[1];
+        String userID = "";
+        if(results.length >= 3) {
+            username = results[1].substring(10);
+            userID = results[2].substring(8);
         }
+        System.out.println("Results: " + results[0] + ", " + results[1] + ", " + results[2]);
+        System.out.println("Results2: " + status + ", " + username + ", " + userID);
+
         if(status.equals("1")){
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, SideBar.class);
             intent.putExtra("username", username);
-           // intent.putExtra("id", id);
+            intent.putExtra("userID", userID);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
 
