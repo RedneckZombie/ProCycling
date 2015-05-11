@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 
 public class TrackDetails extends Fragment {
     private Button buttonMap;
+    private TextView trackName;
     private JSONObject jsonObj;
     private StatisticsCalculator calc;
 
@@ -29,9 +30,13 @@ public class TrackDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_track_details, container, false);
-
+        trackName = (TextView) rootView.findViewById(R.id.trackNameView);
+        String trackNameStr ="";
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
+            trackNameStr = jsonObj.getString("finish");
+            trackName.setText("Trasa z "+ trackNameStr.substring(6,8) + "." + trackNameStr.substring(4,6) + "." + trackNameStr.substring(0,4));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -47,6 +52,9 @@ public class TrackDetails extends Fragment {
         TextView timeTxt = (TextView) rootView.findViewById(R.id.txtTime);
         Period trTime = calc.getTravelTime();
         timeTxt.setText(String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()) + "");
+
+
+
 
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
