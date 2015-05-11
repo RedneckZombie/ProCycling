@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class TrackFilesManager {
 
     private Context context;
     private ArrayList<String> listInter;
+    private static final int TRACKS_CAPACITY = 30;
 
 
 
@@ -31,21 +33,44 @@ public class TrackFilesManager {
     {
         this.context = context;
         synchronize();
-        if(listInter.size()>30)
+        if(listInter.size()>TRACKS_CAPACITY)
             removeTracksFromInterStor();
     }
 
     private void removeTracksFromInterStor() {
-        int numOfRemoved = listInter.size() - 30;
+        int numOfRemoved = listInter.size() - TRACKS_CAPACITY;
         List<String> tracksToRemove = listInter.subList(0, numOfRemoved);
-//        for(String trRem : tracksToRemove)
-//        {
-//            File dir = context.getFilesDir();
-//            File file = new File(dir, trRem);
-//            file.delete();
-//        }
+        File dir = context.getFilesDir();
+        for(String trRem : tracksToRemove)
+        {
+            File file = new File(dir, trRem);
+            file.delete();
+        }
+        try {
+            FileInputStream fis = context.openFileInput("tracksNames");
+            Scanner sc = new Scanner(fis);
+            sc.useDelimiter(";");
+            StringBuilder content = new StringBuilder();
+            int i = 0;
+            while(sc.hasNext())
+            {
+                if(i >= numOfRemoved)
+                    content.append(sc.next()+";");
+                else
+                    sc.next();
+                i++;
+            }
+            fis.close();
+            File tracksFile = new File(dir, "tracksNames");
+            tracksFile.delete();
 
-        //TODO: usun z pliku z lista tras
+            FileOutputStream fos = context.openFileOutput("tracksNames", Context.MODE_PRIVATE);
+            fos.write(content.toString().getBytes());
+            System.out.println("trasy po usunieciu"+content.toString());
+            fos.close();
+        }
+        catch(IOException e){Toast.makeText(context,  "RecordRoute: an error occurred when write to file", Toast.LENGTH_LONG).show();}
+
 
     }
 

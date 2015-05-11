@@ -5,7 +5,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,12 +20,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -65,7 +60,7 @@ public class RecordRoute
         points = new JSONArray();
         times = new JSONArray();
 
-        if(!fileExistance("tracksNames"))
+        if(!fileExistence("tracksNames"))
         {
             createFileWithTracksNames();
             Toast.makeText(context, "utworzono plik z nazwami tras", Toast.LENGTH_LONG).show();
@@ -193,8 +188,8 @@ public class RecordRoute
             obj.put("points", altCor.getCorrectedAlt());
             //obj.put("points", points);
             obj.put("times", times);
-
-            saveTrackInInternalStorage(finish);
+            if(times.length() >= 2)
+                saveTrackInInternalStorage(finish);
         }catch(JSONException e){}
     }
 
@@ -253,7 +248,7 @@ public class RecordRoute
         System.out.println(obj);
     }
 
-    public boolean fileExistance(String fname){
+    public boolean fileExistence(String fname){
         File file = context.getFileStreamPath(fname);
         return file.exists();
     }
