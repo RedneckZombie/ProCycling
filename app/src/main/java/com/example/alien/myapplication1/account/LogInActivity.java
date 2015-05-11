@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.alien.myapplication1.map.SideBar;
@@ -23,6 +24,7 @@ public class LogInActivity extends Activity {
     private Button button_guest;
     private Button button_register;
     SharedPreferences preferences;
+    boolean isLoged=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,31 @@ public class LogInActivity extends Activity {
         login_mail.setText(preferences.getString("mail", ""));
         login_password.setText(preferences.getString("pass", ""));
         checkbox_remember.setChecked(preferences.getBoolean("rem", false));
+        String username = preferences.getString("username", "");
+        isLoged= getIntent().getBooleanExtra("isLoged",true);
+        if(checkbox_remember.isChecked()&&!username.equals("")&&isLoged)
+        {
+            Intent intent = new Intent(getApplicationContext(), SideBar.class);
+            intent.putExtra("username", username);
+            startActivity(intent);
+            finish();
+        }
     }
     public void addListeners()
     {
+        checkbox_remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked)
+                {
+                    SharedPreferences.Editor pref = preferences.edit();
+                    pref.putString("mail", "");
+                    pref.putString("pass", "");
+                    pref.putBoolean("rem", false);
+                    pref.commit();
+                }
+            }
+        });
         button_guest.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v)

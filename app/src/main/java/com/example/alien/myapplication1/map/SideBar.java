@@ -1,6 +1,8 @@
 package com.example.alien.myapplication1.map;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -38,7 +40,7 @@ public class SideBar extends ActionBarActivity {
     String username;
     private static RecordRoute rr;
     Fragment fr= new Map();
-
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +69,13 @@ public class SideBar extends ActionBarActivity {
 
     public void extra()
     {
+        preferences = getSharedPreferences("PREFS", Activity.MODE_WORLD_READABLE);
         Intent intent = getIntent();
+        SharedPreferences.Editor pref = preferences.edit();
         username = intent.getStringExtra("username");
         getSupportActionBar().setTitle("Witaj w ProCycling");
+        pref.putString("username",username);
+        pref.commit();
     }
     public void mapa()
     {
@@ -173,6 +179,7 @@ public class SideBar extends ActionBarActivity {
                             break;
                         case 3:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                            intent.putExtra("isLoged", false);
                             startActivity(intent);
                             finish();
                             break;
@@ -204,6 +211,7 @@ public class SideBar extends ActionBarActivity {
                             break;
                         case 2:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                            intent.putExtra("isLoged", false);
                             startActivity(intent);
                             finish();
                             break;

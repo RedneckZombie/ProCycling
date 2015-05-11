@@ -55,9 +55,16 @@ public class TrackAdapter extends ArrayAdapter<Track> {
             holder = (Kontener)wiersz.getTag();
         }
         Track object = lista.get(pozycja);
-        String temp = object.getTrackName();
-        String trackName = "Trasa z "+temp.substring(6,8) + " " + temp.substring(4,6) + " " + temp.substring(0,4);
-        holder.row.setText(trackName+" "+object.getTime()+" "+object.getDistance());
+
+        if(object.getTime()==null)
+        {
+            holder.row.setText(object.getTrackName());
+        }
+        else {
+            String temp = object.getTrackName();
+            String trackName = "Trasa z "+temp.substring(6,8) + " " + temp.substring(4,6) + " " + temp.substring(0,4);
+            holder.row.setText(trackName + " " + object.getTime() + " " + object.getDistance());
+        }
         return wiersz;
     }
 

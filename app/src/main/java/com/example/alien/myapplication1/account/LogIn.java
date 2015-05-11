@@ -3,6 +3,7 @@ package com.example.alien.myapplication1.account;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -33,7 +34,6 @@ public class LogIn extends AsyncTask<String,Void,String> {
     private String res;
     private boolean isFinished=false;
     CheckingConnection isConnected;
-
     private String mail="";
 
     public LogIn(Context context) {
