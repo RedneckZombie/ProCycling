@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Nazwa trasy"
-        android:id="@+id/textView3"
+        android:id="@+id/trackNameView"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true" />
@@ -50,7 +50,7 @@
         android:id="@+id/textView4"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
-        android:layout_below="@+id/textView3" />
+        android:layout_below="@+id/trackNameView" />
 
     <TextView
         android:layout_width="wrap_content"
