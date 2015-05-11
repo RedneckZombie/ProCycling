@@ -31,6 +31,7 @@ public class TrackList extends Fragment {
     ListView lv;
     boolean isConnected;
     String username;
+    String userID;
     ViewGroup container;
 
     ArrayList<Track> lista;
@@ -44,6 +45,7 @@ public class TrackList extends Fragment {
         this.container = container;
         isConnected = getArguments().getBoolean("isConnected");
         username = getArguments().getString("username");
+        userID = getArguments().getString("userID");
         if(isConnected) {
             System.out.println("Jest net");
             lista = database();
@@ -146,7 +148,8 @@ public class TrackList extends Fragment {
     public ArrayList<Track> database()
     {
         GetTracks gt = new GetTracks(container.getContext());
-        gt.execute("44");
+        gt.execute(userID);
+        System.out.println(userID);
         while(!gt.isFinished())
         {
             try{

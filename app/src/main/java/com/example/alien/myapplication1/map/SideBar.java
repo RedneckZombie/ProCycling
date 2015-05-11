@@ -39,6 +39,7 @@ public class SideBar extends ActionBarActivity {
     ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
     String username;
+    String userID;
     private static RecordRoute rr;
     Fragment fr= new Map();
     SharedPreferences preferences;
@@ -74,8 +75,10 @@ public class SideBar extends ActionBarActivity {
         Intent intent = getIntent();
         SharedPreferences.Editor pref = preferences.edit();
         username = intent.getStringExtra("username");
+        userID = intent.getStringExtra("userID");
         getSupportActionBar().setTitle("Witaj w ProCycling");
         pref.putString("username",username);
+        pref.putString("userID", userID);
         pref.commit();
     }
     public void mapa()
@@ -158,6 +161,8 @@ public class SideBar extends ActionBarActivity {
                             Fragment tl = new TrackList();
                             Bundle b = new Bundle();
                             b.putString("username", username);
+                            b.putString("userID", userID);
+                            System.out.println("cyce: "+userID);
                             while(!cc.isFinished()){
                                 try{
                                     Thread.sleep(100);
@@ -253,7 +258,7 @@ public class SideBar extends ActionBarActivity {
             StatisticsCalculator calc = new StatisticsCalculator(jsonObj);
             String trackname = jsonObj.getString("finish");
             Period trTime = calc.getTravelTime();
-            new SaveTrack(getApplicationContext()).execute("44", trackname, jsonObj.toString(),
+            new SaveTrack(getApplicationContext()).execute(userID, trackname, jsonObj.toString(),
                     String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()),
                     String.valueOf(calc.getAverageSpeed()));
             new TrackFilesManager(getApplicationContext());

@@ -126,7 +126,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
         String userID = "";
         if(results.length >= 3) {
             username = results[1].substring(10);
-            userID = results[2].substring(8);
+            userID = results[2].substring(11);
         }
         System.out.println("Results: " + results[0] + ", " + results[1] + ", " + results[2]);
         System.out.println("Results2: " + status + ", " + username + ", " + userID);

@@ -47,11 +47,13 @@ public class LogInActivity extends Activity {
         login_password.setText(preferences.getString("pass", ""));
         checkbox_remember.setChecked(preferences.getBoolean("rem", false));
         String username = preferences.getString("username", "");
+        String userID = preferences.getString("userID", "");
         isLoged= getIntent().getBooleanExtra("isLoged",true);
-        if(checkbox_remember.isChecked()&&!username.equals("")&&isLoged)
+        if(checkbox_remember.isChecked()&&!username.equals("")&&isLoged&&!userID.equals(""))
         {
             Intent intent = new Intent(getApplicationContext(), SideBar.class);
             intent.putExtra("username", username);
+            intent.putExtra("userID", userID);
             startActivity(intent);
             finish();
         }
