@@ -1,7 +1,11 @@
 package com.example.alien.myapplication1.tracks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+
+import com.example.alien.myapplication1.OnASyncTaskCompleted;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,22 +17,26 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-public class GetTracks extends AsyncTask<String,Void,String> {
+public class GetAllStats extends AsyncTask<String,Void,String> {
 
     private Context context;
-    private boolean isFinished = false;
-    private ArrayList<Track> list;
+    private OnASyncTaskCompleted callback;
+    private boolean isFinished;
+    private Stats stats;
 
-    public GetTracks(Context context) {
+    public GetAllStats(Context context, OnASyncTaskCompleted callback) {
         this.context = context;
-    }
-
-    public ArrayList<Track> getList() {
-        return list;
+        this.callback = callback;
+        isFinished = false;
+        stats = null;
     }
 
     public boolean isFinished() {
         return isFinished;
+    }
+
+    public Stats getStats() {
+        return stats;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class GetTracks extends AsyncTask<String,Void,String> {
         try {
             String account_id = (String)arg0[0];
 
-            String link = "http://rommam.cba.pl/get_tracks.php";
+            String link = "http://rommam.cba.pl/get_stats_all.php";
             String data  = "account_id"
                     + "=" + account_id;
 
@@ -54,32 +62,22 @@ public class GetTracks extends AsyncTask<String,Void,String> {
             StringBuilder sb = new StringBuilder();
             String line = null;
 
-            ArrayList<Track> tracks = new ArrayList<Track>();
-
             // Read Server Response
             while((line = reader.readLine()) != null) {
                 if(line.contains("QUERY RESULT: ")) {
-                    line = line.substring(14,15) + ";";
                     sb.append(line);
                 }
-
-                if(line.contains("TRACKID: ")) {
-                    String[] lineParts = line.split(";");
-
-                    String track_id = lineParts[0].substring(9);
-                    String track_name = lineParts[1].substring(11);
-                    String track_dist = lineParts[2].substring(11);
-                    String track_time = lineParts[3].substring(11);
-                    String track_avg = lineParts[4].substring(14);
-
-                    Track track = new Track(Integer.parseInt(track_id), track_name, Integer.parseInt(track_dist), track_time,
-                                            Double.parseDouble(track_avg));
-
-                    tracks.add(track);
+                else if(line.contains("DISTANCE: ")) {
+                    sb.append(line);
+                }
+                else if(line.contains("AVERAGE: ")) {
+                    sb.append(line);
+                }
+                else if(line.contains("TIME: ")) {
+                    sb.append(line);
                 }
             }
 
-            list = tracks;
             isFinished = true;
 
             return sb.toString();
@@ -100,7 +98,33 @@ public class GetTracks extends AsyncTask<String,Void,String> {
     }
 
     @Override
-    protected void onPostExecute(String result){
+    protected void onPostExecute(String result) {
         System.out.println("Result: " + result);
+
+        String[] resultParts = result.split(";");
+
+        String status = "";
+        String distance = "";
+        String average = "";
+        String time = "";
+
+        if(resultParts[0].length() > 4 ) {
+            status = resultParts[0].substring(14, 15);
+        }
+        else {
+            status = result.substring(0,1);
+        }
+
+        if(resultParts.length >= 4) {
+            distance = resultParts[1].substring(10);
+            average = resultParts[2].substring(9);
+            time = resultParts[3].substring(6);
+        }
+
+        stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
+
+        //callback.onASyncTaskCompleted(stats);
+
+        //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);
     }
 }

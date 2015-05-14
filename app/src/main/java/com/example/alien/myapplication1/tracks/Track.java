@@ -1,60 +1,60 @@
 package com.example.alien.myapplication1.tracks;
 
-/**
- * Created by Alien on 2015-04-29.
- */
 public class Track {
-    private int _track_id;
-    private String _track_name;
-    private String _custom_name;
-    private int _distance;
-    private String _time;
-    private double _average;
+    private int track_id;
+    private String track_name;
+    private String custom_name;
+    private int distance;
+    private String time;
+    private double average;
 
-    Track(String track_name){
-        _track_name = track_name;
+    Track(String track_name) {
+        this.track_name = track_name;
     }
 
-    Track(int track_id, String track_name, int distance, String time, double average){
-        _track_id = track_id;
-        _track_name = track_name;
-        _distance = distance;
-        _time = time;
-        _average = average;
-        _custom_name = "";
+    Track(int track_id, String track_name, int distance, String time, double average) {
+        this.track_id = track_id;
+        this.track_name = track_name;
+        this.distance = distance;
+        this.time = time;
+        this.average = average;
+        this.custom_name = "";
     }
 
-    Track(int track_id, String track_name, String custom, int distance, String time, double average){
-        _track_id = track_id;
-        _track_name = track_name;
-        _distance = distance;
-        _time = time;
-        _average = average;
-        _custom_name = custom;
+    Track(int track_id, String track_name, String custom, int distance, String time, double average) {
+        this.track_id = track_id;
+        this.track_name = track_name;
+        this.distance = distance;
+        this.time = time;
+        this.average = average;
+        this.custom_name = custom;
     }
 
-    public int getTrackId(){
-        return _track_id;
+    public int getTrackId() {
+        return track_id;
     }
 
-    public String getTrackName(){
-        return _track_name;
+    public String getTrackName() {
+        return track_name;
     }
 
-    public String getCustomName() { return _custom_name; }
-
-    public int getDistance(){
-        return _distance;
+    public String getCustomName() {
+        return custom_name;
     }
 
-    public String getTime(){
-        return _time;
+    public int getDistance() {
+        return distance;
     }
 
-    public double getAverage(){
-        return _average;
+    public String getTime() {
+        return time;
     }
 
+    public double getAverage() {
+        return average;
+    }
 
-    public void setCustomName(String custom) { _custom_name = custom; }
+    public void setCustomName(String custom) {
+        custom_name = custom;
+    }
 }

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class SaveTrack extends AsyncTask<String,Void,String> {
+
     private Context context;
 
     public SaveTrack(Context context) {
@@ -25,7 +26,7 @@ public class SaveTrack extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        try{
+        try {
             String account = (String)arg0[0];
             String track_name = (String)arg0[1];
             String gps_data = (String)arg0[2];
@@ -46,6 +47,7 @@ public class SaveTrack extends AsyncTask<String,Void,String> {
                     + "=" + time;
             data += "&" + "average"
                     + "=" + average;
+
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
@@ -59,27 +61,31 @@ public class SaveTrack extends AsyncTask<String,Void,String> {
 
             StringBuilder sb = new StringBuilder();
             String line = null;
+
             // Read Server Response
-            while((line = reader.readLine()) != null)
-            {
+            while((line = reader.readLine()) != null) {
                 if(line.contains("QUERY RESULT: ")) {
                     line = line.substring(14,15) + ";";
                     sb.append(line);
                 }
             }
+
             return sb.toString();
-        }catch(UnsupportedEncodingException e){
+
+        }
+        catch(UnsupportedEncodingException e) {
             return new String("UEEException: " + e.getMessage());
         }
-        catch(MalformedURLException e){
+        catch(MalformedURLException e) {
             return new String("MUException: " + e.getMessage());
-        }catch(IOException e){
+        }
+        catch(IOException e) {
             return new String("IOException: " + e.getStackTrace().toString());
         }
     }
 
     @Override
-    protected void onPostExecute(String result){
+    protected void onPostExecute(String result) {
         System.out.println("Result: " + result);
     }
 }
