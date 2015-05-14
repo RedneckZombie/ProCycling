@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -123,7 +121,7 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
 
         stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
 
-        //callback.onASyncTaskCompleted(stats);
+        callback.onASyncTaskCompleted(stats);
 
         //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);
     }

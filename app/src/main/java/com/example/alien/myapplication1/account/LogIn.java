@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.map.SideBar;
 
 import java.io.BufferedReader;
@@ -21,25 +20,19 @@ import java.net.URLConnection;
 public class LogIn extends AsyncTask<String,Void,String> {
 
     private Context context;
-    //private String res; // old way
-    //private boolean isFinished = false; //old way
-    private OnASyncTaskCompleted callback;
+    private String res;
+    private boolean isFinished = false;
     CheckingConnection isConnected;
     private String mail = "";
 
-    public LogIn(Context context, OnASyncTaskCompleted callback) {
+    public LogIn(Context context) {
         this.context = context;
-        this.callback = callback;
         isConnected = new CheckingConnection(context);
     }
-
-    /* old way
 
     public boolean isFinished() {
         return isFinished;
     }
-
-    */
 
     protected void onPreExecute() {
         isConnected.execute();
@@ -87,38 +80,34 @@ public class LogIn extends AsyncTask<String,Void,String> {
                     }
                 }
 
-                //res = sb.toString().substring(0,1); // old way
-                //isFinished = true; // old way
+                res = sb.toString().substring(0,1);
+                isFinished = true;
 
                 return sb.toString();
 
             }
             catch(UnsupportedEncodingException e) {
-                //isFinished = true; // old way
+                isFinished = true;
                 return new String("UEEException: " + e.getMessage());
             }
             catch(MalformedURLException e) {
-                //isFinished = true; // old way
+                isFinished = true;
                 return new String("MUException: " + e.getMessage());
             }
             catch(IOException e) {
-                //isFinished = true; // old way
+                isFinished = true;
                 return new String("IOException: " + e.getStackTrace().toString());
             }
         }
         else {
-            //isFinished = true; // old way
+            isFinished = true;
             return new String("Brak internetu");
         }
     }
 
-    /* old way
-
     public String getRes() {
         return res;
     }
-
-    */
 
     @Override
     protected void onPostExecute(String result) {
@@ -143,8 +132,6 @@ public class LogIn extends AsyncTask<String,Void,String> {
             username = results[1].substring(10);
             userID = results[2].substring(11);
         }
-
-        callback.onASyncTaskCompleted(status);
 
         if(status.equals("1")) {
             Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();

@@ -26,7 +26,6 @@ import com.example.alien.myapplication1.account.LogInActivity;
 public class Registration extends AsyncTask<String,Void,String> {
 
     private Context context;
-
     public Registration(Context context) {
         this.context = context;
     }
