@@ -134,10 +134,11 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
 
                 pref.commit();
 
-                // for check
+               /* // for check
                 GetAllStats st = new GetAllStats(getApplicationContext(), callback);
                 st.execute("44");
                 // for check - end
+                */
 
                 LogIn loginTask = new LogIn(getApplicationContext(), callback);
                 loginTask.execute(login, password);

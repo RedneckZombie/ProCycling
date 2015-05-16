@@ -1,9 +1,7 @@
 package com.example.alien.myapplication1.tracks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import com.example.alien.myapplication1.OnASyncTaskCompleted;
 
@@ -123,8 +121,7 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
 
         stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
 
-        //callback.onASyncTaskCompleted(stats);
-
+        callback.onASyncTaskCompleted(stats);
         //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);
     }
 }

@@ -1,9 +1,11 @@
 package com.example.alien.myapplication1.map;
 
 import android.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.os.Bundle;
@@ -18,11 +20,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
+import com.example.alien.myapplication1.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
+import com.example.alien.myapplication1.tracks.AllStatsFragment;
+import com.example.alien.myapplication1.tracks.GetAllStats;
 import com.example.alien.myapplication1.tracks.RecordRoute;
 import com.example.alien.myapplication1.tracks.SaveTrack;
 import com.example.alien.myapplication1.tracks.StatisticsCalculator;
+import com.example.alien.myapplication1.tracks.Stats;
 import com.example.alien.myapplication1.tracks.TrackFilesManager;
 import com.example.alien.myapplication1.tracks.TrackList;
 import com.example.alien.myapplication1.tracks.TrackSummary;
@@ -32,7 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class SideBar extends ActionBarActivity {
+public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
 
 
     DrawerLayout mDrawerLayout;
@@ -43,6 +49,8 @@ public class SideBar extends ActionBarActivity {
     private static RecordRoute rr;
     Fragment fr= new Map();
     SharedPreferences preferences;
+    private Stats stats;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,6 +192,10 @@ public class SideBar extends ActionBarActivity {
                             mDrawerList.setItemChecked(-1, true);
                             break;
                         case 3:
+                            statystyki();
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            break;
+                        case 4:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.putExtra("isLoged", false);
                             startActivity(intent);
@@ -252,13 +264,32 @@ public class SideBar extends ActionBarActivity {
             }catch(Exception e){}
     }
 
+    public void statystyki()
+    {
+        CheckingConnection cc = new CheckingConnection(getApplicationContext());
+        cc.execute();
+        while(!cc.isFinished()){
+            try{
+                Thread.sleep(100);
+            }catch(Exception e){}
+        }
+        if(cc.isConnected())
+        {
+            new GetAllStats(getApplicationContext(),this).execute(userID);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Nie mozna pobrac statystyk z bazy", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void zapisz(JSONObject jsonObj)
     {
         try {
             StatisticsCalculator calc = new StatisticsCalculator(jsonObj);
-            String trackname = jsonObj.getString("finish");
+            String trackName = jsonObj.getString("finish");
             Period trTime = calc.getTravelTime();
-            new SaveTrack(getApplicationContext()).execute(userID, trackname, jsonObj.toString(),
+            new SaveTrack(getApplicationContext()).execute(userID, trackName, jsonObj.toString(),
                     String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()),
                     String.valueOf(calc.getAverageSpeed()));
             new TrackFilesManager(getApplicationContext());
@@ -333,4 +364,17 @@ public class SideBar extends ActionBarActivity {
     }
 
 
+    @Override
+    public void onASyncTaskCompleted(Object... value) {
+        stats = (Stats)value[0];
+        Fragment fr = new AllStatsFragment();
+        Bundle b = new Bundle();
+        FragmentManager fm = getSupportFragmentManager();
+        b.putString("time", stats.getTime());
+        b.putInt("dist", stats.getDistance());
+        b.putDouble("avg", stats.getAverage());
+        b.putString("username", username);
+        fr.setArguments(b);
+        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+    }
 }
