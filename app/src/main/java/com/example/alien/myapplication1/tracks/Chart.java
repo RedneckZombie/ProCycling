@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.example.alien.myapplication1.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by kamilos on 2015-05-11.
@@ -43,11 +45,13 @@ public class Chart extends Fragment{
 
         chart = (LineChart) rootView.findViewById(R.id.chart);
         sc = new StatisticsCalculator(jsonObj);
+
         ArrayList<String> times = new ArrayList<>();
         ArrayList<LineDataSet> pointsDataSet = new ArrayList<LineDataSet>();
         ArrayList<Entry> speed = new ArrayList<Entry>();
 
         String temp = "";
+        Random rand = new Random();
 
         JSONArray time = sc.getTimes();
         for(int i = 0; i < time.length(); i++)
@@ -56,12 +60,15 @@ public class Chart extends Fragment{
                 temp = time.get(i).toString();
             } catch (JSONException e) {e.printStackTrace(); }
             times.add(temp.substring(8,10)+":"+temp.substring(10,12)+":"+temp.substring(12,14));
-            speed.add(new Entry((float) sc.getCurrentSpeed(i), 0));
+            //speed.add(new Entry((float) sc.getCurrentSpeed(i), i));
+            speed.add(new Entry(rand.nextFloat()*10, i));
         }
 
         LineDataSet lsd = new LineDataSet(speed, "Prędkość");
+        pointsDataSet.add(lsd);
 
-
+        LineData ld = new LineData(times, pointsDataSet);
+        chart.setData(ld);
 
         chart.setDescription("Wykres zmiany prędkości w czasie");
 
