@@ -194,7 +194,8 @@ public class RecordRoute
             //obj.put("points", points);
             obj.put("times", times);
 
-            saveTrackInInternalStorage(finish);
+            if(times.length() >= 2)
+                saveTrackInInternalStorage(finish);
         }catch(JSONException e){}
     }
 

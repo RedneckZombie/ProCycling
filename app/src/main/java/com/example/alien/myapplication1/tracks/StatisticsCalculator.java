@@ -33,11 +33,11 @@ public class StatisticsCalculator {
             pts = obj.getJSONArray("points");
             times = obj.getJSONArray("times");
         }
-        catch(JSONException e){}
+        catch(JSONException e){e.printStackTrace();}
     }
 
     //return distance in meters
-    public double getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
+    public int getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
     {
         double d2r = 0.0174532925199433;  // pi / 180
         double dlong = (long2 - long1) * d2r;
@@ -48,6 +48,22 @@ public class StatisticsCalculator {
 
         return (int)(d*1000);
     }
+
+    public Period getTimeBetweenPoints(int timeIndex1, int timeIndex2)
+    {
+        Period period = null;
+        try{
+            String time1 = times.get(timeIndex1).toString();
+            String time2 = times.get(timeIndex2).toString();
+            DateTime point1 = new DateTime(Integer.parseInt(time1.substring(0, 4)), Integer.parseInt(time1.substring(4, 6)), Integer.parseInt(time1.substring(6, 8)), Integer.parseInt(time1.substring(8,10)), Integer.parseInt(time1.substring(10, 12)), Integer.parseInt(time1.substring(12, 14)));
+            DateTime point2 = new DateTime(Integer.parseInt(time2.substring(0,4)), Integer.parseInt(time2.substring(4,6)), Integer.parseInt(time2.substring(6,8)), Integer.parseInt(time2.substring(8,10)), Integer.parseInt(time2.substring(10,12)), Integer.parseInt(time2.substring(12,14)));
+            period = new Interval(point1, point2).toPeriod();
+
+        }catch(JSONException e){e.printStackTrace();}
+
+        return period;
+    }
+
 
     //return distance in meters
     public int getDistance()
@@ -80,7 +96,7 @@ public class StatisticsCalculator {
             jodaFinish = new DateTime(Integer.parseInt(finish.substring(0,4)), Integer.parseInt(finish.substring(4,6)), Integer.parseInt(finish.substring(6,8)), Integer.parseInt(finish.substring(8,10)), Integer.parseInt(finish.substring(10,12)), Integer.parseInt(finish.substring(12,14)));
 
 
-        }catch(JSONException e){}
+        }catch(JSONException e){e.printStackTrace();}
 
         return new Interval(jodaStart, jodaFinish).toPeriod();
     }
@@ -91,5 +107,57 @@ public class StatisticsCalculator {
         double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
 
         return (double)getDistance()/1000.0 / time;
+    }
+
+    // current speed for chart
+    public double getCurrentSpeed(int timeIndex)
+    {
+        double distance = 0, time = 0;
+        Period tempPeriod;
+
+        try {
+            if(timeIndex - 2 >= 0)
+            {
+                distance += getDistanceBetweenPoints((double) pts.get(timeIndex-2), (double) pts.get(timeIndex-2), (double)pts.get(timeIndex-1), (double)pts.get(timeIndex-1));
+                tempPeriod = getTimeBetweenPoints(timeIndex - 2, timeIndex - 1);
+                time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
+            }
+            if(timeIndex - 1 >= 0)
+            {
+                distance += getDistanceBetweenPoints((double) pts.get(timeIndex-1), (double) pts.get(timeIndex-1), (double)pts.get(timeIndex), (double)pts.get(timeIndex));
+                tempPeriod = getTimeBetweenPoints(timeIndex-1, timeIndex);
+                time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
+            }
+            if(timeIndex + 1 < times.length())
+            {
+                distance += getDistanceBetweenPoints((double) pts.get(timeIndex), (double) pts.get(timeIndex), (double)pts.get(timeIndex+1), (double)pts.get(timeIndex+1));
+                tempPeriod = getTimeBetweenPoints(timeIndex, timeIndex+1);
+                time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
+            }
+            if(timeIndex+2 < times.length())
+            {
+                distance += getDistanceBetweenPoints((double) pts.get(timeIndex+1), (double) pts.get(timeIndex+1), (double)pts.get(timeIndex+2), (double)pts.get(timeIndex+2));
+                tempPeriod = getTimeBetweenPoints(timeIndex+1, timeIndex+2);
+                time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
+            }
+
+        }catch(JSONException e){e.printStackTrace();}
+
+        return distance/1000.0 / time;
+    }
+
+
+
+    public int getPtsLength() {
+        return pts.length();
+    }
+    public int getTimesLength() {
+        return times.length();
+    }
+    public JSONArray getPts() {
+        return pts;
+    }
+    public JSONArray getTimes() {
+        return times;
     }
 }
