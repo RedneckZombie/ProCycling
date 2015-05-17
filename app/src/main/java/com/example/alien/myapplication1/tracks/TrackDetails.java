@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 
 
 public class TrackDetails extends Fragment {
-    private Button buttonMap, buttonChart;
+    private Button buttonMap;
     private JSONObject jsonObj;
     private StatisticsCalculator calc;
 
@@ -38,7 +38,6 @@ public class TrackDetails extends Fragment {
         calc = new StatisticsCalculator(jsonObj);
 
         buttonMap = (Button) rootView.findViewById(R.id.btn_map);
-        buttonChart = (Button) rootView.findViewById(R.id.btn_chart);
         TextView distTxt = (TextView) rootView.findViewById(R.id.txtDist);
         double dist = calc.getDistance();
         dist /= 1000.0;
@@ -62,21 +61,6 @@ public class TrackDetails extends Fragment {
                 transaction.commit();
             }
         });
-
-        buttonChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Chart chartFragment = new Chart();
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                Bundle b = new Bundle();
-                b.putString("json", jsonObj.toString());
-                chartFragment.setArguments(b);
-                ft.replace(R.id.details_container, chartFragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
-
 
 
         return rootView;

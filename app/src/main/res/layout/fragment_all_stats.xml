@@ -1,35 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="com.example.alien.myapplication1.tracks.TrackDetails"
-    android:id="@+id/details_container">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wykresy"
-        android:id="@+id/btn_chart"
-        android:layout_alignTop="@+id/btn_map"
-        android:layout_alignRight="@+id/txtDist"
-        android:layout_alignEnd="@+id/txtDist" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mapa"
-        android:id="@+id/btn_map"
-        android:layout_marginTop="43dp"
-        android:layout_below="@+id/textView6"
-        android:layout_alignLeft="@+id/textView6"
-        android:layout_alignStart="@+id/textView6" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.alien.myapplication1.tracks.AllStatsFragment"
+    android:id="@+id/all_stats_container">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Nazwa trasy"
-        android:id="@+id/trackNameView"
+        android:text="Uzytkownik"
+        android:id="@+id/usernameView"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true" />
 
@@ -41,7 +23,7 @@
         android:id="@+id/textView4"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
-        android:layout_below="@+id/trackNameView" />
+        android:layout_below="@+id/usernameView" />
 
     <TextView
         android:layout_width="wrap_content"

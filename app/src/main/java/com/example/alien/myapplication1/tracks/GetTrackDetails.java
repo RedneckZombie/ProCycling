@@ -16,33 +16,33 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-/**
- * Created by Alien on 2015-04-29.
- */
 public class GetTrackDetails extends AsyncTask<String,Void,String> {
+
     private Context context;
     private JSONObject json;
-    private boolean isFinished=false;
+    private boolean isFinished = false;
 
     public GetTrackDetails(Context context) {
         this.context = context;
     }
 
-    public JSONObject getJSON()
-    {
+    public JSONObject getJSON() {
         return json;
     }
-    public boolean isFinished()
-    {
+
+    public boolean isFinished() {
         return isFinished;
     }
+
     @Override
     protected String doInBackground(String... arg0) {
-        try{
+        try {
             String track_id = (String)arg0[0];
+
             String link = "http://rommam.cba.pl/get_track_details.php";
             String data  = "track_id"
                     + "=" + track_id;
+
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
@@ -56,38 +56,45 @@ public class GetTrackDetails extends AsyncTask<String,Void,String> {
 
             StringBuilder sb = new StringBuilder();
             String line = null;
+
             // Read Server Response
-            while((line = reader.readLine()) != null)
-            {
+            while((line = reader.readLine()) != null) {
                 if(line.contains("QUERY RESULT: ")) {
                     line = line.substring(14,15) + ";";
                     sb.append(line);
                 }
-                if(line.contains("GPSDATA: ")){
+
+                if(line.contains("GPSDATA: ")) {
                     line = line.substring(9);
                     json = new JSONObject(line);
-                    System.out.println(line);
                 }
             }
+
             isFinished = true;
+
             return sb.toString();
-        }catch(UnsupportedEncodingException e){
+
+        }
+        catch(UnsupportedEncodingException e) {
             isFinished = true;
             return new String("UEEException: " + e.getMessage());
         }
-        catch(MalformedURLException e){
+        catch(MalformedURLException e) {
             isFinished = true;
             return new String("MUException: " + e.getMessage());
-        }catch(IOException e){
+        }
+        catch(IOException e) {
             isFinished = true;
             return new String("IOException: " + e.getStackTrace().toString());
-        } catch (JSONException e) {
+        }
+        catch(JSONException e) {
+            isFinished = true;
             return new String("JSONException: " + e.getStackTrace().toString());
         }
     }
 
     @Override
-    protected void onPostExecute(String result){
+    protected void onPostExecute(String result) {
         System.out.println("Result: " + result);
     }
 }
