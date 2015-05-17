@@ -68,7 +68,7 @@ public class Chart extends Fragment{
 
 
 
-        chart.invalidate(); //redraw chart
+        chart.invalidate();  //redraw chart
 
 
         return rootView;
