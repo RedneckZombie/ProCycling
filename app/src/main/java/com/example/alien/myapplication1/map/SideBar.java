@@ -176,7 +176,11 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                                     Thread.sleep(100);
                                 }catch(Exception e){}
                             }
+                            if(cc.isConnected()) {
+                                new TrackFilesManager(getApplicationContext(), userID);
+                            }
                             b.putBoolean("isConnected", cc.isConnected());
+
                             tl.setArguments(b);
                             FragmentManager fm = getSupportFragmentManager();
                             fm.beginTransaction().replace(R.id.content_frame, tl).commit();
@@ -292,7 +296,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             new SaveTrack(getApplicationContext()).execute(userID, trackName, jsonObj.toString(),
                     String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()),
                     String.valueOf(calc.getAverageSpeed()));
-            new TrackFilesManager(getApplicationContext(), userID);
+            //new TrackFilesManager(getApplicationContext(), userID);
             Toast.makeText(getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();

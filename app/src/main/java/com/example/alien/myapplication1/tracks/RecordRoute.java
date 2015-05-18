@@ -187,10 +187,10 @@ public class RecordRoute
 
 
         try{
-            //AltitudeCorrector altCor = new AltitudeCorrector(context, points);
+            AltitudeCorrector altCor = new AltitudeCorrector(context, points);
 
-            obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
-            //obj.put("points", altCor.getCorrectedAlt());
+            //obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
+            obj.put("points", altCor.getCorrectedAlt());
             obj.put("points", points);
             obj.put("times", times);
 
