@@ -1,6 +1,7 @@
 package com.example.alien.myapplication1.map;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -21,8 +22,8 @@ public class Map extends Fragment
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static Marker here;
     private static boolean visible = false;
-    private static double latitude = 51;
-    private static double longitude = 17;
+    private static double latitude = 52.15182309;
+    private static double longitude = 19.42829922;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -31,8 +32,13 @@ public class Map extends Fragment
         mMap = null;
         here = null;
         setUpMapIfNeeded();
-        //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.getLastKnownLocation();
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(loc != null)
+        {
+            latitude = loc.getLatitude();
+            longitude = loc.getLongitude();
+        }
         return rootView;
     }
 
@@ -68,9 +74,14 @@ public class Map extends Fragment
         mMap.getUiSettings().setTiltGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
-        here = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Tu jesteś"));
-
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+        if(latitude == 52.15182309 && longitude == 19.42829922)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 4));
+        else
+        {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
+            here = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Tu jesteś"));
+        }
     }
 
     public static void updatePosition(double lat, double lng)
@@ -78,8 +89,13 @@ public class Map extends Fragment
         latitude = lat;
         longitude = lng;
         LatLng location = new LatLng(lat, lng);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-        here.setPosition(location);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,13));
+        if(here == null)
+            here = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Tu jesteś"));
+        else
+        {
+            here.setPosition(location);
+        }
     }
 
     public static boolean isMapVisible()

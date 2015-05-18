@@ -143,7 +143,7 @@ public class TrackSummary extends Fragment {
         mMap.addPolyline(polyLineOptions);
 
         if(!arrLatLng.isEmpty()) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0), 8));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrLatLng.get(0), 13));
             mMap.addMarker(new MarkerOptions().position(arrLatLng.get(0)).title("Start"));
             mMap.addMarker(new MarkerOptions().position(arrLatLng.get(arrLatLng.size() - 1)).title("Meta"));
         }
