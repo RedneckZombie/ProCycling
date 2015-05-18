@@ -134,7 +134,7 @@ public class TrackFilesManager {
     private ArrayList<String> trackNamesFromDB()
     {
         GetTracks gt = new GetTracks(context);
-        gt.execute("44");
+        gt.execute(userID);
         while(!gt.isFinished())
         {
             try{
