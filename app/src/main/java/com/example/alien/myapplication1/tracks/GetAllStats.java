@@ -121,7 +121,7 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
 
         stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
 
-        callback.onASyncTaskCompleted(stats);
+        callback.onASyncTaskCompleted(stats, status);
         //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);
     }
 }

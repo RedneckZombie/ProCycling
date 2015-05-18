@@ -1,5 +1,7 @@
 package com.example.alien.myapplication1.map;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ public class Map extends Fragment
         mMap = null;
         here = null;
         setUpMapIfNeeded();
+        //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        //locationManager.getLastKnownLocation();
         return rootView;
     }
 

@@ -292,7 +292,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             new SaveTrack(getApplicationContext()).execute(userID, trackName, jsonObj.toString(),
                     String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()),
                     String.valueOf(calc.getAverageSpeed()));
-            new TrackFilesManager(getApplicationContext());
+            new TrackFilesManager(getApplicationContext(), userID);
             Toast.makeText(getApplicationContext(), "Zapisano w bazie", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -366,15 +366,17 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
 
     @Override
     public void onASyncTaskCompleted(Object... value) {
-        stats = (Stats)value[0];
-        Fragment fr = new AllStatsFragment();
-        Bundle b = new Bundle();
-        FragmentManager fm = getSupportFragmentManager();
-        b.putString("time", stats.getTime());
-        b.putInt("dist", stats.getDistance());
-        b.putDouble("avg", stats.getAverage());
-        b.putString("username", username);
-        fr.setArguments(b);
-        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+        if(((String)value[1]).equals("1")) {
+            stats = (Stats) value[0];
+            Fragment fr = new AllStatsFragment();
+            Bundle b = new Bundle();
+            FragmentManager fm = getSupportFragmentManager();
+            b.putString("time", stats.getTime());
+            b.putInt("dist", stats.getDistance());
+            b.putDouble("avg", stats.getAverage());
+            b.putString("username", username);
+            fr.setArguments(b);
+            fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+        }
     }
 }

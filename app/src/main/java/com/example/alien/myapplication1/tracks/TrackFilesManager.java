@@ -26,11 +26,11 @@ public class TrackFilesManager {
     private Context context;
     private ArrayList<String> listInter;
     private static final int TRACKS_CAPACITY = 30;
+    private String userID;
 
-
-
-    public TrackFilesManager(Context context)
+    public TrackFilesManager(Context context, String userID)
     {
+        this.userID = userID;
         this.context = context;
         synchronize();
         if(listInter.size()>TRACKS_CAPACITY)
@@ -86,7 +86,7 @@ public class TrackFilesManager {
                     JSONObject jsonObj = readTrackFromInternalStorage(trackName);
                     StatisticsCalculator calc = new StatisticsCalculator(jsonObj);
                     Period trTime = calc.getTravelTime();
-                    new SaveTrack(context).execute("44", trackName, jsonObj.toString(),
+                    new SaveTrack(context).execute(userID, trackName, jsonObj.toString(),
                             String.valueOf(calc.getDistance()), String.format("%02d:%02d:%02d", trTime.getHours(), trTime.getMinutes(), trTime.getSeconds()), String.valueOf(calc.getAverageSpeed()));
             }
         }
