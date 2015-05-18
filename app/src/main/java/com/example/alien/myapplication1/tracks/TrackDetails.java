@@ -67,12 +67,21 @@ public class TrackDetails extends Fragment {
         buttonChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 Chart chart = new Chart();
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 Bundle b = new Bundle();
                 b.putString("json", jsonObj.toString());
                 chart.setArguments(b);
-                ft.replace(R.id.details_container, chart).addToBackStack(null).commit();
+                ft.replace(R.id.details_container, chart).addToBackStack(null).commit();*/
+
+                chart2testbybotnaeasybitches chart2 = new chart2testbybotnaeasybitches();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                Bundle b = new Bundle();
+                b.putString("json", jsonObj.toString());
+                chart2.setArguments(b);
+                ft.replace(R.id.details_container, chart2).addToBackStack(null).commit();
+
             }
         });
 
