@@ -201,7 +201,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             break;
                         case 4:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-                            intent.putExtra("isLoged", false);
+                            intent.putExtra("isLogged", false);
                             startActivity(intent);
                             finish();
                             break;
@@ -233,7 +233,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             break;
                         case 2:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-                            intent.putExtra("isLoged", false);
+                            intent.putExtra("isLogged", false);
                             startActivity(intent);
                             finish();
                             break;

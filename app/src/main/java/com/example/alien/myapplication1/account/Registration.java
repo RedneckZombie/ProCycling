@@ -6,22 +6,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
-import com.example.alien.myapplication1.account.LogInActivity;
 
 public class Registration extends AsyncTask<String,Void,String> {
 
@@ -34,12 +25,12 @@ public class Registration extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... arg0) {
         try {
-            String email = (String)arg0[0];
-            String password = (String)arg0[1];
-            String user_name = (String)arg0[2];
-            String dateOfBirth = (String)arg0[3];
-            String sex = (String)arg0[4];
-            String city = (String)arg0[5];
+            String email = arg0[0];
+            String password = arg0[1];
+            String user_name = arg0[2];
+            String dateOfBirth = arg0[3];
+            String sex = arg0[4];
+            String city = arg0[5];
 
             String link = "http://rommam.cba.pl/registration.php";
             String data  = "email"
@@ -58,20 +49,19 @@ public class Registration extends AsyncTask<String,Void,String> {
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter
-                    (conn.getOutputStream());
-            wr.write( data );
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
             wr.flush();
 
             InputStreamReader isr = new InputStreamReader(conn.getInputStream());
             BufferedReader reader = new BufferedReader(isr);
 
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
 
             // Read Server Response
-            while((line = reader.readLine()) != null) {
-                if(line.contains("QUERY RESULT: ")) {
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("QUERY RESULT: ")) {
                     line = line.substring(14,15);
                     sb.append(line);
                 }
@@ -80,31 +70,33 @@ public class Registration extends AsyncTask<String,Void,String> {
             return sb.toString();
 
         }
-        catch(UnsupportedEncodingException e) {
-            return new String("UEEException: " + e.getMessage());
+        catch (UnsupportedEncodingException e) {
+            return "UEEException: " + e.getMessage();
         }
-        catch(MalformedURLException e) {
-            return new String("MUException: " + e.getMessage());
+        catch (MalformedURLException e) {
+            return "MUException: " + e.getMessage();
         }
-        catch(IOException e) {
-            return new String("IOException: " + e.getStackTrace().toString());
+        catch (IOException e) {
+            return "IOException: " + e.getMessage();
         }
     }
 
     @Override
     protected void onPostExecute(String result) {
-        if(result.equals("1")) {
-            Toast.makeText(context,"Zarejestrowano!", Toast.LENGTH_SHORT).show();
+        switch (result) {
+            case "1":
+                Toast.makeText(context, "Zarejestrowano!", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(context, LogInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-        else if(result.equals("2")) {
-            Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(context, "Ten adres email jest już zajęty!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, LogInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                break;
+            case "2":
+                Toast.makeText(context, "Brak połączenia z bazą danych!", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(context, "Ten adres email jest już zajęty!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }
