@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.Highlight;
 
 import org.json.JSONArray;
@@ -55,7 +56,27 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         chart.setOnChartGestureListener(this);
         sc = new StatisticsCalculator(jsonObj);
 
-        ArrayList<String> times = new ArrayList<>();
+        //setVelocityChart();
+
+        setChartAppearance();
+        setLegendAppearance();
+        setAltitudeChart();
+
+        chart.fitScreen();
+        chart.invalidate();  //redraw chart
+
+        return rootView;
+    }
+
+    public void setVelocityChart()
+    {
+        chart.setDescription("Wykres zmiany prędkości w czasie");
+        chart.setDescriptionTextSize(16f);
+        chart.setDescriptionPosition(440, 36);
+        chart.animateXY(3000, 2000);
+        chart.setHighlightIndicatorEnabled(false);
+
+        ArrayList<String> labels = new ArrayList<>();
         ArrayList<LineDataSet> pointsDataSet = new ArrayList<LineDataSet>();
         ArrayList<Entry> speed = new ArrayList<Entry>();
 
@@ -67,7 +88,7 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
             try {
                 temp = time.get(i).toString();
             } catch (JSONException e) {e.printStackTrace(); }
-            times.add(temp.substring(8,10)+":"+temp.substring(10,12)+":"+temp.substring(12,14));
+            labels.add(temp.substring(8, 10) + ":" + temp.substring(10, 12) + ":" + temp.substring(12, 14));
             speed.add(new Entry((float) sc.getCurrentSpeed(i), i));
         }
 
@@ -75,33 +96,59 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         lsd.setColor(getResources().getColor(R.color.blue1));
         lsd.setCircleColor(getResources().getColor(R.color.blue1));
         lsd.setValueFormatter(new DecimalNumberFormatter());
+        lsd.setCircleSize(3f);
+
 
         pointsDataSet.add(lsd);
 
-        LineData ld = new LineData(times, pointsDataSet);
+        LineData ld = new LineData(labels, pointsDataSet);
         //ld.setDrawValues(false);
         chart.setData(ld);
 
-        setChartAppearance();
-        setLegendAppearance();
+    }
 
-        chart.invalidate();  //redraw chart
+    public void setAltitudeChart()
+    {
+        chart.setDescription("Profil trasy");
+        chart.setDescriptionTextSize(16f);
+        chart.setDescriptionPosition(440, 36);
 
-        return rootView;
+        ArrayList<String> labels = new ArrayList<>();
+        ArrayList<LineDataSet> altitudeDataSet = new ArrayList<LineDataSet>();
+        ArrayList<Entry> attitude = new ArrayList<Entry>();
+
+        JSONArray jPoints = null;
+        JSONArray time = sc.getTimes();
+        String temp="";
+        try{
+            jPoints= jsonObj.getJSONArray("points");
+        }catch(Exception e){}
+
+        for(int i = 0; i < time.length(); i++)
+        {
+            try {
+                temp = time.get(i).toString();
+                attitude.add(new Entry((float)jPoints.getDouble(i*3+2), i));
+            } catch (JSONException e) {e.printStackTrace(); }
+
+            labels.add(temp.substring(8, 10) + ":" + temp.substring(10, 12) + ":" + temp.substring(12, 14));
+            //speed.add(new Entry((float) sc.getCurrentSpeed(i), i));
+        }
+
+
+        LineDataSet lsd = new LineDataSet(attitude, "Wysokość ");
+        altitudeDataSet.add(lsd);
+        lsd.setColor(getResources().getColor(R.color.blue1));
+        lsd.setCircleColor(getResources().getColor(R.color.blue1));
+        lsd.setValueFormatter(new DefaultValueFormatter(0));
+        lsd.setCircleSize(3f);
+
+        LineData ld = new LineData(labels, altitudeDataSet);
+        chart.setData(ld);
     }
 
     public void setChartAppearance()
     {
-        chart.fitScreen();
-        chart.invalidate();
-
-        chart.setDescription("Wykres zmiany prędkości w czasie");
-        chart.setDescriptionTextSize(16f);
-        chart.setDescriptionPosition(440, 36);
-        chart.animateXY(3000, 2000);
-        chart.setHighlightIndicatorEnabled(false);
-
-        //chart.setDrawGridBackground(false);
         chart.setMaxVisibleValueCount(15);
 
         System.out.println("half x: "+chart.getCenter().x);
@@ -129,10 +176,43 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
 
         legend.setForm(Legend.LegendForm.LINE);
         legend.setFormSize(14f);
-
     }
 
 
+
+
+    public void setAltitudeChartAppearance()
+    {
+
+        chart.animateXY(3000, 2000);
+        chart.setHighlightIndicatorEnabled(false);
+
+        //chart.setDrawGridBackground(false);
+        chart.setMaxVisibleValueCount(15);
+
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineWidth(2);
+        xAxis.setAxisLineColor(getResources().getColor(R.color.black1));
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setAxisLineWidth(2);
+        leftAxis.setAxisLineColor(getResources().getColor(R.color.black1));
+        leftAxis.setValueFormatter(new DefaultValueFormatter(0));
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
+    }
+
+    public void setAltitudeLegendAppearance()
+    {
+        Legend legend = chart.getLegend();
+        legend.setTextSize(14f);
+        legend.setForm(Legend.LegendForm.LINE);
+        legend.setFormSize(14f);
+    }
 
 
 
