@@ -75,14 +75,6 @@ public class TrackDetails extends Fragment {
                 chart.setArguments(b);
                 ft.replace(R.id.details_container, chart).addToBackStack(null).commit();
 
-                /*
-                Chart2 chart2 = new Chart2();
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                Bundle b = new Bundle();
-                b.putString("json", jsonObj.toString());
-                chart2.setArguments(b);
-                ft.replace(R.id.details_container, chart2).addToBackStack(null).commit();*/
-
             }
         });
 
