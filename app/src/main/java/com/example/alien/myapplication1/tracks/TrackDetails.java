@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.alien.myapplication1.Charts.Chart;
 import com.example.alien.myapplication1.R;
 
 import org.joda.time.Period;

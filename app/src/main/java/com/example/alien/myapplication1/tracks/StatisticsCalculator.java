@@ -118,25 +118,25 @@ public class StatisticsCalculator {
         try {
             if(timeIndex - 2 >= 0)
             {
-                distance += getDistanceBetweenPoints((double) pts.get(timeIndex-2), (double) pts.get(timeIndex-2), (double)pts.get(timeIndex-1), (double)pts.get(timeIndex-1));
+                distance += getDistanceBetweenPoints((double) pts.get((timeIndex-2)*3), (double) pts.get((timeIndex-2)*3+1), (double)pts.get((timeIndex-1)*3), (double)pts.get((timeIndex-1)*3+1));
                 tempPeriod = getTimeBetweenPoints(timeIndex - 2, timeIndex - 1);
                 time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
             }
             if(timeIndex - 1 >= 0)
             {
-                distance += getDistanceBetweenPoints((double) pts.get(timeIndex-1), (double) pts.get(timeIndex-1), (double)pts.get(timeIndex), (double)pts.get(timeIndex));
+                distance += getDistanceBetweenPoints((double) pts.get((timeIndex-1)*3), (double) pts.get((timeIndex-1)*3+1), (double)pts.get(timeIndex*3), (double)pts.get(timeIndex*3+1));
                 tempPeriod = getTimeBetweenPoints(timeIndex-1, timeIndex);
                 time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
             }
             if(timeIndex + 1 < times.length())
             {
-                distance += getDistanceBetweenPoints((double) pts.get(timeIndex), (double) pts.get(timeIndex), (double)pts.get(timeIndex+1), (double)pts.get(timeIndex+1));
+                distance += getDistanceBetweenPoints((double) pts.get(timeIndex*3), (double) pts.get(timeIndex*3+1), (double)pts.get((timeIndex+1)*3), (double)pts.get((timeIndex+1)*3+1));
                 tempPeriod = getTimeBetweenPoints(timeIndex, timeIndex+1);
                 time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
             }
             if(timeIndex+2 < times.length())
             {
-                distance += getDistanceBetweenPoints((double) pts.get(timeIndex+1), (double) pts.get(timeIndex+1), (double)pts.get(timeIndex+2), (double)pts.get(timeIndex+2));
+                distance += getDistanceBetweenPoints((double) pts.get((timeIndex+1)*3), (double) pts.get((timeIndex+1)*3+1), (double)pts.get((timeIndex+2)*3), (double)pts.get((timeIndex+2)*3+1));
                 tempPeriod = getTimeBetweenPoints(timeIndex+1, timeIndex+2);
                 time += tempPeriod.getDays()*24 + tempPeriod.getHours() + (double)tempPeriod.getMinutes() / 60D + (double)tempPeriod.getSeconds() / 3600D;
             }
