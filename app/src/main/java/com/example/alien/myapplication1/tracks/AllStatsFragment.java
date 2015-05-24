@@ -22,7 +22,7 @@ public class AllStatsFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        container.removeAllViews();
+        //container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_all_stats, container, false);
         TextView username = (TextView) rootView.findViewById(R.id.usernameView);
         username.setText(getArguments().getString("username"));

@@ -83,15 +83,15 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
         }
         catch(UnsupportedEncodingException e) {
             isFinished = true;
-            return new String("UEEException: " + e.getMessage());
+            return "UEEException: " + e.getMessage();
         }
         catch(MalformedURLException e) {
             isFinished = true;
-            return new String("MUException: " + e.getMessage());
+            return "MUException: " + e.getMessage();
         }
         catch(IOException e) {
             isFinished = true;
-            return new String("IOException: " + e.getStackTrace().toString());
+            return "IOException: " + e.getStackTrace().toString();
         }
     }
 
@@ -121,7 +121,7 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
 
         stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
 
-        callback.onASyncTaskCompleted(stats);
+        callback.onASyncTaskCompleted(stats, status);
         //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);
     }
 }

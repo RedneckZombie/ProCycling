@@ -23,6 +23,7 @@ import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
+import com.example.alien.myapplication1.rankings.ViewPagerFragment;
 import com.example.alien.myapplication1.tracks.AllStatsFragment;
 import com.example.alien.myapplication1.tracks.GetAllStats;
 import com.example.alien.myapplication1.tracks.RecordRoute;
@@ -200,6 +201,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 4:
+                            rankingi();
+                            mDrawerLayout.closeDrawer(mDrawerList);
+                            break;
+                        case 5:
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.putExtra("isLogged", false);
                             startActivity(intent);
@@ -284,6 +289,26 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         else
         {
             Toast.makeText(getApplicationContext(), "Nie mozna pobrac statystyk z bazy", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void rankingi()
+    {
+        CheckingConnection cc = new CheckingConnection(getApplicationContext());
+        cc.execute();
+        while(!cc.isFinished()){
+            try{
+                Thread.sleep(100);
+            }catch(Exception e){}
+        }
+        if(cc.isConnected())
+        {
+            Fragment fr = new ViewPagerFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fr).commit();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Nie mozna pobrac rankingow", Toast.LENGTH_LONG).show();
         }
     }
 

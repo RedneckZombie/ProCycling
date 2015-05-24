@@ -39,6 +39,7 @@
         <item >Moje trasy</item>
         <item >Mapa</item>
         <item >Statystyki</item>
+        <item >Rankingi</item>
         <item >Wyloguj</item>
     </string-array>
     <string-array name="options2">
@@ -46,6 +47,7 @@
         <item >Moje trasy</item>
         <item >Mapa</item>
         <item >Statystyki</item>
+        <item >Rankingi</item>
         <item >Wyloguj</item>
     </string-array>
 

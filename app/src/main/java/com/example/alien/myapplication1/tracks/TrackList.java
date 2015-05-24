@@ -52,7 +52,7 @@ public class TrackList extends Fragment {
         }
         else {
             System.out.println("Ni ma net");
-            lista = iStorage();                     //TO SPADA Z ROWERKA
+            lista = iStorage();
         }
         TrackAdapter adapter = new TrackAdapter(container.getContext(), R.layout.track_list_row, lista);
         lv =  (ListView)rootView.findViewById(R.id.listView);
@@ -60,14 +60,14 @@ public class TrackList extends Fragment {
         lv.setOnItemClickListener(listener);
         return rootView;
     }
-///
+
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String src = lista.get(position).getTrackName();
             if(src.equals("Brak tras"))
                 return;
-            JSONObject json;//sprawdz czy nazwa to nie brak tras bo sie wysypio
+            JSONObject json;
             if(!isConnected)
                 json = readTrackFromInternalStorage(src);
             else {
@@ -125,7 +125,7 @@ public class TrackList extends Fragment {
                     p = stat.getTravelTime();
                     time = p.getYears()+""+p.getMonths()+p.getDays()+p.getHours()+p.getMinutes()+p.getSeconds();
 
-                    tracks.add(new Track(counter,name, tempName.substring(index2+1), stat.getDistance(), time, stat.getAverageSpeed()));
+                    tracks.add(new Track(counter,name, stat.getDistance(), time, stat.getAverageSpeed()));
                 }
                 else{
                     stat = new StatisticsCalculator(readTrackFromInternalStorage(tempName));
@@ -140,7 +140,6 @@ public class TrackList extends Fragment {
 
         }catch(IOException e){e.printStackTrace();}
 
-        ///////////prezent dla Kamila <- jak miło, dziękuję :D
         if(tracks.isEmpty())
             tracks.add(new Track("Brak tras"));
         return tracks;
