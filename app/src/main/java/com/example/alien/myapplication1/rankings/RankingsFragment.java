@@ -5,9 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.Stats;
+
+import java.util.ArrayList;
 
 
 /**
@@ -15,7 +19,6 @@ import com.example.alien.myapplication1.R;
  */
 public class RankingsFragment extends Fragment {
 
-    private View rootView;
     private TextView rankTitle;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,6 +28,12 @@ public class RankingsFragment extends Fragment {
         System.out.println("argument " + getArguments().getString("title"));
         rankTitle.setText(getArguments().getString("title"));
 
+        ArrayList<Rank> list = new ArrayList<>();
+        list.add(new Rank(1, "test", new Stats(111111, 11.1, "11:11:11")));
+
+        RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list);
+        ListView lv = (ListView) rootView.findViewById(R.id.listView);
+        lv.setAdapter(adapter);
         return rootView;
     }
 

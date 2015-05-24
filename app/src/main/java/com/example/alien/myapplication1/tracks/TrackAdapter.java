@@ -34,8 +34,8 @@ public class TrackAdapter extends ArrayAdapter<Track> {
     static class Kontener
     {
         TextView row;
-
     }
+
     public View getView(int pozycja, View konwertowanyWidok, ViewGroup rodzic)
     {
         View wiersz = konwertowanyWidok;
