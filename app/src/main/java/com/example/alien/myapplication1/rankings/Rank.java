@@ -5,7 +5,7 @@ import com.example.alien.myapplication1.tracks.Stats;
 /**
  * Created by Adams on 2015-05-24.
  */
-public class Rank {
+public class Rank{
     private int position;
     private String username;
     private Stats stats;

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.alien.myapplication1.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Adams on 2015-05-24.
  */
@@ -20,6 +22,7 @@ public class ViewPagerFragment extends Fragment {
 
         private ViewPagerAdapter mAdapter;
         private ViewPager mPager;
+        static ArrayList<Rank> rankList;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class ViewPagerFragment extends Fragment {
             mAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mPager = (ViewPager) rootView.findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
+            rankList = new ArrayList<>(); //tu pobierz
             return rootView;
         }
 
@@ -39,25 +43,24 @@ public class ViewPagerFragment extends Fragment {
 
             @Override
             public Fragment getItem(int num) {
+                Fragment fr = new RankingsFragment();
+                Bundle b = new Bundle();
                 if (num == 0)
                 {
-                    Fragment fr = new RankingsFragment();
-                    Bundle b = new Bundle();
+                    b.putInt("type", 1);
                     b.putString("title","Ranking 1");
                     fr.setArguments(b);
                     return fr;
                 }
                 else if(num == 1)
                 {
-                    Fragment fr = new RankingsFragment();
-                    Bundle b = new Bundle();
+                    b.putInt("type", 2);
                     b.putString("title","Ranking 2");
                     fr.setArguments(b);
                     return fr;
                 }
                 else {
-                    Fragment fr = new RankingsFragment();
-                    Bundle b = new Bundle();
+                    b.putInt("type", 3);
                     b.putString("title","Ranking 3");
                     fr.setArguments(b);
                     return fr;

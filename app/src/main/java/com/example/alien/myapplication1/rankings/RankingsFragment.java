@@ -12,6 +12,8 @@ import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.tracks.Stats;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -27,7 +29,20 @@ public class RankingsFragment extends Fragment {
         rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
         System.out.println("argument " + getArguments().getString("title"));
         rankTitle.setText(getArguments().getString("title"));
-
+//        Comparator comp;
+//        switch(getArguments().getInt("type"))
+//        {
+//            case 1:
+//                comp = new Comparator
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//
+//        }
+//        ArrayList<Rank> list = ViewPagerFragment.rankList;
+//        Collections.sort(list, )
         ArrayList<Rank> list = new ArrayList<>();
         list.add(new Rank(1, "test", new Stats(111111, 11.1, "11:11:11")));
 
