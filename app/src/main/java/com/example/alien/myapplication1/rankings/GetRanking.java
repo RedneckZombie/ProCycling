@@ -1,12 +1,9 @@
 package com.example.alien.myapplication1.rankings;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.example.alien.myapplication1.OnASyncTaskCompleted;
-import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.tracks.Stats;
 
 import java.io.BufferedReader;
@@ -31,14 +28,13 @@ public class GetRanking extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... arg0) {
         try {
-
             String link = "http://rommam.cba.pl/get_ranking.php";
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            //wr.write(data);
+            wr.write("");
             wr.flush();
 
             InputStreamReader isr = new InputStreamReader(conn.getInputStream());
@@ -82,7 +78,6 @@ public class GetRanking extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
-
         String[] results = result.split(";");
 
         String status;
