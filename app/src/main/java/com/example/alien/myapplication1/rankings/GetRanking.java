@@ -51,7 +51,7 @@ public class GetRanking extends AsyncTask<String,Void,String> {
                 else if (line.contains("USERNAME: ")) {
                     sb.append(line);
                 }
-                else if (line.contains("DISTANCE: ")) {
+                /*else if (line.contains("DISTANCE: ")) {
                     sb.append(line);
                 }
                 else if (line.contains("TIME: ")) {
@@ -59,7 +59,7 @@ public class GetRanking extends AsyncTask<String,Void,String> {
                 }
                 else if (line.contains("AVERAGE: ")) {
                     sb.append(line);
-                }
+                }*/
             }
 
             return sb.toString();
@@ -78,6 +78,8 @@ public class GetRanking extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
+        System.out.println(result);
+
         String[] results = result.split(";");
 
         String status;
@@ -95,12 +97,14 @@ public class GetRanking extends AsyncTask<String,Void,String> {
         }
 
         if (results.length >= 3) {
-            username = results[1].substring(10);
-            distance = results[2].substring(10);
-            time = results[3].substring(6);
-            average = results[4].substring(9);
+            for (int i = 1; i < results.length - 1; i += 4) {
+                username = results[i].substring(10);
+                distance = results[i + 1].substring(10);
+                time = results[i + 2].substring(6);
+                average = results[i + 3].substring(9);
 
-            rank.add(new Rank(0, username, new Stats(Integer.parseInt(distance), Double.parseDouble(average), time)));
+                rank.add(new Rank(0, username, new Stats(Integer.parseInt(distance), Double.parseDouble(average), time)));
+            }
         }
 
         callback.onASyncTaskCompleted(rank);
