@@ -36,8 +36,8 @@ public class RankingsFragment extends Fragment {
                 comp = new Comparator<Rank>(){
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
-                        Integer x = lhs.getStats().getDistance();
-                        return x.compareTo(rhs.getStats().getDistance());
+                        Integer x = rhs.getStats().getDistance();
+                        return x.compareTo(lhs.getStats().getDistance());
                     }
                 };
                 break;
@@ -45,7 +45,8 @@ public class RankingsFragment extends Fragment {
                 comp = new Comparator<Rank>(){
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
-                        return lhs.getStats().getTime().compareTo(rhs.getStats().getTime());
+                        return rhs.getStats().getTime().compareTo(lhs.getStats().getTime());
+                        //popraw
                     }
                 };
                 break;
@@ -53,7 +54,7 @@ public class RankingsFragment extends Fragment {
                 comp = new Comparator<Rank>(){
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
-                        Double x = lhs.getStats().getAverage();
+                        Double x = rhs.getStats().getAverage();
                         return x.compareTo(lhs.getStats().getAverage());
                     }
                 };
