@@ -10,12 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.GetTracks;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Map extends Fragment
 {
@@ -24,6 +30,7 @@ public class Map extends Fragment
     private static boolean visible = false;
     private static double latitude = 52.15182309;
     private static double longitude = 19.42829922;
+    private List<Point> userPoints;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -39,6 +46,8 @@ public class Map extends Fragment
             latitude = loc.getLatitude();
             longitude = loc.getLongitude();
         }
+        userPoints = new ArrayList<>();
+
         return rootView;
     }
 
@@ -89,7 +98,7 @@ public class Map extends Fragment
         latitude = lat;
         longitude = lng;
         LatLng location = new LatLng(lat, lng);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
         if(here == null)
             here = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Tu jesteś"));
         else
@@ -101,6 +110,29 @@ public class Map extends Fragment
     public static boolean isMapVisible()
     {
         return visible;
+    }
+
+    public boolean addPoint(double longitude,double latitude)
+    {
+        //GetTracks gt = new GetTracks(getActivity());
+
+
+        return userPoints.add(new Point(longitude, latitude));
+    }
+
+    public void savePointsInInternalStorage(int id)
+    {
+        String temp;
+        try {
+            FileOutputStream fos = getActivity().openFileOutput(id+"", Context.MODE_APPEND);
+
+            for(Point e : userPoints) {
+                temp = e.longitude + "," + e.latitude + ";";
+                fos.write(temp.getBytes());
+            }
+
+            fos.close();
+        } catch(IOException e){ e.printStackTrace();}
     }
 
 }
