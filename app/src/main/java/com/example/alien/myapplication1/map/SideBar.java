@@ -92,6 +92,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     public void mapa()
     {
         FragmentManager fm = getSupportFragmentManager();
+
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
     public void drawer()
@@ -201,6 +202,9 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             startActivity(intent);
                             finish();
                             break;
+                        case 5:
+                            finish();
+                            break;
                     }
                 }
                 else{//dla gościa
@@ -231,6 +235,9 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.putExtra("isLoged", false);
                             startActivity(intent);
+                            finish();
+                            break;
+                        case 3:
                             finish();
                             break;
                     }
@@ -378,5 +385,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             fr.setArguments(b);
             fm.beginTransaction().replace(R.id.content_frame, fr).commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

@@ -218,10 +218,6 @@ public class RecordRoute
             }
             fis.close();
 
-            //content = content.replace("null", "");
-
-            System.out.println("tracks names: " + content);
-
             String fn = fileName;
             int counter = 2;
 

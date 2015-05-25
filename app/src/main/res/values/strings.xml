@@ -40,6 +40,7 @@
         <item >Mapa</item>
         <item >Statystyki</item>
         <item >Wyloguj</item>
+        <item >Zamknij</item>
     </string-array>
     <string-array name="options2">
         <item >Zakoncz rejestracje trasy</item>
@@ -47,17 +48,20 @@
         <item >Mapa</item>
         <item >Statystyki</item>
         <item >Wyloguj</item>
+        <item >Zamknij</item>
     </string-array>
 
     <string-array name="guest">
         <item >Rejestruj trasę</item>
         <item >Mapa</item>
         <item >Zaloguj</item>
+        <item >Zamknij</item>
     </string-array>
     <string-array name="guest2">
         <item >Zakoncz rejestracje trasy</item>
         <item >Mapa</item>
         <item >Zaloguj</item>
+        <item >Zamknij</item>
     </string-array>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>

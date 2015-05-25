@@ -1,12 +1,12 @@
 package com.example.alien.myapplication1.map;
 
 import android.content.Context;
-import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.alien.myapplication1.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -16,6 +16,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Map extends Fragment
 {
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -23,6 +29,7 @@ public class Map extends Fragment
     private static boolean visible = false;
     private static double latitude = 51;
     private static double longitude = 17;
+    private List<Point> userPoints;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -31,6 +38,8 @@ public class Map extends Fragment
         mMap = null;
         here = null;
         setUpMapIfNeeded();
+
+        userPoints = new ArrayList<>();
         //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         //locationManager.getLastKnownLocation();
         return rootView;
@@ -86,5 +95,26 @@ public class Map extends Fragment
     {
         return visible;
     }
+
+    public boolean addPoint(double longitude,double latitude)
+    {
+        return userPoints.add(new Point(longitude, latitude));
+    }
+
+    public void savePointsInInternalStorage(int id)
+    {
+        String temp;
+        try {
+            FileOutputStream fos = getActivity().openFileOutput(id+"", Context.MODE_APPEND);
+
+            for(Point e : userPoints) {
+                temp = e.longitude + "," + e.latitude + ";";
+                fos.write(temp.getBytes());
+            }
+
+            fos.close();
+        } catch(IOException e){ e.printStackTrace();}
+    }
+
 
 }
