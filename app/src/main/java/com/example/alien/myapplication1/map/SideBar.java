@@ -211,7 +211,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             startActivity(intent);
                             finish();
                             break;
-                        case 5:
+                        case 6:
                             finish();
                             break;
                     }
