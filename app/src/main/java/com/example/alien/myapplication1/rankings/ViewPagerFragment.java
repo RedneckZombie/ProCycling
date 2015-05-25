@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.alien.myapplication1.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Adams on 2015-05-24.
  */
-public class ViewPagerFragment extends Fragment {
+public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
 
         static final int NUM_ITEMS = 3;
 
@@ -31,11 +32,18 @@ public class ViewPagerFragment extends Fragment {
             mAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mPager = (ViewPager) rootView.findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
-            rankList = new ArrayList<>(); //tu pobierz
+            GetRanking ranking = new GetRanking(container.getContext(), this);
+            ranking.execute();
+            //rankList = new ArrayList<>(); //tu pobierz
             return rootView;
         }
 
-        public class ViewPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public void onASyncTaskCompleted(Object... value) {
+        rankList = (ArrayList<Rank>) value[0];
+    }
+
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
             public ViewPagerAdapter(FragmentManager fm) {
                 super(fm);
             }
