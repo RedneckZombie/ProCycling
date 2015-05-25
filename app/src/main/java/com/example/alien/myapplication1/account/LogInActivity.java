@@ -14,7 +14,6 @@ import android.widget.EditText;
 import com.example.alien.myapplication1.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.map.SideBar;
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.GetAllStats;
 
 public class LogInActivity extends Activity implements OnASyncTaskCompleted {
     private EditText login_mail;
@@ -28,10 +27,9 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
 
     SharedPreferences preferences;
 
-    boolean isLoged = true;
-    //private Stats stats; // for check
-    private String result; // new
-    private OnASyncTaskCompleted callback; // new
+    boolean isLogged = true;
+    protected String result;
+    private OnASyncTaskCompleted callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         addListeners();
         restoreData();
 
-        callback = this; // new
+        callback = this;
     }
 
     public void restoreData() {
@@ -64,13 +62,13 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         String username = preferences.getString("username", "");
         String userID = preferences.getString("userID", "");
 
-        isLoged = getIntent().getBooleanExtra("isLoged",true);
+        isLogged = getIntent().getBooleanExtra("isLogged", true);
 
-        if(!isLoged) {
+        if (!isLogged) {
             checkbox_remember.setChecked(false);
         }
 
-        if(checkbox_remember.isChecked() && !username.equals("") && isLoged&&!userID.equals("")) {
+        if (checkbox_remember.isChecked() && !username.equals("") && isLogged &&!userID.equals("")) {
             Intent intent = new Intent(getApplicationContext(), SideBar.class);
             intent.putExtra("username", username);
             intent.putExtra("userID", userID);
@@ -83,12 +81,12 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         checkbox_remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
+                if (!isChecked) {
                     SharedPreferences.Editor pref = preferences.edit();
                     pref.putString("mail", "");
                     pref.putString("pass", "");
                     pref.putBoolean("rem", false);
-                    pref.commit();
+                    pref.apply();
                 }
             }
         });
@@ -121,7 +119,7 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
                 String login = login_mail.getText().toString();
                 String password = login_password.getText().toString();
 
-                if(checkbox_remember.isChecked()) {
+                if (checkbox_remember.isChecked()) {
                     pref.putString("mail", login);
                     pref.putString("pass", password);
                     pref.putBoolean("rem", checkbox_remember.isChecked());
@@ -132,32 +130,10 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
                     pref.putBoolean("rem", false);
                 }
 
-                pref.commit();
-
-               /* // for check
-                GetAllStats st = new GetAllStats(getApplicationContext(), callback);
-                st.execute("44");
-                // for check - end
-                */
+                pref.apply();
 
                 LogIn loginTask = new LogIn(getApplicationContext(), callback);
                 loginTask.execute(login, password);
-
-                /* old way
-
-                while(!li.isFinished()){
-                    System.out.println(li.isFinished());
-                    try{
-                        Thread.sleep(100);
-                    }catch(Exception e){}
-                }
-
-                String res = li.getRes();
-                if(res!=null) {
-                        finish();
-                }
-
-                */
             }
         });
     }
@@ -170,15 +146,6 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
 
     @Override
     public void onASyncTaskCompleted(Object... value) {
-
-        result = (String)value[0];
-        System.out.println(result);
-
-        /* for check
-
-        stats = (Stats)value;
-        System.out.println("DIST: " + stats.getDistance() + ", AVG: " + stats.getAverage() + ", TIME: " + stats.getTime());
-
-        */
+        result = (String) value[0];
     }
 }

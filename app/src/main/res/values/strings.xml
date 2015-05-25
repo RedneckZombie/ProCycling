@@ -39,6 +39,7 @@
         <item >Moje trasy</item>
         <item >Mapa</item>
         <item >Statystyki</item>
+        <item >Rankingi</item>
         <item >Wyloguj</item>
         <item >Zamknij</item>
     </string-array>
@@ -47,6 +48,7 @@
         <item >Moje trasy</item>
         <item >Mapa</item>
         <item >Statystyki</item>
+        <item >Rankingi</item>
         <item >Wyloguj</item>
         <item >Zamknij</item>
     </string-array>
@@ -70,5 +72,6 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_charts">ChartsActivity</string>
 
 </resources>

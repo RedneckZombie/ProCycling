@@ -1,6 +1,6 @@
 package com.example.alien.myapplication1.tracks;
 
-public class Stats {
+public class Stats{
     private int distance;
     private double average;
     private String time;
