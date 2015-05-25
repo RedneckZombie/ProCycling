@@ -28,19 +28,25 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             //container.removeAllViews();
-            View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
-            mAdapter = new ViewPagerAdapter(getChildFragmentManager());
-            mPager = (ViewPager) rootView.findViewById(R.id.pager);
-            mPager.setAdapter(mAdapter);
+
             GetRanking ranking = new GetRanking(container.getContext(), this);
             ranking.execute();
             //rankList = new ArrayList<>(); //tu pobierz
+            View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
+            mAdapter = new ViewPagerAdapter(getChildFragmentManager());
+            mPager = (ViewPager) rootView.findViewById(R.id.pager);
             return rootView;
         }
 
     @Override
     public void onASyncTaskCompleted(Object... value) {
+        System.out.println("TUTEJ KURWA");
         rankList = (ArrayList<Rank>) value[0];
+        if(rankList == null)
+        {
+            System.out.println("Null KURWA");
+        }
+        mPager.setAdapter(mAdapter);
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -56,20 +62,20 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
                 if (num == 0)
                 {
                     b.putInt("type", 1);
-                    b.putString("title","Ranking 1");
+                    b.putString("title", "Ranking dystans");
                     fr.setArguments(b);
                     return fr;
                 }
                 else if(num == 1)
                 {
                     b.putInt("type", 2);
-                    b.putString("title","Ranking 2");
+                    b.putString("title","Ranking czas");
                     fr.setArguments(b);
                     return fr;
                 }
                 else {
                     b.putInt("type", 3);
-                    b.putString("title","Ranking 3");
+                    b.putString("title","Ranking srednia");
                     fr.setArguments(b);
                     return fr;
                 }

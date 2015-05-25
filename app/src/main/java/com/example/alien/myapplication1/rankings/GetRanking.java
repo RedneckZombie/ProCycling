@@ -103,7 +103,7 @@ public class GetRanking extends AsyncTask<String,Void,String> {
             username = results[1].substring(10);
             distance = results[2].substring(10);
             time = results[3].substring(6);
-            average = results[3].substring(9);
+            average = results[4].substring(9);
 
             rank.add(new Rank(0, username, new Stats(Integer.parseInt(distance), Double.parseDouble(average), time)));
         }
