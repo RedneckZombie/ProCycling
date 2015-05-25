@@ -28,4 +28,9 @@ public class Rank{
     public Stats getStats() {
         return stats;
     }
+
+    public void setPosition(int x)
+    {
+        position = x;
+    }
 }

@@ -29,41 +29,44 @@ public class RankingsFragment extends Fragment {
         rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
         System.out.println("argument " + getArguments().getString("title"));
         rankTitle.setText(getArguments().getString("title"));
-//        Comparator comp = null;
-//        switch(getArguments().getInt("type"))
-//        {
-//            case 1:
-//                comp = new Comparator<Rank>(){
-//                    @Override
-//                    public int compare(Rank lhs, Rank rhs) {
-//                        Integer x = lhs.getStats().getDistance();
-//                        return x.compareTo(rhs.getStats().getDistance());
-//                    }
-//                };
-//                break;
-//            case 2:
-//                comp = new Comparator<Rank>(){
-//                    @Override
-//                    public int compare(Rank lhs, Rank rhs) {
-//                        return lhs.getStats().getTime().compareTo(rhs.getStats().getTime());
-//                    }
-//                };
-//                break;
-//            case 3:
-//                comp = new Comparator<Rank>(){
-//                    @Override
-//                    public int compare(Rank lhs, Rank rhs) {
-//                        Double x = lhs.getStats().getAverage();
-//                        return x.compareTo(lhs.getStats().getAverage());
-//                    }
-//                };
-//                break;
-//
-//        }
-        ArrayList<Rank> list = ViewPagerFragment.rankList;
-//        Collections.sort(list, comp);
-//        list.add(new Rank(1, "test", new Stats(111111, 11.1, "11:11:11")));
+        Comparator comp = null;
+        switch(getArguments().getInt("type"))
+        {
+            case 1:
+                comp = new Comparator<Rank>(){
+                    @Override
+                    public int compare(Rank lhs, Rank rhs) {
+                        Integer x = lhs.getStats().getDistance();
+                        return x.compareTo(rhs.getStats().getDistance());
+                    }
+                };
+                break;
+            case 2:
+                comp = new Comparator<Rank>(){
+                    @Override
+                    public int compare(Rank lhs, Rank rhs) {
+                        return lhs.getStats().getTime().compareTo(rhs.getStats().getTime());
+                    }
+                };
+                break;
+            case 3:
+                comp = new Comparator<Rank>(){
+                    @Override
+                    public int compare(Rank lhs, Rank rhs) {
+                        Double x = lhs.getStats().getAverage();
+                        return x.compareTo(lhs.getStats().getAverage());
+                    }
+                };
+                break;
 
+        }
+        ArrayList<Rank> list = ViewPagerFragment.rankList;
+        Collections.sort(list, comp);
+        int i = 0;
+        for(Rank r : list)
+        {
+            r.setPosition(++i);
+        }
         RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list);
         ListView lv = (ListView) rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);
