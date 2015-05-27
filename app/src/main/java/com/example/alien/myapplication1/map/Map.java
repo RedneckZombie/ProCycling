@@ -1,5 +1,6 @@
 package com.example.alien.myapplication1.map;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -8,6 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.tracks.GetTracks;
@@ -23,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map extends Fragment
+public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, View.OnClickListener
 {
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static Marker here;
@@ -31,6 +35,15 @@ public class Map extends Fragment
     private static double latitude = 52.15182309;
     private static double longitude = 19.42829922;
     private List<Point> userPoints;
+
+    private boolean isVisible=false;
+
+    EditText interestingPlace;
+    Button ok;
+    Button cancel;
+    LinearLayout linLayouyt, mapLayout;
+
+    LatLng ll;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -47,10 +60,37 @@ public class Map extends Fragment
             longitude = loc.getLongitude();
         }
         userPoints = new ArrayList<>();
-
+        initialize(rootView);
+        mapListeners();
         return rootView;
     }
 
+    public void initialize(View view)
+    {
+        interestingPlace = (EditText)view.findViewById(R.id.etPlace);
+        ok = (Button) view.findViewById(R.id.btOK);
+        cancel = (Button) view.findViewById(R.id.btCancel);
+        linLayouyt = (LinearLayout) view.findViewById(R.id.linLayout);
+        mapLayout = (LinearLayout) view.findViewById(R.id.mapLinLayout);
+    }
+    public void hideObjects()
+    {
+        interestingPlace.setVisibility(View.GONE);
+        linLayouyt.setVisibility(View.GONE);
+        isVisible=false;
+    }
+    public void showObjects()
+    {
+        interestingPlace.setVisibility(View.VISIBLE);
+        linLayouyt.setVisibility(View.VISIBLE);
+        isVisible=true;
+    }
+    public void mapListeners()
+    {
+        ok.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+    }
     public void onResume() {
         visible = true;
         super.onResume();
@@ -135,4 +175,40 @@ public class Map extends Fragment
         } catch(IOException e){ e.printStackTrace();}
     }
 
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        if(!isVisible)
+        {
+            showObjects();
+            mapLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    380));
+            ll=latLng;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId())
+        {
+            case R.id.btCancel:
+                break;
+            case R.id.btOK:
+                addMarker();
+                break;
+        }
+        if(isVisible)
+        {
+            hideObjects();
+            mapLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT));
+        }
+    }
+    public void addMarker()
+    {
+        mMap.addMarker(new MarkerOptions()
+                .position(ll)
+                .title(interestingPlace.getText().toString()));
+    }
 }
