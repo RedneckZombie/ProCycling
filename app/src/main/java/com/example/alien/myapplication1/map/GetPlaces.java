@@ -37,7 +37,7 @@ public class GetPlaces extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... arg0) {
         try {
-            String link = "http://rommam.cba.pl/get_tracks.php";
+            String link = "http://rommam.cba.pl/get_places.php";
             String data = "";
 
             URL url = new URL(link);
@@ -100,5 +100,5 @@ public class GetPlaces extends AsyncTask<String,Void,String> {
     }
 
     @Override
-    protected void onPostExecute(String result){}
+    protected void onPostExecute(String result){System.out.println(result);}
 }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.GetTrackDetails;
 import com.example.alien.myapplication1.tracks.GetTracks;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,8 +35,10 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     private static boolean visible = false;
     private static double latitude = 52.15182309;
     private static double longitude = 19.42829922;
-    private List<Point> userPoints;
+    private List<Point> userPoints; //<--do wyjebki
+    private List<Place> allPlaces;
     private String userID;
+    private boolean ifShowsMarkers=true;
 
     private boolean isVisible=false;
 
@@ -52,6 +55,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
         mMap = null;
         here = null;
+        allPlaces = new ArrayList<Place>();
         setUpMapIfNeeded();
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -64,9 +68,30 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         initialize(rootView);
         mapListeners();
         readUserId();
+        showsMarkers();
         return rootView;
     }
 
+    public void showsMarkers()
+    {
+        if(ifShowsMarkers)
+        {
+            GetPlaces places = new GetPlaces(getActivity());
+            places.execute();
+            while (!places.isFinished()) {
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {}
+            }
+            allPlaces=places.getList();
+
+            for(int i=0;i<allPlaces.size();i++)
+            {
+                setMarker(allPlaces.get(i).latitude, allPlaces.get(i).longitude, allPlaces.get(i).getTitle());
+            }
+            System.out.println("showMarker");
+        }
+    }
     public void readUserId()
     {
         userID=getArguments().getString("userID");
@@ -213,6 +238,12 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT));
         }
+    }
+    public void setMarker(double x, double y, String name)
+    {
+        mMap.addMarker(new MarkerOptions()
+        .position(new LatLng(y,x))
+        .title(name));
     }
     public void addMarker()
     {
