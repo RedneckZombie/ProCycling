@@ -51,15 +51,6 @@ public class GetRanking extends AsyncTask<String,Void,String> {
                 else if (line.contains("USERNAME: ")) {
                     sb.append(line);
                 }
-                /*else if (line.contains("DISTANCE: ")) {
-                    sb.append(line);
-                }
-                else if (line.contains("TIME: ")) {
-                    sb.append(line);
-                }
-                else if (line.contains("AVERAGE: ")) {
-                    sb.append(line);
-                }*/
             }
 
             return sb.toString();
@@ -78,8 +69,6 @@ public class GetRanking extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
-        System.out.println(result);
-
         String[] results = result.split(";");
 
         String status;
@@ -87,6 +76,7 @@ public class GetRanking extends AsyncTask<String,Void,String> {
         String distance = "";
         String time = "";
         String average = "";
+
         ArrayList<Rank> rank = new ArrayList<Rank>();
 
         if (results[0].length() > 4 ) {

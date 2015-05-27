@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.alien.myapplication1.OnASyncTaskCompleted;
+import com.example.alien.myapplication1.map.SavePlace;
 import com.example.alien.myapplication1.map.SideBar;
 import com.example.alien.myapplication1.R;
 
@@ -131,6 +132,9 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
                 }
 
                 pref.apply();
+
+                SavePlace sp = new SavePlace(getApplicationContext());
+                sp.execute("48", "Chata wuja Frączkowskiego", "90.1111", "64.7824");
 
                 LogIn loginTask = new LogIn(getApplicationContext(), callback);
                 loginTask.execute(login, password);

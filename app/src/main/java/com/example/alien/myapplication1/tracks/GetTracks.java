@@ -3,6 +3,9 @@ package com.example.alien.myapplication1.tracks;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.alien.myapplication1.OnASyncTaskCompleted;
+import com.example.alien.myapplication1.rankings.Rank;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -100,7 +103,5 @@ public class GetTracks extends AsyncTask<String,Void,String> {
     }
 
     @Override
-    protected void onPostExecute(String result){
-        System.out.println("Result: " + result);
-    }
+    protected void onPostExecute(String result){}
 }
