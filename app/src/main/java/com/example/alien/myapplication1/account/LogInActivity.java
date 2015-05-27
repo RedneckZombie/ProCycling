@@ -133,8 +133,6 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
 
                 pref.apply();
 
-                SavePlace sp = new SavePlace(getApplicationContext());
-                sp.execute("48", "Chata wuja Frączkowskiego", "90.1111", "64.7824");
 
                 LogIn loginTask = new LogIn(getApplicationContext(), callback);
                 loginTask.execute(login, password);

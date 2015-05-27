@@ -35,6 +35,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     private static double latitude = 52.15182309;
     private static double longitude = 19.42829922;
     private List<Point> userPoints;
+    private String userID;
 
     private boolean isVisible=false;
 
@@ -62,9 +63,14 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         userPoints = new ArrayList<>();
         initialize(rootView);
         mapListeners();
+        readUserId();
         return rootView;
     }
 
+    public void readUserId()
+    {
+        userID=getArguments().getString("userID");
+    }
     public void initialize(View view)
     {
         interestingPlace = (EditText)view.findViewById(R.id.etPlace);
@@ -76,6 +82,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     public void hideObjects()
     {
         interestingPlace.setVisibility(View.GONE);
+        interestingPlace.setText("");
         linLayouyt.setVisibility(View.GONE);
         isVisible=false;
     }
@@ -177,6 +184,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
 
     @Override
     public void onMapLongClick(LatLng latLng) {
+        System.out.println("IsVisible: "+ isVisible);
         if(!isVisible)
         {
             showObjects();
@@ -195,6 +203,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                 break;
             case R.id.btOK:
                 addMarker();
+                saveMarker();
                 break;
         }
         if(isVisible)
@@ -210,5 +219,17 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         mMap.addMarker(new MarkerOptions()
                 .position(ll)
                 .title(interestingPlace.getText().toString()));
+    }
+
+    public void saveMarker()
+    {
+        if(true)//jest net ->kod Artura
+        {
+            SavePlace sp = new SavePlace(getActivity());
+            sp.execute(userID, interestingPlace.getText().toString(), String.valueOf(ll.latitude), String.valueOf(ll.longitude));
+        }
+        else{//ni ma neta-> kod Kamila
+
+        }
     }
 }

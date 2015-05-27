@@ -92,8 +92,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     }
     public void mapa()
     {
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", userID);
+        fr.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
-
         fm.beginTransaction().replace(R.id.content_frame, fr).commit();
     }
     public void drawer()
@@ -172,7 +174,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             Bundle b = new Bundle();
                             b.putString("username", username);
                             b.putString("userID", userID);
-                            System.out.println("cyce: "+userID);
                             while(!cc.isFinished()){
                                 try{
                                     Thread.sleep(100);
