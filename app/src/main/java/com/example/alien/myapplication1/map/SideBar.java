@@ -69,8 +69,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                if (rr == null)
-                {
+                if (rr == null) {
                     rr = new RecordRoute(getApplicationContext());
                     rr.createListener();
                 }
@@ -150,7 +149,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                                     int position,
                                     long id) {
 
-                if(username!=null) {//dla uzytkownika
+                if (username != null) {//dla uzytkownika
                     switch (position) {
                         case 0:
                             if (!rr.isRecording()) {
@@ -174,12 +173,13 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             Bundle b = new Bundle();
                             b.putString("username", username);
                             b.putString("userID", userID);
-                            while(!cc.isFinished()){
-                                try{
+                            while (!cc.isFinished()) {
+                                try {
                                     Thread.sleep(100);
-                                }catch(Exception e){}
+                                } catch (Exception e) {
+                                }
                             }
-                            if(cc.isConnected()) {
+                            if (cc.isConnected()) {
                                 new TrackFilesManager(getApplicationContext(), userID);
                             }
                             b.putBoolean("isConnected", cc.isConnected());
@@ -192,7 +192,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             mDrawerList.setItemChecked(-1, true);
                             break;
                         case 2:
-                            if(!fr.isVisible()) {
+                            if (!fr.isVisible()) {
                                 mapa();
                             }
                             mDrawerLayout.closeDrawer(mDrawerList);
@@ -216,10 +216,8 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             finish();
                             break;
                     }
-                }
-                else{//dla gościa
-                    switch(position)
-                    {
+                } else {//dla gościa
+                    switch (position) {
                         case 0:
                             if (!rr.isRecording()) {
                                 rr.startRecording();
@@ -235,7 +233,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:
-                            if(!fr.isVisible()) {
+                            if (!fr.isVisible()) {
                                 mapa();
                             }
                             mDrawerLayout.closeDrawer(mDrawerList);
@@ -368,8 +366,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     }
 
 
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -412,10 +408,13 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             b.putInt("dist", stats.getDistance());
             b.putDouble("avg", stats.getAverage());
             b.putString("username", username);
+            b.putString("userID", userID);
             fr.setArguments(b);
             fm.beginTransaction().replace(R.id.content_frame, fr).commit();
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

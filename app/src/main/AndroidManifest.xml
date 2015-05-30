@@ -48,7 +48,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Charts.ChartsActivity"
+            android:name=".Charts.ChartActivity"
             android:label="@string/title_activity_charts" >
         </activity>
     </application>

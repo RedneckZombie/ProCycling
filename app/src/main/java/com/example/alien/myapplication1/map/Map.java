@@ -35,7 +35,6 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     private static boolean visible = false;
     private static double latitude = 52.15182309;
     private static double longitude = 19.42829922;
-    private List<Point> userPoints; //<--do wyjebki
     private List<Place> allPlaces;
     private String userID;
     private boolean ifShowsMarkers=true;
@@ -64,7 +63,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
             latitude = loc.getLatitude();
             longitude = loc.getLongitude();
         }
-        userPoints = new ArrayList<>();
+
         initialize(rootView);
         mapListeners();
         readUserId();
@@ -85,9 +84,10 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
             }
             allPlaces=places.getList();
 
-            for(int i=0;i<allPlaces.size();i++)
-            {
-                setMarker(allPlaces.get(i).latitude, allPlaces.get(i).longitude, allPlaces.get(i).getTitle());
+            if(allPlaces != null) {
+                for (int i = 0; i < allPlaces.size(); i++) {
+                    setMarker(allPlaces.get(i).latitude, allPlaces.get(i).longitude, allPlaces.get(i).getTitle());
+                }
             }
             System.out.println("showMarker");
         }
@@ -184,29 +184,6 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         return visible;
     }
 
-    public boolean addPoint(double longitude,double latitude)
-    {
-        //GetTracks gt = new GetTracks(getActivity());
-
-
-        return userPoints.add(new Point(longitude, latitude));
-    }
-
-    public void savePointsInInternalStorage(int id)
-    {
-        String temp;
-        try {
-            FileOutputStream fos = getActivity().openFileOutput(id+"", Context.MODE_APPEND);
-
-            for(Point e : userPoints) {
-                temp = e.longitude + "," + e.latitude + ";";
-                fos.write(temp.getBytes());
-            }
-
-            fos.close();
-        } catch(IOException e){ e.printStackTrace();}
-    }
-
     @Override
     public void onMapLongClick(LatLng latLng) {
         System.out.println("IsVisible: "+ isVisible);
@@ -257,10 +234,19 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         if(true)//jest net ->kod Artura
         {
             SavePlace sp = new SavePlace(getActivity());
+
             sp.execute(userID, interestingPlace.getText().toString(), String.valueOf(ll.latitude), String.valueOf(ll.longitude));
         }
         else{//ni ma neta-> kod Kamila
+            String temp;
+            try {
+                FileOutputStream fos = getActivity().openFileOutput(userID+"", Context.MODE_APPEND);
 
+                temp = ll.longitude + "," + ll.latitude + ";";
+                fos.write(temp.getBytes());
+
+                fos.close();
+            } catch(IOException e){ e.printStackTrace();}
         }
     }
 }

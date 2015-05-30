@@ -79,4 +79,15 @@
         android:layout_alignRight="@+id/txtDist"
         android:layout_alignEnd="@+id/txtDist" />
 
+    <Button
+        android:id="@+id/allStatsChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wykresy"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignEnd="@+id/txtSpd"
+        android:layout_alignRight="@id/txtSpd"
+        android:layout_below="@id/txtSpd"
+        android:layout_marginTop="20dp"/>
+
 </RelativeLayout>

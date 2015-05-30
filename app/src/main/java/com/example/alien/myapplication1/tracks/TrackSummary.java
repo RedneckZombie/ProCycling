@@ -30,6 +30,8 @@ public class TrackSummary extends Fragment {
     private JSONObject jsonObj;
     private ArrayList<LatLng> arrLatLng;
     private Button buttonDetails;
+    private String userID;
+    private boolean isConnected;
 
     public TrackSummary() {
     }
@@ -38,9 +40,11 @@ public class TrackSummary extends Fragment {
         container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_track_summary, container, false);
         //mMap = null;
+        userID = getArguments().getString("userID");
         setUpMapIfNeeded();
         arrLatLng = new ArrayList<>();
         buttonDetails  = (Button) rootView.findViewById(R.id.btn_details);
+        isConnected = getArguments().getBoolean("isConnected");
 
         try {
             jsonObj = new JSONObject(getArguments().getString("json"));
@@ -57,6 +61,8 @@ public class TrackSummary extends Fragment {
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 Bundle b = new Bundle();
                 b.putString("json", jsonObj.toString());
+                b.putString("userID", userID);
+                b.putBoolean("isConnected", isConnected);
                 detFragment.setArguments(b);
                 transaction.replace(R.id.summary_container, detFragment);
                 //transaction.addToBackStack(null);

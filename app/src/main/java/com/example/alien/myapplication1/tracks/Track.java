@@ -7,15 +7,15 @@ public class Track {
     private String time;
     protected double average;
 
-    Track(String track_name) {
+    public Track(String track_name) {
         this.track_name = track_name;
     }
 
-    Track(int track_id, String track_name, int distance, String time, double average) {
+    public Track(int track_id, String track_name, int distance, String time, double average) {
         this.track_id = track_id;
         this.track_name = track_name;
-        this.distance = distance;
-        this.time = time;
+        this.distance = distance; // in kilemeters? meters?
+        this.time = time; // travel time
         this.average = average;
     }
 

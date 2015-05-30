@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.alien.myapplication1.Charts.Chart;
-import com.example.alien.myapplication1.Charts.ChartsActivity;
+import com.example.alien.myapplication1.Charts.ChartActivity;
 import com.example.alien.myapplication1.R;
 
 import org.joda.time.Period;
@@ -27,6 +26,8 @@ public class TrackDetails extends Fragment {
     private JSONObject jsonObj;
     private StatisticsCalculator calc;
     private Context context;
+    private String userID;
+    private boolean isConnected;
 
     public TrackDetails() {
     }
@@ -42,6 +43,7 @@ public class TrackDetails extends Fragment {
             e.printStackTrace();
         }
         calc = new StatisticsCalculator(jsonObj);
+        isConnected = getArguments().getBoolean("isConnected");
 
         buttonMap = (Button) rootView.findViewById(R.id.btn_map);
         buttonChart = (Button) rootView.findViewById(R.id.btn_chart);
@@ -90,8 +92,11 @@ public class TrackDetails extends Fragment {
                 chart2.setArguments(b);
                 ft.replace(R.id.details_container, chart2).addToBackStack(null).commit();
                 */
-                Intent in = new Intent(context, ChartsActivity.class);
+                Intent in = new Intent(context, ChartActivity.class);
                 in.putExtra("json", jsonObj.toString());
+                in.putExtra("mode", "singleTrack");
+                in.putExtra("userID", userID);
+                in.putExtra("isConnected", isConnected);
                 startActivity(in);
 
             }

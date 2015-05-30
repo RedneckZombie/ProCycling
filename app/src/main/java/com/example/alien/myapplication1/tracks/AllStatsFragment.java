@@ -1,22 +1,30 @@
 package com.example.alien.myapplication1.tracks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.alien.myapplication1.Charts.ChartActivity;
+import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.R;
 
 
 import java.text.DecimalFormat;
 
 /**
- * Created by Adams on 2015-05-16.
+ * Created by Adams on 2011-05-16.
  */
-public class AllStatsFragment extends Fragment {
+
+
+public class AllStatsFragment extends Fragment implements View.OnClickListener {
+
+    String userID;
+    Button charts;
 
     public AllStatsFragment() {
     }
@@ -26,6 +34,10 @@ public class AllStatsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_stats, container, false);
         TextView username = (TextView) rootView.findViewById(R.id.usernameView);
         username.setText(getArguments().getString("username"));
+
+        userID = getArguments().getString("userID");
+        charts = (Button) rootView.findViewById(R.id.allStatsChartButton);
+        charts.setOnClickListener(this);
 
         TextView distTxt = (TextView) rootView.findViewById(R.id.txtDist);
         double dist = getArguments().getInt("dist");
@@ -47,5 +59,13 @@ public class AllStatsFragment extends Fragment {
         super.onPause();
     }
 
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(getActivity(), ChartActivity.class);
+        intent.putExtra("mode", "overall");
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
 }
 

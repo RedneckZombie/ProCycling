@@ -38,8 +38,6 @@ public class TrackList extends Fragment {
 
     public  TrackList() {}
 
-    //public TrackList(Context context){ context = context; }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_track_list, container, false);
         this.container = container;
@@ -85,6 +83,8 @@ public class TrackList extends Fragment {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             Bundle b = new Bundle();
             b.putString("json", json.toString());
+            b.putString("userID", userID);
+            b.putBoolean("isConnected", isConnected);
             summFragment.setArguments(b);
             transaction.replace(R.id.track_list_container, summFragment);
             transaction.addToBackStack(null);
@@ -140,7 +140,6 @@ public class TrackList extends Fragment {
 
         }catch(IOException e){e.printStackTrace();}
 
-        ///////////prezent dla Kamila <- jak miło, dziękuję :D
         if(tracks.isEmpty())
             tracks.add(new Track("Brak tras"));
         return tracks;
