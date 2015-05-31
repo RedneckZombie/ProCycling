@@ -40,12 +40,7 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
 
     @Override
     public void onASyncTaskCompleted(Object... value) {
-        System.out.println("TUTEJ KURWA");
         rankList = (ArrayList<Rank>) value[0];
-        if(rankList == null)
-        {
-            System.out.println("Null KURWA");
-        }
         mPager.setAdapter(mAdapter);
     }
 

@@ -249,4 +249,5 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
             } catch(IOException e){ e.printStackTrace();}
         }
     }
+
 }

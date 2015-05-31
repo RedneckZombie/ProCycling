@@ -21,13 +21,15 @@ public class RankAdapter extends ArrayAdapter<Rank> {
     private Context cont;
     private int layoutRID;
     private ArrayList<Rank> list;
+    private int rankType;
 
-    public RankAdapter(Context context, int layoutRID, ArrayList<Rank> list)
+    public RankAdapter(Context context, int layoutRID, ArrayList<Rank> list, int rankType)
     {
         super(context, layoutRID, list);
         this.layoutRID=layoutRID;
         this.cont=context;
         this.list=list;
+        this.rankType = rankType;
     }
 
     static class Kontener
@@ -54,8 +56,22 @@ public class RankAdapter extends ArrayAdapter<Rank> {
         }
         Rank object = list.get(pozycja);
 
-        String content = String.format("%4d %-20s %7.1f %10s %4.1f", object.getPosition(), object.getUsername(),
-                object.getStats().getDistance()/1000.0, object.getStats().getTime(), object.getStats().getAverage());
+        String rankValue = "";
+        switch(rankType)
+        {
+            case 1:
+                rankValue = String.format("%.2f",object.getStats().getDistance()/1000.0) + "km";
+                break;
+            case 2:
+                rankValue = object.getStats().getTime();
+                break;
+            case 3:
+                rankValue = String.format("%.2f",object.getStats().getAverage()) + "km/h";
+                break;
+        }
+        String content = String.format("%4d %-30s %10s", object.getPosition(), object.getUsername(),
+                rankValue);
+        System.out.println(content);
         holder.row.setText(content);
         return wiersz;
     }
