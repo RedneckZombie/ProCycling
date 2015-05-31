@@ -39,6 +39,7 @@ public class StatisticsCalculator {
     //return distance in meters
     public int getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
     {
+        /*
         double d2r = 0.0174532925199433;  // pi / 180
         double dlong = (long2 - long1) * d2r;
         double dlat = (lat2 - lat1) * d2r;
@@ -47,6 +48,20 @@ public class StatisticsCalculator {
         double d = 6367 * c;
 
         return (int)(d*1000);
+        */
+
+        double R = 6371000; // Earth radius
+        double dLat = Math.toRadians(long2 - long1);
+        double dLon = Math.toRadians(lat2 - lat1);
+        double latt1 = Math.toRadians(long1);
+        double latt2 = Math.toRadians(long2);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2)
+                * Math.sin(dLon / 2) * Math.cos(latt1) * Math.cos(latt2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+
+        return (int)d;
     }
 
     public Period getTimeBetweenPoints(int timeIndex1, int timeIndex2)

@@ -3,6 +3,7 @@
 
     <item name="blue1" type="color">#FF0000FF</item>
     <item name="green1" type="color">#FF00C800</item>
+    <item name="green2" type="color">#FF3CDC4E</item>
     <item name="black1" type="color">#FF000000</item>
 
 </resources>
