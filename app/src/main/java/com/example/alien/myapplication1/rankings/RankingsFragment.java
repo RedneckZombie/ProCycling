@@ -9,7 +9,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.Stats;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +33,6 @@ public class RankingsFragment extends Fragment {
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
                         Integer x = rhs.getStats().getDistance();
-                        System.out.println("komparuje");
                         return x.compareTo(lhs.getStats().getDistance());
                     }
                 };
@@ -64,7 +62,11 @@ public class RankingsFragment extends Fragment {
                 };
                 break;
         }
-        ArrayList<Rank> list = ViewPagerFragment.rankList;
+        ArrayList<Rank> list = new ArrayList<>();
+        for(Rank r: ViewPagerFragment.rankList)
+        {
+            list.add(r);
+        }
         Collections.sort(list, comp);
         int i = 0;
         for(Rank r : list)
