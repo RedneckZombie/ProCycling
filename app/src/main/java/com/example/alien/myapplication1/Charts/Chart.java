@@ -203,9 +203,14 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        ArrayList<Track> tracks = isConnected ? database() : iStorage();
-
+        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        //ArrayList<Track> tracks = iStorage();
+        ArrayList<Track> tracks = database();
+        System.out.println("isConnected " + isConnected);
+        System.out.println("yearly, size = " + tracks.size()+"\n\n");
         Collections.sort(tracks);
+        for(int i = 0 ; i < tracks.size(); i++)
+            System.out.println(tracks.get(i).getTrackName());
 
         String temp;
         int dist = 0;
@@ -249,8 +254,14 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        //ArrayList<Track> tracks = iStorage();
+        ArrayList<Track> tracks = database();
+        System.out.println("isConnected " + isConnected);
+        System.out.println("monthly, size = " + tracks.size()+"\n\n");
         Collections.sort(tracks);
+        for(int i = 0 ; i < tracks.size(); i++)
+            System.out.println(tracks.get(i).getTrackName());
 
 
         String temp;
@@ -260,7 +271,7 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         {
             dist = 0;
             temp = tracks.get(0).getTrackName().substring(0, 6);
-            labels.add(months[Integer.parseInt(temp.substring(4, 6))] + " " + temp.substring(0, 4));
+            labels.add(months[Integer.parseInt(temp.substring(4, 6))-1] + " " + temp.substring(0, 4));
             dist += tracks.get(0).getDistance();
             tracks.remove(0);
 
@@ -296,9 +307,17 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        //ArrayList<Track> tracks = iStorage();
+        ArrayList<Track> tracks = database();
+        System.out.println("isConnected " + isConnected);
+        System.out.println("daily, size = " + tracks.size());
 
         Collections.sort(tracks);
+        System.out.println("tracks.size() = " + tracks.size()+"\n\n");
+
+        for(int i = 0 ; i < tracks.size(); i++)
+            System.out.println(tracks.get(i).getTrackName());
 
         String temp;
         int dist = 0;

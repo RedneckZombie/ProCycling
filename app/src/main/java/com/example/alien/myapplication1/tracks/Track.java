@@ -1,6 +1,6 @@
 package com.example.alien.myapplication1.tracks;
 
-public class Track implements Comparable {
+public class Track implements Comparable<Track> {
     private int track_id;
     private String track_name; //date+hour -> yyyymmddhhmmss
     private int distance; // in meters probably
@@ -35,18 +35,16 @@ public class Track implements Comparable {
         return time;
     }
 
-
-    //sort ascending
     @Override
-    public int compareTo(Object o) {
-        int compare = track_name.substring(0, 4).compareTo(o.toString().substring(0, 4)); //compare year
+    public int compareTo(Track track) {
+        int compare = track_name.substring(0, 4).compareTo(track.track_name.substring(0, 4)); //compare year
         if (compare == 0) {
-            compare = track_name.substring(4, 6).compareTo(o.toString().substring(4, 6)); //compare month
+            compare = track_name.substring(4, 6).compareTo(track.track_name.substring(4, 6)); //compare month
             if (compare == 0) {
-                return -track_name.substring(6, 8).compareTo(o.toString().substring(6, 8)); //compare day
+                return track_name.substring(6, 8).compareTo(track.track_name.substring(6, 8)); //compare day
             } else
-                return -compare;
+                return compare;
         } else
-            return -compare;
+            return compare;
     }
 }

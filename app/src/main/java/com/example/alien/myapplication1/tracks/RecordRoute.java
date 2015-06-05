@@ -154,6 +154,24 @@ public class RecordRoute
         return result;
     }
 
+    public String formatDateAndTime(DateTime dt)
+    {
+        int m = dt.getMonthOfYear();
+        int d = dt.getDayOfMonth();
+        int h = dt.getHourOfDay();
+        int min = dt.getMinuteOfHour();
+        int s = dt.getSecondOfMinute();
+
+        String result = dt.getYear()+"";
+        result += m < 10 ? "0" + m : m;
+        result += d < 10 ? "0" + d : d;
+        result += h < 10 ? "0" + h : h;
+        result += min < 10 ? "0" + min : min;
+        result += s < 10 ? "0" + s : s;
+
+        return result;
+    }
+
     public void startRecording()
     {
         System.out.println("start recoding");
@@ -173,6 +191,8 @@ public class RecordRoute
         try{
             obj.put("start", formatDate(year, month, day)+formatTime(hour, minute, second));
         }catch(JSONException e){}
+
+        //generateTracks(60);
     }
 
     public void stopRecording()
@@ -185,46 +205,6 @@ public class RecordRoute
         Interval interval2 = new Interval(jodaStart, jodaFinish);
         Period p2 = interval2.toPeriod();
         Toast.makeText(context, p2.getYears()+" "+ p2.getMonths() + " " + p2.getDays() + " " + p2.getHours() + " " + p2.getMinutes() + " " + p2.getSeconds(), Toast.LENGTH_LONG).show();
-
-        int temp = 0;
-
-        /*
-        //generowanie tras
-        //4,5 miejsce po przecinku pkt.
-        // 17, 51, 12
-        //długośc 14 - 23
-        // szerokość 51 - 54
-
-        int pointsCounter;
-        double startLong, startLat, startAlt;
-        Random rand = new Random();
-        int []years = {2010, 2011, 2012, 2013, 2014, 2015};
-
-        for(int i = 0 ; i < 1; i++) {
-            start = "";
-            start = (rand.nextInt(6) + 2010) + "" + rand.nextInt(13) + "" + rand.nextInt(29);
-            startLong = rand.nextInt(10)+14 + rand.nextDouble();
-            startLat = rand.nextInt(4)+51 + rand.nextDouble();
-            startAlt = rand.nextInt(300) + 10 + rand.nextDouble();
-            pointsCounter = 0;
-            points = new JSONArray();
-            times = new JSONArray();
-
-            points.put(new Double(startLong));
-            points.put(new Double(startLat));
-            points.put(new Double(startAlt));
-
-            while(rand.nextInt(100) >= 1)
-            {
-
-                pointsCounter++;
-            }
-
-            //get some finish based on pointsCounter + some random value + start
-
-            System.out.println(temp + ", ");
-        }
-        */
 
         try{
             //AltitudeCorrector altCor = new AltitudeCorrector(context, points);
@@ -309,5 +289,72 @@ public class RecordRoute
         File dir = context.getFilesDir();
         File file = new File(dir, "tracksNames");
         return file.delete();
+    }
+
+    public void generateTracks(int numberOftracks)
+    {
+        //generowanie tras
+        //4,5 miejsce po przecinku pkt.
+        // 17, 51, 12
+        //długośc 14 - 23
+        // szerokość 51 - 54
+
+        double startLong, startLat, startAlt;
+        Random rand = new Random();
+
+        for(int i = 0 ; i < numberOftracks; i++) {
+
+            DateTime dt = new DateTime(rand.nextInt(6) + 2010, rand.nextInt(12)+1, rand.nextInt(29)+1, rand.nextInt(24), rand.nextInt(60), rand.nextInt(60));
+            start = formatDateAndTime(dt);
+
+            //System.out.println("start: "+dt);
+
+            startLong = rand.nextInt(9)+14 + rand.nextDouble();
+            startLat = rand.nextInt(4)+51 + rand.nextDouble();
+            startAlt = rand.nextInt(300) + 10 + rand.nextDouble();
+
+            points = new JSONArray();
+            times = new JSONArray();
+
+            points.put(new Double(startLong));
+            points.put(new Double(startLat));
+            points.put(new Double(startAlt));
+            times.put(formatDateAndTime(dt));
+
+            while(rand.nextInt(200) >= 1)
+            {
+                dt = dt.plusSeconds(15);
+                times.put(formatDateAndTime(dt));
+
+                startLong += (double)rand.nextInt(10) / 5000;
+                if(rand.nextInt(2) == 0){ //add
+                    startLat += (double)rand.nextInt(10) / 5000;
+                    startAlt += (double)rand.nextInt(3);
+                }
+                else{ //substract
+                    startLat -= (double)rand.nextInt(10) / 5000;
+                    startAlt -= (double)rand.nextInt(3);
+                }
+                points.put(new Double(startLong));
+                points.put(new Double(startLat));
+                points.put(new Double(startAlt));
+            }
+
+            finish = formatDateAndTime(dt);
+            //System.out.println("finish: " + dt);
+
+            try{
+                obj = new JSONObject();
+                obj.put("start", start);
+                obj.put("finish", finish);
+                obj.put("points", points);
+                obj.put("times", times);
+
+                //System.out.println("times.length = " + times.length() + ", point.length = " + points.length());
+
+                if(points.length() > 3)
+                    saveTrackInInternalStorage(finish);
+            }catch(JSONException e){e.printStackTrace();}
+        }
     }
 }

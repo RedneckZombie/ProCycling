@@ -22,7 +22,7 @@ public class ChartActivity extends ActionBarActivity {
     int mode; //0 - single track charts, 1 - overall charts
     final int []chartsCount = { 2, 3}; // single track charts, overall charts
     String userID;
-    String []singleNames = {"Profil trasy", "Wykres prsêdkoœci"};
+    String []singleNames = {"Profil trasy", "Wykres predkosci"};
     //String []overalllNames = {"Miesiêczny", "Roczny", "Dzienny"};
     String []overalllNames = { "Dzienny", "Miesieczny", "Roczny"};
     String [][]names = {singleNames, overalllNames};
