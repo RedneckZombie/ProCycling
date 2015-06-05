@@ -207,10 +207,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
 
         Collections.sort(tracks);
 
-        System.out.println("\nsorted\n");
-        for(Track t:tracks)
-            System.out.println("Trackname "+ t.getTrackName());
-
         String temp;
         int dist = 0;
         int counter = 0;
@@ -229,8 +225,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
             distance.add(new BarEntry( ((float)dist/1000), counter));
             counter++;
         }
-
-        System.out.println("distance length = " + distance.size() + ", labels length = " + labels.size());
 
         BarDataSet bsd = new BarDataSet(distance, "Dystans [km]");
         bsd.setColor(getResources().getColor(R.color.green2));
@@ -279,8 +273,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
             counter++;
         }
 
-        System.out.println("distance length = " + distance.size() + ", labels length = " + labels.size());
-
         BarDataSet bsd = new BarDataSet(distance, "Dystans [km]");
         bsd.setColor(getResources().getColor(R.color.green2));
         //bsd.setDrawValues(false);
@@ -308,10 +300,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
 
         Collections.sort(tracks);
 
-        System.out.println("\nsorted\n");
-        for(Track t:tracks)
-            System.out.println("Trackname "+ t.getTrackName());
-
         String temp;
         int dist = 0;
         int counter = 0;
@@ -331,7 +319,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
             counter++;
         }
 
-        System.out.println("distance length = " + distance.size() + ", labels length = " + labels.size());
 
         BarDataSet bsd = new BarDataSet(distance, "Dystans [km]");
         bsd.setColor(getResources().getColor(R.color.green2));
@@ -348,8 +335,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
     public void setBarChartAppearance()
     {
         barChart.setMaxVisibleValueCount(15);
-
-        System.out.println("half x: " + barChart.getCenter().x);
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setEnabled(true);
@@ -372,8 +357,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
     public void setLineChartAppearance()
     {
         lineChart.setMaxVisibleValueCount(15);
-
-        System.out.println("half x: " + lineChart.getCenter().x);
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -477,7 +460,6 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
     {
         GetTracks gt = new GetTracks(getActivity());
         gt.execute(userID);
-        System.out.println(userID);
         while(!gt.isFinished())
         {
             try{

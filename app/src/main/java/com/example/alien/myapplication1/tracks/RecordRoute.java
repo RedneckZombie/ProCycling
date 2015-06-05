@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -185,6 +186,22 @@ public class RecordRoute
         Period p2 = interval2.toPeriod();
         Toast.makeText(context, p2.getYears()+" "+ p2.getMonths() + " " + p2.getDays() + " " + p2.getHours() + " " + p2.getMinutes() + " " + p2.getSeconds(), Toast.LENGTH_LONG).show();
 
+        int []years = {2010, 2011, 2012, 2013, 2014, 2015};
+        Random rand = new Random();
+        int temp = 0;
+
+        /*
+        //generowanie tras
+        //4,5 miejsce po przecinku pkt.
+        // 12, 17, 51
+        for(int i = 0 ; i < 100; i++) {
+            start = "";
+            start = (rand.nextInt(6) + 2010) + "" + rand.nextInt(13) + "" + rand.nextInt(29);
+
+
+            System.out.println(temp + ", ");
+        }
+        */
 
         try{
             AltitudeCorrector altCor = new AltitudeCorrector(context, points);

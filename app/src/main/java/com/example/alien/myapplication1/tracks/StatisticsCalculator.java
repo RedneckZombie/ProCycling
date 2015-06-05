@@ -39,29 +39,18 @@ public class StatisticsCalculator {
     //return distance in meters
     public int getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
     {
-        /*
-        double d2r = 0.0174532925199433;  // pi / 180
-        double dlong = (long2 - long1) * d2r;
-        double dlat = (lat2 - lat1) * d2r;
-        double a = Math.pow(Math.sin(dlat / 2.0), 2) + Math.cos(lat1 * d2r) * Math.cos(lat2 * d2r) * Math.pow(Math.sin(dlong / 2.0), 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = 6367 * c;
+        int R = 6371000; //earh radius in meters -> result in meters
+        double d2r = 0.0174532925199433; //degrees to radians
+        double dLat = (lat2-lat1) * d2r;
+        double dLong = (long2-long1) * d2r;
+        double latt1 = lat1 * d2r;
+        double latt2 = lat2 * d2r;
 
-        return (int)(d*1000);
-        */
+        double a = Math.sin(dLat/2)  * Math.sin(dLat/2)  +
+                   Math.sin(dLong/2) * Math.sin(dLong/2) * Math.cos(latt1) * Math.cos(latt2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        double R = 6371000; // Earth radius
-        double dLat = Math.toRadians(long2 - long1);
-        double dLon = Math.toRadians(lat2 - lat1);
-        double latt1 = Math.toRadians(long1);
-        double latt2 = Math.toRadians(long2);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2)
-                * Math.sin(dLon / 2) * Math.cos(latt1) * Math.cos(latt2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = R * c;
-
-        return (int)d;
+        return (int)(R*c);
     }
 
     public Period getTimeBetweenPoints(int timeIndex1, int timeIndex2)
@@ -90,7 +79,7 @@ public class StatisticsCalculator {
             int i = 0;
             while (i < pts.length()) {
                 dist += getDistanceBetweenPoints((double) pts.get(i), (double) pts.get(i + 1), (double) pts.get(i + 3), (double) pts.get(i + 4));
-                i += 6;
+                i += 3;
             }
         }catch(JSONException e){}
 

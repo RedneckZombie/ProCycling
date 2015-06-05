@@ -20,8 +20,12 @@ public class ChartActivity extends ActionBarActivity {
     int chartIndex; //1-velocty, 2-topographic profile
     String modeS;
     int mode; //0 - single track charts, 1 - overall charts
-    final int []chartsCount = { 2, 5}; // single track charts, overall charts
+    final int []chartsCount = { 2, 3}; // single track charts, overall charts
     String userID;
+    String []singleNames = {"Profil trasy", "Wykres prsêdkoœci"};
+    //String []overalllNames = {"Miesiêczny", "Roczny", "Dzienny"};
+    String []overalllNames = { "Dzienny", "Miesieczny", "Roczny"};
+    String [][]names = {singleNames, overalllNames};
 
 
     @Override
@@ -29,12 +33,17 @@ public class ChartActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charts);
 
+        next = (Button) findViewById(R.id.button2);
+        back = (Button) findViewById(R.id.button);
+
         fm = getSupportFragmentManager();
 
         Intent intent = getIntent();
         modeS = intent.getStringExtra("mode");
-        if(modeS.equals("singleTrack"))
+        if(modeS.equals("singleTrack")) {
             mode = 0;
+            back.setVisibility(View.INVISIBLE);
+        }
         else if(modeS.equals("overall"))
             mode = 1;
 
@@ -51,13 +60,13 @@ public class ChartActivity extends ActionBarActivity {
         else if(mode == 1){
             applyOverallChart();
         }
+
+        back.setText(names[mode][names[mode].length-1]);
+        next.setText(names[mode][1]);
     }
 
     public void listeners()
     {
-        next = (Button) findViewById(R.id.button2);
-        back = (Button) findViewById(R.id.button);
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +76,28 @@ public class ChartActivity extends ActionBarActivity {
                 else
                     chartIndex++;
 
+                System.out.println("chartIndex = " + chartIndex);
+
+                if(mode == 0)
+                {
+                    switch(chartIndex)
+                    {
+                        case 1: next.setText("Profil trasy"); break;
+                        case 2: next.setText("Wykres prêdkoœci"); break;
+                    }
+                }
+                else if(mode == 1)
+                {
+                    switch(chartIndex)
+                    {
+                        case 1: back.setText("Roczny");
+                                next.setText("Miesieczny"); break;
+                        case 2: back.setText("Dzienny");
+                                next.setText("Roczny"); break;
+                        case 3: back.setText("Miesieczny");
+                                next.setText("Dzienny"); break;
+                    }
+                }
 
 
                 Bundle b = new Bundle();
@@ -88,6 +119,31 @@ public class ChartActivity extends ActionBarActivity {
                     chartIndex = chartsCount[mode];
                 else
                     chartIndex--;
+
+                System.out.println("chartIndex = " + chartIndex);
+
+                if(mode == 0)
+                {
+                    switch(chartIndex)
+                    {
+                        case 1: next.setText("Profil trasy"); break;
+                        case 2: next.setText("Wykres prêdkoœci"); break;
+                    }
+                }
+                else if(mode == 1)
+                {
+                    switch(chartIndex)
+                    {
+                        case 1: back.setText("Roczny");
+                            next.setText("Miesieczny"); break;
+                        case 2: back.setText("Dzienny");
+                            next.setText("Roczny"); break;
+                        case 3: back.setText("Miesieczny");
+                            next.setText("Dzienny"); break;
+                    }
+                }
+
+
 
                 Bundle b = new Bundle();
                 b.putString("json", json);
