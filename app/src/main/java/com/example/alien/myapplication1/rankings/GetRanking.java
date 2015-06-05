@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GetRanking extends AsyncTask<String,Void,String> {
     private Context context;
@@ -96,7 +98,6 @@ public class GetRanking extends AsyncTask<String,Void,String> {
                 rank.add(new Rank(0, username, new Stats(Integer.parseInt(distance), Double.parseDouble(average), time)));
             }
         }
-
         callback.onASyncTaskCompleted(rank);
     }
 }

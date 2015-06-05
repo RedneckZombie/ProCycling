@@ -28,10 +28,8 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             //container.removeAllViews();
-
             GetRanking ranking = new GetRanking(container.getContext(), this);
             ranking.execute();
-            //rankList = new ArrayList<>(); //tu pobierz
             View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
             mAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mPager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -40,52 +38,48 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
 
     @Override
     public void onASyncTaskCompleted(Object... value) {
-        System.out.println("TUTEJ KURWA");
         rankList = (ArrayList<Rank>) value[0];
-        if(rankList == null)
-        {
-            System.out.println("Null KURWA");
-        }
         mPager.setAdapter(mAdapter);
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
-            public ViewPagerAdapter(FragmentManager fm) {
-                super(fm);
-            }
 
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-            @Override
-            public Fragment getItem(int num) {
+        @Override
+        public Fragment getItem(int num) {
+
+            if (num == 0) {
                 Fragment fr = new RankingsFragment();
                 Bundle b = new Bundle();
-                if (num == 0)
-                {
-                    b.putInt("type", 1);
-                    b.putString("title", "Ranking dystans");
-                    fr.setArguments(b);
-                    return fr;
-                }
-                else if(num == 1)
-                {
-                    b.putInt("type", 2);
-                    b.putString("title","Ranking czas");
-                    fr.setArguments(b);
-                    return fr;
-                }
-                else {
-                    b.putInt("type", 3);
-                    b.putString("title","Ranking srednia");
-                    fr.setArguments(b);
-                    return fr;
-                }
+                b.putInt("type", 1);
+                b.putString("title", "Ranking dystans");
+                fr.setArguments(b);
+                return fr;
+            } else if (num == 1) {
+                Fragment fr = new RankingsFragment();
+                Bundle b = new Bundle();
+                b.putInt("type", 2);
+                b.putString("title", "Ranking czas");
+                fr.setArguments(b);
+                return fr;
+            } else {
+                Fragment fr = new RankingsFragment();
+                Bundle b = new Bundle();
+                b.putInt("type", 3);
+                b.putString("title", "Ranking srednia");
+                fr.setArguments(b);
+                return fr;
             }
-
-            @Override
-            public int getCount() {
-                return NUM_ITEMS;
-            }
-
         }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+    }
 }
 

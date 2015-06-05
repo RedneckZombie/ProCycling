@@ -118,8 +118,12 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
             average = resultParts[2].substring(9);
             time = resultParts[3].substring(6);
         }
-
-        stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
+        if(status.equals("0"))
+        {
+            stats = new Stats(0,0.0,"0");
+        }else {
+            stats = new Stats(Integer.parseInt(distance), Double.parseDouble(average), time);
+        }
 
         callback.onASyncTaskCompleted(stats, status);
         //System.out.println("RES: " + status + ", DIST: " + distance + ", AVG: " + average + ", TIME: " + time);

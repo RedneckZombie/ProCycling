@@ -9,7 +9,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.Stats;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,12 +24,9 @@ public class RankingsFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //container.removeAllViews();
-        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
-        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
-        System.out.println("argument " + getArguments().getString("title"));
-        rankTitle.setText(getArguments().getString("title"));
         Comparator comp = null;
-        switch(getArguments().getInt("type"))
+        int listType = getArguments().getInt("type");
+        switch(listType)
         {
             case 1:
                 comp = new Comparator<Rank>(){
@@ -45,8 +41,14 @@ public class RankingsFragment extends Fragment {
                 comp = new Comparator<Rank>(){
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
-                        return rhs.getStats().getTime().compareTo(lhs.getStats().getTime());
-                        //popraw
+                        String[] rhsTime = rhs.getStats().getTime().split(":");
+                        String[] lhsTime = lhs.getStats().getTime().split(":");
+                        int result = Integer.valueOf(rhsTime[0]).compareTo(Integer.valueOf(lhsTime[0]));
+                        if(result == 0)
+                            result = Integer.valueOf(rhsTime[1]).compareTo(Integer.valueOf(lhsTime[1]));
+                        if(result == 0)
+                            result = Integer.valueOf(rhsTime[2]).compareTo(Integer.valueOf(lhsTime[2]));
+                        return result;
                     }
                 };
                 break;
@@ -59,16 +61,22 @@ public class RankingsFragment extends Fragment {
                     }
                 };
                 break;
-
         }
-        ArrayList<Rank> list = ViewPagerFragment.rankList;
+        ArrayList<Rank> list = new ArrayList<>();
+        for(Rank r: ViewPagerFragment.rankList)
+        {
+            list.add(r);
+        }
         Collections.sort(list, comp);
         int i = 0;
         for(Rank r : list)
         {
             r.setPosition(++i);
         }
-        RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list);
+        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
+        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
+        rankTitle.setText(getArguments().getString("title"));
+        RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list, listType);
         ListView lv = (ListView) rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);
         return rootView;

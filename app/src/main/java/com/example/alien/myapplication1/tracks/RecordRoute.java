@@ -75,7 +75,7 @@ public class RecordRoute
     }
 
     public void createListener(){
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 15, locationListener);
     }
 
     // Define a listener that responds to location updates
@@ -227,11 +227,11 @@ public class RecordRoute
         */
 
         try{
-            AltitudeCorrector altCor = new AltitudeCorrector(context, points);
+            //AltitudeCorrector altCor = new AltitudeCorrector(context, points);
 
             obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
-            obj.put("points", altCor.getCorrectedAlt());
-            //obj.put("points", points);
+            //obj.put("points", altCor.getCorrectedAlt());
+            obj.put("points", points);
             obj.put("times", times);
 
             if(points.length() > 3)
@@ -310,91 +310,4 @@ public class RecordRoute
         File file = new File(dir, "tracksNames");
         return file.delete();
     }
-
-
-
 }
-
-/*
-
-try{
-            obj.put("start", formatDate(year, month, day)+formatTime(hour, minute, second));
-            obj.put("finish", formatDate(year, month, day)+formatTime(hour, minute, second));
-            points.put(new Double(longitude));
-            points.put(new Double(latitude));
-            points.put(new Double(altitude));
-            times.put(formatDate(year, month, day)+formatTime(hour, minute, second));
-            obj.put("points", points);
-            obj.put("times", times);
-
-        }catch(JSONException e){}
-
- */
-
-
-
-
-/*
-
-    //return distance in kilometers
-    public double getDistanceBetweenPoints(double long1, double lat1, double long2, double lat2)
-    {
-        double d2r = 0.0174532925199433;  // pi / 180
-        double dlong = (long2 - long1) * d2r;
-        double dlat = (lat2 - lat1) * d2r;
-        double a = Math.pow(Math.sin(dlat / 2.0), 2) + Math.cos(lat1 * d2r) * Math.cos(lat2 * d2r) * Math.pow(Math.sin(dlong / 2.0), 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = 6367 * c;
-
-        return d;
-    }
-
-    public double getDistance(String trackName)
-    {
-        double dist = 0;
-
-        byte [] bytes;
-        obj.toString();
-
-        try {
-
-            FileInputStream fis = context.openFileInput(trackName);
-            Scanner sc = new Scanner(fis);
-            String linia="";
-            while(sc.hasNext())
-            {
-                linia+=sc.next();
-            }
-            JSONObject jsonobj = new JSONObject(linia);
-
-            JSONArray pts = jsonobj.getJSONArray("points");
-
-            int i = 0;
-            while(i < pts.length()) {
-                dist += getDistanceBetweenPoints((double) pts.get(i), (double) pts.get(i + 1), (double) pts.get(i + 3), (double) pts.get(i + 4));
-                i += 6;
-            }
-
-        }catch(FileNotFoundException e){Toast.makeText(context, "RecordRoute: an error occurred when read from file", Toast.LENGTH_LONG).show();}
-        catch(IOException e){Toast.makeText(context, "RecordRoute: error at getChannel().size()", Toast.LENGTH_LONG).show();}
-        catch(JSONException e){Toast.makeText(context, "RecordRoute: error at new JSONObject(bytes.toString())", Toast.LENGTH_LONG).show();}
-
-        return dist;
-    }
-
-    // HHMMSS - 2 signs for hours, minutes and seconds
-    public Period getTravelTime(String trackName)
-    {
-        return new Interval(jodaStart, jodaFinish).toPeriod();
-    }
-
-    public double avarageSpeed(String trackName)
-    {
-        Period t = getTravelTime(trackName);
-        double time = t.getDays()*24 + t.getHours() + (double)t.getMinutes() / 60D + (double)t.getSeconds() / 3600D;
-
-        return getDistance(trackName) / time;
-    }
-
-
- */
