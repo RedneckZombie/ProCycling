@@ -186,18 +186,41 @@ public class RecordRoute
         Period p2 = interval2.toPeriod();
         Toast.makeText(context, p2.getYears()+" "+ p2.getMonths() + " " + p2.getDays() + " " + p2.getHours() + " " + p2.getMinutes() + " " + p2.getSeconds(), Toast.LENGTH_LONG).show();
 
-        int []years = {2010, 2011, 2012, 2013, 2014, 2015};
-        Random rand = new Random();
         int temp = 0;
 
         /*
         //generowanie tras
         //4,5 miejsce po przecinku pkt.
-        // 12, 17, 51
-        for(int i = 0 ; i < 100; i++) {
+        // 17, 51, 12
+        //długośc 14 - 23
+        // szerokość 51 - 54
+
+        int pointsCounter;
+        double startLong, startLat, startAlt;
+        Random rand = new Random();
+        int []years = {2010, 2011, 2012, 2013, 2014, 2015};
+
+        for(int i = 0 ; i < 1; i++) {
             start = "";
             start = (rand.nextInt(6) + 2010) + "" + rand.nextInt(13) + "" + rand.nextInt(29);
+            startLong = rand.nextInt(10)+14 + rand.nextDouble();
+            startLat = rand.nextInt(4)+51 + rand.nextDouble();
+            startAlt = rand.nextInt(300) + 10 + rand.nextDouble();
+            pointsCounter = 0;
+            points = new JSONArray();
+            times = new JSONArray();
 
+            points.put(new Double(startLong));
+            points.put(new Double(startLat));
+            points.put(new Double(startAlt));
+
+            while(rand.nextInt(100) >= 1)
+            {
+
+                pointsCounter++;
+            }
+
+            //get some finish based on pointsCounter + some random value + start
 
             System.out.println(temp + ", ");
         }

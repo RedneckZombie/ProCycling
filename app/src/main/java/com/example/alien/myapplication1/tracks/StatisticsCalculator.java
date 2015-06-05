@@ -20,7 +20,7 @@ import java.util.Scanner;
  * Created by kamilos on 2015-04-27.
  */
 public class StatisticsCalculator {
-
+//
     JSONObject obj;
     JSONArray pts;
     JSONArray times;
