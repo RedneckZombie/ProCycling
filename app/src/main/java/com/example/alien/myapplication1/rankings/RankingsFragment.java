@@ -25,10 +25,6 @@ public class RankingsFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //container.removeAllViews();
-        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
-        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
-        System.out.println("argument " + getArguments().getString("title"));
-        rankTitle.setText(getArguments().getString("title"));
         Comparator comp = null;
         int listType = getArguments().getInt("type");
         switch(listType)
@@ -38,6 +34,7 @@ public class RankingsFragment extends Fragment {
                     @Override
                     public int compare(Rank lhs, Rank rhs) {
                         Integer x = rhs.getStats().getDistance();
+                        System.out.println("komparuje");
                         return x.compareTo(lhs.getStats().getDistance());
                     }
                 };
@@ -66,7 +63,6 @@ public class RankingsFragment extends Fragment {
                     }
                 };
                 break;
-
         }
         ArrayList<Rank> list = ViewPagerFragment.rankList;
         Collections.sort(list, comp);
@@ -75,6 +71,9 @@ public class RankingsFragment extends Fragment {
         {
             r.setPosition(++i);
         }
+        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
+        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
+        rankTitle.setText(getArguments().getString("title"));
         RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list, listType);
         ListView lv = (ListView) rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);

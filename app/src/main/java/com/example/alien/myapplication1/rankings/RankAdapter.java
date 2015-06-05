@@ -34,7 +34,8 @@ public class RankAdapter extends ArrayAdapter<Rank> {
 
     static class Kontener
     {
-        TextView row;
+        TextView user;
+        TextView value;
     }
 
     public View getView(int pozycja, View konwertowanyWidok, ViewGroup rodzic)
@@ -47,7 +48,8 @@ public class RankAdapter extends ArrayAdapter<Rank> {
             wiersz = inflater.inflate(layoutRID, rodzic, false);
 
             holder = new Kontener();
-            holder.row = (TextView)wiersz.findViewById(R.id.rowText);
+            holder.user = (TextView)wiersz.findViewById(R.id.userText);
+            holder.value = (TextView)wiersz.findViewById(R.id.valueText);
             wiersz.setTag(holder);
         }
         else
@@ -69,10 +71,10 @@ public class RankAdapter extends ArrayAdapter<Rank> {
                 rankValue = String.format("%.2f",object.getStats().getAverage()) + "km/h";
                 break;
         }
-        String content = String.format("%4d %-30s %10s", object.getPosition(), object.getUsername(),
-                rankValue);
-        System.out.println(content);
-        holder.row.setText(content);
+        String content1 = String.format("%3d %-20s", object.getPosition(), object.getUsername());
+        String content2 = String.format("%28s", rankValue);
+        holder.user.setText(content1);
+        holder.value.setText(content2);
         return wiersz;
     }
 }
