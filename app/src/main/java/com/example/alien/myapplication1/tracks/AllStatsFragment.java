@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.alien.myapplication1.Charts.ChartActivity;
-import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.R;
 
 

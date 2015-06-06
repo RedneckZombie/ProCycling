@@ -48,7 +48,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     String username;
     String userID;
     private static RecordRoute rr;
-    Fragment fr= new Map();
+    Map fr= new Map();
     SharedPreferences preferences;
     private Stats stats;
     private boolean doubleBackToExitPressedOnce = false;
@@ -65,6 +65,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         rejestrujTrase();
 
     }
+
 
     public void rejestrujTrase()
     {
@@ -374,9 +375,20 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_markers_off) {
+            fr.offMarkers();
+            return true;
+        }
+        if (id == R.id.action_markers_on) {
+            fr.onMarkers();
+            return true;
+        }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -386,7 +398,8 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
        // menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_markers_off).setVisible(true);
+        menu.findItem(R.id.action_markers_on).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -396,7 +409,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         getMenuInflater().inflate(R.menu.menu_map, menu);
         return true;
     }
-
 
     @Override
     public void onASyncTaskCompleted(Object... value) {

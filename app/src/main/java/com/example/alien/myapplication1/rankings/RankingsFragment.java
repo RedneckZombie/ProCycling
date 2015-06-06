@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.tracks.Stats;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,10 @@ public class RankingsFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //container.removeAllViews();
+        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
+        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
+        System.out.println("argument " + getArguments().getString("title"));
+        rankTitle.setText(getArguments().getString("title"));
         Comparator comp = null;
         int listType = getArguments().getInt("type");
         switch(listType)
@@ -61,21 +66,15 @@ public class RankingsFragment extends Fragment {
                     }
                 };
                 break;
+
         }
-        ArrayList<Rank> list = new ArrayList<>();
-        for(Rank r: ViewPagerFragment.rankList)
-        {
-            list.add(r);
-        }
+        ArrayList<Rank> list = ViewPagerFragment.rankList;
         Collections.sort(list, comp);
         int i = 0;
         for(Rank r : list)
         {
             r.setPosition(++i);
         }
-        View rootView = inflater.inflate(R.layout.fragment_ranking, container, false);
-        rankTitle = (TextView) rootView.findViewById(R.id.rankTitle);
-        rankTitle.setText(getArguments().getString("title"));
         RankAdapter adapter = new RankAdapter(container.getContext(), R.layout.rank_list_row, list, listType);
         ListView lv = (ListView) rootView.findViewById(R.id.listView);
         lv.setAdapter(adapter);

@@ -3,8 +3,6 @@ package com.example.alien.myapplication1.map;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
-import com.example.alien.myapplication1.rankings.Rank;
 
 import java.io.BufferedReader;
 import java.io.IOException;

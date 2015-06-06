@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.R;
-import com.example.alien.myapplication1.tracks.GetTrackDetails;
-import com.example.alien.myapplication1.tracks.GetTracks;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -73,25 +72,45 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         return rootView;
     }
 
+    public void offMarkers()
+    {
+        ifShowsMarkers=false;
+        mMap.clear();
+    }
+    public void onMarkers()
+    {
+        ifShowsMarkers=true;
+        showsMarkers();
+    }
     public void showsMarkers()
     {
         if(ifShowsMarkers)
         {
-            GetPlaces places = new GetPlaces(getActivity());
-            places.execute();
-            while (!places.isFinished()) {
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {}
+            CheckingConnection check_conn = new CheckingConnection(getActivity());
+            check_conn.execute();
+            while(!check_conn.isFinished()){
+                try{
+                    Thread.sleep(10);
+                }catch(Exception e){}
             }
-            allPlaces=places.getList();
-
-            if(allPlaces != null) {
-                for (int i = 0; i < allPlaces.size(); i++) {
-                    setMarker(allPlaces.get(i).latitude, allPlaces.get(i).longitude, allPlaces.get(i).getTitle());
+            if(check_conn.isConnected()) {
+                GetPlaces places = new GetPlaces(getActivity());
+                places.execute();
+                while (!places.isFinished()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                    }
                 }
+                allPlaces = places.getList();
+
+                if (allPlaces != null) {
+                    for (int i = 0; i < allPlaces.size(); i++) {
+                        setMarker(allPlaces.get(i).latitude, allPlaces.get(i).longitude, allPlaces.get(i).getTitle());
+                    }
+                }
+                System.out.println("showMarker");
             }
-            System.out.println("showMarker");
         }
     }
     public void readUserId()
@@ -233,7 +252,14 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
 
     public void saveMarker()
     {
-        if(true)//jest net ->kod Artura
+        CheckingConnection check_conn = new CheckingConnection(getActivity());
+        check_conn.execute();
+        while(!check_conn.isFinished()){
+            try{
+                Thread.sleep(10);
+            }catch(Exception e){}
+        }
+        if(check_conn.isConnected())//jest net ->kod Artura
         {
             SavePlace sp = new SavePlace(getActivity());
 

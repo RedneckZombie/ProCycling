@@ -3,6 +3,8 @@
 
     <string name="app_name">ProCycling</string>
     <string name="title_activity_logowanie">Login</string>
+    <string name="action_markers_on">Włącz markery</string>
+    <string name="action_markers_off">Wyłącz markery</string>
     <string name="action_settings">Ustawienia</string>
     <string name="text_mail">przyklad@gmail.com</string>
     <string name="text_password">hasło</string>
@@ -73,6 +75,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_charts">ChartsActivity</string>
+    <string name="title_activity_charts">Wykresy</string>
+    <string name="title_activity_sdfds">sdfds</string>
 
 </resources>
