@@ -179,6 +179,7 @@ public class RecordRoute
 
         updateTimeAndDate();
 
+
         //create new objects to not append old ones
         obj    = new JSONObject();
         points = new JSONArray();

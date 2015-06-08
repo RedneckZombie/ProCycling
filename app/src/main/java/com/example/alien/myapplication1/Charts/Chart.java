@@ -98,7 +98,9 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
 
             CheckingConnection cc = new CheckingConnection(getActivity());
             cc.execute();
+            while(!cc.isFinished()){}
             isConnected = cc.isConnected();
+
             //lineChart.setVisibility(View.INVISIBLE);
             //barChart.setVisibility(View.VISIBLE);
 
@@ -203,9 +205,9 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        ArrayList<Track> tracks = isConnected ? database() : iStorage();
         //ArrayList<Track> tracks = iStorage();
-        ArrayList<Track> tracks = database();
+        //ArrayList<Track> tracks = database();
         System.out.println("isConnected " + isConnected);
         System.out.println("yearly, size = " + tracks.size()+"\n\n");
         Collections.sort(tracks);
@@ -254,9 +256,9 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        ArrayList<Track> tracks = isConnected ? database() : iStorage();
         //ArrayList<Track> tracks = iStorage();
-        ArrayList<Track> tracks = database();
+        //ArrayList<Track> tracks = database();
         System.out.println("isConnected " + isConnected);
         System.out.println("monthly, size = " + tracks.size()+"\n\n");
         Collections.sort(tracks);
@@ -307,9 +309,9 @@ public class Chart extends Fragment implements OnChartValueSelectedListener, OnC
         ArrayList<BarDataSet> barDataSets = new ArrayList<>();
         ArrayList<BarEntry> distance = new ArrayList<>();
 
-        //ArrayList<Track> tracks = isConnected ? database() : iStorage();
+        ArrayList<Track> tracks = isConnected ? database() : iStorage();
         //ArrayList<Track> tracks = iStorage();
-        ArrayList<Track> tracks = database();
+        //ArrayList<Track> tracks = database();
         System.out.println("isConnected " + isConnected);
         System.out.println("daily, size = " + tracks.size());
 
