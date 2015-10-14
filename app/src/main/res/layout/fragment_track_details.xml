@@ -27,21 +27,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Nazwa trasy"
-        android:id="@+id/trackNameView"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Przebyty dystans:"
         android:id="@+id/textView4"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_below="@+id/trackNameView" />
+        android:layout_marginLeft="20dp" />
 
     <TextView
         android:layout_width="wrap_content"

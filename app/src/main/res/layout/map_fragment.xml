@@ -51,7 +51,8 @@
             android:layout_height="wrap_content"
             android:text="Anuluj"
             android:id="@+id/btCancel"
-            android:layout_marginLeft="200dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginLeft="180dp"
             />
     </LinearLayout>
 </LinearLayout>
