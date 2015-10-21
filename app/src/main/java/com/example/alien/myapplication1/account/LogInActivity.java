@@ -11,10 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
-import com.example.alien.myapplication1.map.SavePlace;
-import com.example.alien.myapplication1.map.SideBar;
+
+import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.map.SideBar;
 
 public class LogInActivity extends Activity implements OnASyncTaskCompleted {
     private EditText login_mail;

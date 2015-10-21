@@ -9,7 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
+
+import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by Adams on 2015-05-24.
  */
-public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted{
+public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted {
 
         static final int NUM_ITEMS = 3;
 

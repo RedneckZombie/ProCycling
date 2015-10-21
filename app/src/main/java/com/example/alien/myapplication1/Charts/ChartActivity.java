@@ -23,7 +23,7 @@ public class ChartActivity extends ActionBarActivity {
     final int []chartsCount = { 2, 3}; // single track charts, overall charts
     String userID;
     String []singleNames = {"Profil trasy", "Wykres predkosci"};
-    //String []overalllNames = {"Miesiêczny", "Roczny", "Dzienny"};
+    //String []overalllNames = {"MiesiÄ™czny", "Roczny", "Dzienny"};
     String []overalllNames = { "Dzienny", "Miesieczny", "Roczny"};
     String [][]names = {singleNames, overalllNames};
 
@@ -83,7 +83,7 @@ public class ChartActivity extends ActionBarActivity {
                     switch(chartIndex)
                     {
                         case 1: next.setText("Profil trasy"); break;
-                        case 2: next.setText("Wykres prêdkoœci"); break;
+                        case 2: next.setText("Wykres prÄ™dkoÅ›ci"); break;
                     }
                 }
                 else if(mode == 1)
@@ -127,7 +127,7 @@ public class ChartActivity extends ActionBarActivity {
                     switch(chartIndex)
                     {
                         case 1: next.setText("Profil trasy"); break;
-                        case 2: next.setText("Wykres prêdkoœci"); break;
+                        case 2: next.setText("Wykres prÄ™dkoÅ›ci"); break;
                     }
                 }
                 else if(mode == 1)

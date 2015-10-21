@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
+
+import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
+import com.example.alien.myapplication1.Options.OptionsActivity;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.rankings.ViewPagerFragment;
@@ -377,6 +379,12 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.options)
+        {
+            Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
+            startActivity(intent);
+        }
+        /*
         if (id == R.id.action_markers_off) {
             fr.offMarkers();
             return true;
@@ -384,7 +392,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         if (id == R.id.action_markers_on) {
             fr.onMarkers();
             return true;
-        }
+        }*/
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -398,8 +406,9 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
        // menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        menu.findItem(R.id.action_markers_off).setVisible(true);
-        menu.findItem(R.id.action_markers_on).setVisible(true);
+       // menu.findItem(R.id.action_markers_off).setVisible(true);
+       // menu.findItem(R.id.action_markers_on).setVisible(true);
+        menu.findItem(R.id.options).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 

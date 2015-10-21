@@ -54,6 +54,10 @@
             android:name=".Charts.ChartActivity"
             android:label="@string/title_activity_charts" >
         </activity>
+        <activity
+            android:name=".Options.OptionsActivity"
+            android:label="@string/title_activity_options" >
+        </activity>
     </application>
 
 </manifest>

@@ -3,7 +3,8 @@ package com.example.alien.myapplication1.rankings;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.alien.myapplication1.OnASyncTaskCompleted;
+
+import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.tracks.Stats;
 
 import java.io.BufferedReader;
