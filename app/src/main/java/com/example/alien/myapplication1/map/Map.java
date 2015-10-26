@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
+import com.example.alien.myapplication1.Options.Preferences;
 import com.example.alien.myapplication1.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,8 +47,9 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     Button ok;
     Button cancel;
     LinearLayout linLayouyt, mapLayout;
-
+    boolean isMarkersOn;
     LatLng ll;
+    Preferences prefs;
 
     public Map(){}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -64,14 +66,30 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
             latitude = loc.getLatitude();
             longitude = loc.getLongitude();
         }
-
+        prefs = new Preferences(getActivity().getApplicationContext());
         initialize(rootView);
         mapListeners();
         readUserId();
-        showsMarkers();
+        ustawMarkery();
         return rootView;
     }
-
+    public void ustawDaneOpcji(boolean isMarkersOn)
+    {
+        this.isMarkersOn = isMarkersOn;
+    }
+    public void ustawMarkery() {
+        if (isMarkersOn)
+            onMarkers();
+        else
+            offMarkers();
+    }
+    public void markers(boolean isMarkers)
+    {
+        if( isMarkers )
+            onMarkers();
+        else
+            offMarkers();
+    }
     public void offMarkers()
     {
         ifShowsMarkers=false;
@@ -146,6 +164,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     }
     public void onResume() {
         visible = true;
+        markers(prefs.getPreferencesBoolean("enableMarkers"));
         super.onResume();
     }
 

@@ -49,8 +49,11 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     ActionBarDrawerToggle mDrawerToggle;
     String username;
     String userID;
+    boolean isMarkersOn;
+    boolean isSynthOn;
+    boolean isRecognOn;
     private static RecordRoute rr;
-    Map fr= new Map();
+    Map fr;
     SharedPreferences preferences;
     private Stats stats;
     private boolean doubleBackToExitPressedOnce = false;
@@ -59,16 +62,15 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.side_bar_activity);
+        fr = new Map();
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         extra();
         drawer();
         mapa();
         rejestrujTrase();
-
+        fr.ustawDaneOpcji(isMarkersOn);
     }
-
-
     public void rejestrujTrase()
     {
         this.runOnUiThread(new Runnable() {
@@ -88,6 +90,9 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         SharedPreferences.Editor pref = preferences.edit();
         username = intent.getStringExtra("username");
         userID = intent.getStringExtra("userID");
+        isMarkersOn = intent.getBooleanExtra("isMarkerOn", false);
+        isRecognOn = intent.getBooleanExtra("isRecognOn", true);
+        isSynthOn = intent.getBooleanExtra("isSynthOn", true);
         getSupportActionBar().setTitle("Witaj w ProCycling");
         pref.putString("username",username);
         pref.putString("userID", userID);
@@ -155,7 +160,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
 
                 if (username != null) {//dla uzytkownika
                     switch (position) {
-                        case 0:
+                        case 0:    //rejestracja trasy
                             if (!rr.isRecording()) {
                                 rr.startRecording();
                                 Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
@@ -169,8 +174,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             }
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
-                        case 1:
-                            //////////do refaktoryzacji- kod działa ale wygląda ch... nie ładnie////
+                        case 1:      //moje trasy
                             CheckingConnection cc = new CheckingConnection(getApplicationContext());
                             cc.execute();
                             Fragment tl = new TrackList();
@@ -195,28 +199,28 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             mDrawerList.setItemChecked(-1, true);
                             break;
-                        case 2:
+                        case 2:    //Mapa
                             if (!fr.isVisible()) {
                                 mapa();
                             }
                             mDrawerLayout.closeDrawer(mDrawerList);
                             mDrawerList.setItemChecked(-1, true);
                             break;
-                        case 3:
+                        case 3:  //Statystyki
                             statystyki();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
-                        case 4:
+                        case 4:       //rankingi
                             rankingi();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
-                        case 5:
+                        case 5:   //wyloguj
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.putExtra("isLogged", false);
                             startActivity(intent);
                             finish();
                             break;
-                        case 6:
+                        case 6:     // wyjdź
                             finish();
                             break;
                     }
@@ -382,6 +386,9 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         if (id == R.id.options)
         {
             Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
+            intent.putExtra("isMarkersOn", isMarkersOn);
+            intent.putExtra("isSynthOn", isSynthOn);
+            intent.putExtra("isRecognOn", isRecognOn);
             startActivity(intent);
         }
         /*

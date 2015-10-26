@@ -2,6 +2,7 @@ package com.example.alien.myapplication1.Options;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ public class OptionsActivity extends Activity {
         setContentView(R.layout.activity_options);
         initialize();
         listeners();
+        setData();
     }
     public void initialize()
     {
@@ -59,12 +61,27 @@ public class OptionsActivity extends Activity {
     }
     public void saveOptions()
     {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedPref = getSharedPreferences("PREFS", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("enableMarkers", markersOn.isChecked());
-        editor.putBoolean("enableSynth", synthOn.isChecked());
-        editor.putBoolean("enableRecogn", recognOn.isChecked());
-        editor.commit();
+        boolean enableMarkers = markersOn.isChecked();
+        boolean enableSynth = synthOn.isChecked();
+        boolean enableRecogn = recognOn.isChecked();
+        editor.putBoolean("enableMarkers", enableMarkers);
+        editor.putBoolean("enableSynth", enableSynth);
+        editor.putBoolean("enableRecogn", enableRecogn);
+        editor.apply();
+    }
+    public void setData(){
+        SharedPreferences preferences = getSharedPreferences("PREFS", Activity.MODE_PRIVATE);
+        boolean enableMarkers = preferences.getBoolean("enableMarkers", false);
+        boolean enableSynth = preferences.getBoolean("enableSynth", false);
+        boolean enableRecogn = preferences.getBoolean("enableRecogn", false);
+        markersOn.setChecked(enableMarkers);
+        markersOff.setChecked(!enableMarkers);
+        recognOn.setChecked(enableRecogn);
+        recognOff.setChecked(!enableRecogn);
+        synthOn.setChecked(enableSynth);
+        syntOff.setChecked(!enableSynth);
     }
 
 }

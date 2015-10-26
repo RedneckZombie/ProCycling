@@ -64,6 +64,14 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         String userID = preferences.getString("userID", "");
 
         isLogged = getIntent().getBooleanExtra("isLogged", true);
+        boolean markers = false;
+        boolean synth = true;
+        boolean recogn = true;
+        try {
+            markers = preferences.getBoolean("enableMarkers", false);
+            synth = preferences.getBoolean("enableSynth", true);
+            recogn = preferences.getBoolean("enableRecogn", true);
+        }catch(Exception e){System.out.println("test");}
 
         if (!isLogged) {
             checkbox_remember.setChecked(false);
@@ -73,6 +81,9 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
             Intent intent = new Intent(getApplicationContext(), SideBar.class);
             intent.putExtra("username", username);
             intent.putExtra("userID", userID);
+            intent.putExtra("isMarkerOn", markers);
+            intent.putExtra("isSynthOn", synth);
+            intent.putExtra("isRecognOn", recogn);
             startActivity(intent);
             finish();
         }
