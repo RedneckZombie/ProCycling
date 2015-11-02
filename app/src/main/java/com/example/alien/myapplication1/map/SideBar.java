@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -24,6 +25,7 @@ import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.Options.OptionsActivity;
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.Speech.SpeechInterface;
 import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.rankings.ViewPagerFragment;
 import com.example.alien.myapplication1.tracks.AllStatsFragment;
@@ -57,6 +59,8 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     SharedPreferences preferences;
     private Stats stats;
     private boolean doubleBackToExitPressedOnce = false;
+    SpeechInterface speechInterface;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         mapa();
         rejestrujTrase();
         fr.ustawDaneOpcji(isMarkersOn);
+        speechInterface = new SpeechInterface(this, getClass().getSimpleName(), this);
     }
     public void rejestrujTrase()
     {
@@ -94,17 +99,67 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         isRecognOn = intent.getBooleanExtra("isRecognOn", true);
         isSynthOn = intent.getBooleanExtra("isSynthOn", true);
         getSupportActionBar().setTitle("Witaj w ProCycling");
-        pref.putString("username",username);
+        pref.putString("username", username);
         pref.putString("userID", userID);
         pref.commit();
     }
     public void mapa()
     {
-        Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
-        fr.setArguments(bundle);
+        if (!fr.isVisible()) {
+            Bundle bundle = new Bundle();
+            bundle.putString("userID", userID);
+            fr.setArguments(bundle);
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+        }
+    }
+    public void rejestracjaTrasy()
+    {
+        if (!rr.isRecording()) {
+            rr.startRecording();
+            Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
+            aktualizujAdapter(0);
+        } else {
+            rr.stopRecording();
+            Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
+            aktualizujAdapter(1);
+            podsumowanie();
+
+        }
+    }
+    public void mojeTrasy()
+    {
+        CheckingConnection cc = new CheckingConnection(getApplicationContext());
+        cc.execute();
+        Fragment tl = new TrackList();
+        Bundle b = new Bundle();
+        b.putString("username", username);
+        b.putString("userID", userID);
+        while (!cc.isFinished()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+            }
+        }
+        if (cc.isConnected()) {
+            new TrackFilesManager(getApplicationContext(), userID);
+        }
+        b.putBoolean("isConnected", cc.isConnected());
+
+        tl.setArguments(b);
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.content_frame, fr).commit();
+        fm.beginTransaction().replace(R.id.content_frame, tl).commit();
+    }
+    public void wyloguj()
+    {
+        Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+        intent.putExtra("isLogged", false);
+        startActivity(intent);
+        finish();
+    }
+    public void wyjdz()
+    {
+        finish();
     }
     public void drawer()
     {
@@ -161,48 +216,16 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                 if (username != null) {//dla uzytkownika
                     switch (position) {
                         case 0:    //rejestracja trasy
-                            if (!rr.isRecording()) {
-                                rr.startRecording();
-                                Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
-                                aktualizujAdapter(0);
-                            } else {
-                                rr.stopRecording();
-                                Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
-                                aktualizujAdapter(1);
-                                podsumowanie();
-
-                            }
+                            rejestracjaTrasy();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:      //moje trasy
-                            CheckingConnection cc = new CheckingConnection(getApplicationContext());
-                            cc.execute();
-                            Fragment tl = new TrackList();
-                            Bundle b = new Bundle();
-                            b.putString("username", username);
-                            b.putString("userID", userID);
-                            while (!cc.isFinished()) {
-                                try {
-                                    Thread.sleep(100);
-                                } catch (Exception e) {
-                                }
-                            }
-                            if (cc.isConnected()) {
-                                new TrackFilesManager(getApplicationContext(), userID);
-                            }
-                            b.putBoolean("isConnected", cc.isConnected());
-
-                            tl.setArguments(b);
-                            FragmentManager fm = getSupportFragmentManager();
-                            fm.beginTransaction().replace(R.id.content_frame, tl).commit();
-
+                            mojeTrasy();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             mDrawerList.setItemChecked(-1, true);
                             break;
                         case 2:    //Mapa
-                            if (!fr.isVisible()) {
-                                mapa();
-                            }
+                            mapa();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             mDrawerList.setItemChecked(-1, true);
                             break;
@@ -215,46 +238,28 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 5:   //wyloguj
-                            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-                            intent.putExtra("isLogged", false);
-                            startActivity(intent);
-                            finish();
+                            wyloguj();
                             break;
                         case 6:     // wyjdź
-                            finish();
+                            wyjdz();
                             break;
                     }
                 } else {//dla gościa
                     switch (position) {
                         case 0:
-                            if (!rr.isRecording()) {
-                                rr.startRecording();
-                                Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
-                                aktualizujAdapter(0);
-                            } else {
-                                rr.stopRecording();
-                                Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
-                                aktualizujAdapter(1);
-                                podsumowanie();
-
-                            }
+                            rejestracjaTrasy();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             break;
                         case 1:
-                            if (!fr.isVisible()) {
-                                mapa();
-                            }
+                            mapa();
                             mDrawerLayout.closeDrawer(mDrawerList);
                             mDrawerList.setItemChecked(-1, true);
                             break;
                         case 2:
-                            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-                            intent.putExtra("isLogged", false);
-                            startActivity(intent);
-                            finish();
+                            wyloguj();
                             break;
                         case 3:
-                            finish();
+                            wyjdz();
                             break;
                     }
                 }
@@ -372,7 +377,33 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         );
         mDrawerList.setAdapter(a);
     }
-
+    public void microCommandRun(int result)
+    {
+        speechInterface.tell(result+"");
+        switch(result){
+            case 0:
+                rejestracjaTrasy();
+                break;
+            case 1:
+                mojeTrasy();
+                break;
+            case 2:
+                mapa();
+                break;
+            case 3:
+                statystyki();
+                break;
+            case 4:
+                rankingi();
+                break;
+            case 5:
+                wyloguj();
+                break;
+            case 6:
+                wyjdz();
+                break;
+        }
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -390,6 +421,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             intent.putExtra("isSynthOn", isSynthOn);
             intent.putExtra("isRecognOn", isRecognOn);
             startActivity(intent);
+        }
+        else if(id==R.id.listenMicro)
+        {
+            speechInterface.listenCommand();
         }
         /*
         if (id == R.id.action_markers_off) {
@@ -449,10 +484,8 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             super.onBackPressed();
             return;
         }
-
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Naciśnij ponownie, aby wyjść z aplikacji", Toast.LENGTH_SHORT).show();
-
         new Handler().postDelayed(new Runnable() {
 
             @Override
@@ -460,5 +493,11 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechInterface.onDestroy();
     }
 }

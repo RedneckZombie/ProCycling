@@ -2,6 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.alien.myapplication1.map.SideBar">
+    <item android:id="@+id/listenMicro" android:icon="@drawable/micro" android:title="micro"
+        android:orderInCategory="101" app:showAsAction="always" />
     <item android:id="@+id/options" android:title="@string/menu_options"
         android:orderInCategory="100" app:showAsAction="never" />
+
 </menu>
