@@ -1,10 +1,10 @@
 package com.example.alien.myapplication1.Speech;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.example.alien.myapplication1.map.SideBar;
+import com.example.alien.myapplication1.Options.Preferences;
+
 
 /**
  * Created by BotNaEasy on 2015-11-01.
@@ -13,11 +13,13 @@ public class SpeechInterface{
     private SpeechRecognition speechRecognition;
     private SpeechSynthesis speechSynthesis;
     private Activity act;
-    public SpeechInterface(Activity act, String clazz, SideBar s)
+    private Preferences prefs;
+    public SpeechInterface(Activity act, String clazz, MicroListener micro)
     {
         try {
             this.act = act;
-            speechRecognition = new SpeechRecognition(act, clazz, s);
+            prefs = new Preferences(act);
+            speechRecognition = new SpeechRecognition(act, clazz, micro);
             speechSynthesis = new SpeechSynthesis(act);
         }catch(Exception e){
             Toast.makeText(act, "Nie znaleziono słownika!",Toast.LENGTH_SHORT).show();
@@ -25,13 +27,15 @@ public class SpeechInterface{
     }
     public void tell(String command)
     {
-        speechSynthesis.speakOut(command);
+        if(prefs.getPreferencesBoolean("enableSynth"))
+            speechSynthesis.speakOut(command);
     }
     public void listenCommand()
     {
-        speechRecognition.initRecognizer();
+        if(prefs.getPreferencesBoolean("enableRecogn"))
+            speechRecognition.initRecognizer();
     }
-    public void onDestroy()
+    public void destroy()
     {
         speechRecognition.onDestroy();
         speechSynthesis.onDestroy();

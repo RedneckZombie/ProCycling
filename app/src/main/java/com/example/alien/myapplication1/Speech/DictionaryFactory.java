@@ -14,15 +14,25 @@ public class DictionaryFactory {
             case "SideBar" :
                String[] komendy = {
                         "Rejestruj trase",
-                        //"Zakończ rejestrację trasy",
                         "Moje trasy",
                         "Mapa",
                         "Statystyki",
                         "Rankingi",
                         "Wyloguj",
-                        "Zamknij"
+                        "Zamknij",
+                        "Zakończ rejestracje trasy",
+                        "Wykresy"
                 };
                 dict = new Dictionary(komendy);
+                break;
+            case "ChartActivity" :
+                String[] komendy2 = {
+                        "Cofnij",
+                        "Wykres dzienny",
+                        "Wykres miesięczny",
+                        "Wykres roczny"
+                };
+                dict = new Dictionary(komendy2);
                 break;
             default:
                 throw new Exception("Unknown dictionary");

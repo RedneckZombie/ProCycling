@@ -2,17 +2,13 @@ package com.example.alien.myapplication1.Speech;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.alien.myapplication1.map.SideBar;
 
 import java.util.ArrayList;
 
@@ -26,10 +22,10 @@ public class SpeechRecognition {
     private boolean isFinished;
     private ArrayList<String> result;
     private Dictionary dictionary;
-    SideBar s;
-    public SpeechRecognition(Activity act, String clazz, SideBar s)
+    MicroListener micro;
+    public SpeechRecognition(Activity act, String clazz, MicroListener micro)
     {
-        this.s=s;
+        this.micro=micro;
         this.act = act;
         recogn = SpeechRecognizer.createSpeechRecognizer(act);
         try {
@@ -91,6 +87,11 @@ public class SpeechRecognition {
         else
             return -1;
     }
+    /*
+    public int getIncludedWordResult()
+    {
+
+    }*/
     public int recognitionResult()
     {
         //initRecognizer();
@@ -98,6 +99,9 @@ public class SpeechRecognition {
         if(result>=0)
             return result;
         result = getSimmilarResult();
+        if(result>=0)
+            return result;
+       // result = getIncludedWordResult();
         if(result>=0)
             return result;
         else{
@@ -145,7 +149,7 @@ public class SpeechRecognition {
             public void onResults(Bundle results) {
                 result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 isFinished = true;
-                s.microCommandRun(recognitionResult());
+                micro.microCommandRun(recognitionResult());
             }
 
             @Override
@@ -159,5 +163,4 @@ public class SpeechRecognition {
             }
         });
     }
-
 }

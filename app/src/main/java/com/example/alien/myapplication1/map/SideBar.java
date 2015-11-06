@@ -20,11 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.alien.myapplication1.Charts.ChartActivity;
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 
 import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.Options.OptionsActivity;
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.Speech.MicroListener;
 import com.example.alien.myapplication1.Speech.SpeechInterface;
 import com.example.alien.myapplication1.account.LogInActivity;
 import com.example.alien.myapplication1.rankings.ViewPagerFragment;
@@ -43,7 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
+public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, MicroListener {
 
 
     DrawerLayout mDrawerLayout;
@@ -125,6 +127,23 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             aktualizujAdapter(1);
             podsumowanie();
 
+        }
+    }
+    public void startRouteRecording()
+    {
+        if (!rr.isRecording()) {
+            rr.startRecording();
+            Toast.makeText(getApplicationContext(), R.string.rejestruj_trase, Toast.LENGTH_LONG).show();
+            aktualizujAdapter(0);
+        }
+    }
+    public void stopRouteRecording()
+    {
+        if(rr.isRecording()) {
+            rr.stopRecording();
+            Toast.makeText(getApplicationContext(), R.string.zakoncz_trase, Toast.LENGTH_LONG).show();
+            aktualizujAdapter(1);
+            podsumowanie();
         }
     }
     public void mojeTrasy()
@@ -379,10 +398,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     }
     public void microCommandRun(int result)
     {
-        speechInterface.tell(result+"");
+        speechInterface.tell(result + "");
         switch(result){
             case 0:
-                rejestracjaTrasy();
+                startRouteRecording();
                 break;
             case 1:
                 mojeTrasy();
@@ -402,9 +421,31 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
             case 6:
                 wyjdz();
                 break;
+            case 7:
+                stopRouteRecording();
+                break;
+            case 8:
+                chartsInStatistics();
+                break;
         }
     }
-
+    public void initCharts()
+    {
+        Intent intent = new Intent(this, ChartActivity.class);
+        intent.putExtra("mode", "overall");
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+    public void chartsInStatistics()
+    {
+        if(stats!=null)
+        {
+            initCharts();
+        }else{
+            statystyki();
+            initCharts();
+        }
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -426,15 +467,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
         {
             speechInterface.listenCommand();
         }
-        /*
-        if (id == R.id.action_markers_off) {
-            fr.offMarkers();
-            return true;
-        }
-        if (id == R.id.action_markers_on) {
-            fr.onMarkers();
-            return true;
-        }*/
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -498,6 +530,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        speechInterface.onDestroy();
+        speechInterface.destroy();
     }
 }
