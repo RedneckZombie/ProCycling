@@ -249,4 +249,9 @@ public class ChartActivity extends ActionBarActivity implements MicroListener{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        speechInterface.destroy();
+        super.onDestroy();
+    }
 }

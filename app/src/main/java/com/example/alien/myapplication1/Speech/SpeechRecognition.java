@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by BotNaEasy on 2015-10-14.
@@ -23,6 +24,8 @@ public class SpeechRecognition {
     private ArrayList<String> result;
     private Dictionary dictionary;
     MicroListener micro;
+    private int intParam;
+    private String stringParam;
     public SpeechRecognition(Activity act, String clazz, MicroListener micro)
     {
         this.micro=micro;
@@ -47,6 +50,23 @@ public class SpeechRecognition {
             Toast.makeText(act.getApplication(),
                     "To urządzenie nie ma wsparcia do zamiany mowy na tekst!",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+    public int recognitionResult()
+    {
+        int result = dictionary.onPositionInDictionary(getResult());
+        if(result>=0)
+            return result;
+        result = getSimmilarResult();
+        if(result>=0)
+            return result;
+        result = dictionary.getIncludedWordResult(getResult());
+        setParams();
+        if(result>=0)
+            return result;
+        else{
+            Toast.makeText(act, "Nie rozpoznano komendy!", Toast.LENGTH_SHORT).show();
+            return -1;
         }
     }
     public void onDestroy()
@@ -87,29 +107,76 @@ public class SpeechRecognition {
         else
             return -1;
     }
-    /*
-    public int getIncludedWordResult()
+    public void showResult()
     {
-
-    }*/
-    public int recognitionResult()
-    {
-        //initRecognizer();
-        int result = dictionary.onPositionInDictionary(getResult());
-        if(result>=0)
-            return result;
-        result = getSimmilarResult();
-        if(result>=0)
-            return result;
-       // result = getIncludedWordResult();
-        if(result>=0)
-            return result;
-        else{
-            Toast.makeText(act, "Nie rozpoznano komendy!", Toast.LENGTH_SHORT).show();
-            return -1;
+        for(int i=0;i<result.size();i++) {
+            System.out.println(i + ": " + result.get(i));
         }
     }
+    private void setParams()
+    {
+        stringParam = null;
+        intParam = 0;
+        List<String> dictWithParams = new ArrayList<String>();
+        String[] dict = dictionary.getDictionary().clone();
+        for(int i=0;i<dict.length;i++)
+        {
+            if(dict[i].contains("param")) {
+                dict[i] = dict[i].replace("param","");
+                dict[i] = dict[i].trim();
+                dictWithParams.add(dict[i]);
+            }
+        }
+        if(dictWithParams.isEmpty())
+            return;
 
+        /*NAJLEPIEJ PASUJĄCA KOMENDA Z PARAMETREM
+        int[] pointsOnPosition = new int[dictWithParams.size()];
+        for(int i=0;i<getResult().size();i++)
+        {
+            String[] splittedCommand = getResult().get(i).split(" ");
+            for(int j=0;j<splittedCommand.length;j++)
+            {
+                for(int k=0;k<dictWithParams.size();k++)
+                {
+                    if(dictWithParams.get(k).equals(splittedCommand[j]))
+                    {
+                        pointsOnPosition[k]+=1;
+                    }
+                }
+            }
+        }*/
+        System.out.println("dojszedlem");
+        for(int i=0;i<getResult().size();i++)
+        {
+            String[] splittedCommand = getResult().get(i).split(" ");
+            if(splittedCommand.length==2)//komenda + parametr
+            {
+                System.out.println("dojszedlem2");
+                try{
+                    if(stringParam==null)
+                        stringParam = splittedCommand[1];//parametr
+                    intParam = Integer.parseInt(splittedCommand[1]);
+                    break;
+                }catch(Exception e){
+                    continue;
+                }
+            }
+        }
+    }
+    public String getStringParam()
+    {
+        return stringParam;
+    }
+    public int getIntParam()
+    {
+        return intParam;
+    }
+    public void showParams()
+    {
+        System.out.println("String: "+getStringParam());
+        System.out.println("Int: " + getIntParam());
+    }
     private void initListener()
     {
         recogn.setRecognitionListener(new RecognitionListener() {
@@ -149,6 +216,8 @@ public class SpeechRecognition {
             public void onResults(Bundle results) {
                 result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 isFinished = true;
+                showResult();
+                showParams();
                 micro.microCommandRun(recognitionResult());
             }
 

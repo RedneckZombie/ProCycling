@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,9 +16,11 @@ import android.widget.EditText;
 
 import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
+import com.example.alien.myapplication1.Speech.MicroListener;
+import com.example.alien.myapplication1.Speech.SpeechInterface;
 import com.example.alien.myapplication1.map.SideBar;
 
-public class LogInActivity extends Activity implements OnASyncTaskCompleted {
+public class LogInActivity extends ActionBarActivity implements OnASyncTaskCompleted, MicroListener {
     private EditText login_mail;
     private EditText login_password;
 
@@ -31,6 +35,7 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
     boolean isLogged = true;
     protected String result;
     private OnASyncTaskCompleted callback;
+    private SpeechInterface speechInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         restoreData();
 
         callback = this;
+        speechInterface = new SpeechInterface(this, getClass().getSimpleName(), this);
     }
 
     public void restoreData() {
@@ -89,64 +95,67 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
         }
     }
 
+    public void guestLogIn()
+    {
+        Intent intent = new Intent(getApplicationContext(), SideBar.class);
+        startActivity(intent);
+        finish();
+    }
+    public void register()
+    {
+        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    public void logIn()
+    {
+        SharedPreferences.Editor pref = preferences.edit();
+
+        String login = login_mail.getText().toString();
+        String password = login_password.getText().toString();
+
+        if (checkbox_remember.isChecked()) {
+            pref.putString("mail", login);
+            pref.putString("pass", password);
+            pref.putBoolean("rem", checkbox_remember.isChecked());
+        } else {
+            pref.putString("mail", "");
+            pref.putString("pass", "");
+            pref.putBoolean("rem", false);
+        }
+
+        pref.apply();
+
+
+        LogIn loginTask = new LogIn(getApplicationContext(), callback);
+        loginTask.execute(login, password);
+    }
     public void addListeners() {
         checkbox_remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    SharedPreferences.Editor pref = preferences.edit();
-                    pref.putString("mail", "");
-                    pref.putString("pass", "");
-                    pref.putBoolean("rem", false);
-                    pref.apply();
-                }
+                saveCheckbox(isChecked);
             }
         });
 
-        button_guest.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v)
-                {
-                    Intent intent = new Intent(getApplicationContext(), SideBar.class);
-                    startActivity(intent);
-                    finish();
-            }
-        });
-
-        button_register.setOnClickListener(new View.OnClickListener(){
+        button_guest.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                startActivity(intent);
-                finish();
+            public void onClick(View v) {
+                guestLogIn();
+            }
+        });
+
+        button_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
             }
         });
 
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor pref = preferences.edit();
-
-                String login = login_mail.getText().toString();
-                String password = login_password.getText().toString();
-
-                if (checkbox_remember.isChecked()) {
-                    pref.putString("mail", login);
-                    pref.putString("pass", password);
-                    pref.putBoolean("rem", checkbox_remember.isChecked());
-                }
-                else {
-                    pref.putString("mail", "");
-                    pref.putString("pass", "");
-                    pref.putBoolean("rem", false);
-                }
-
-                pref.apply();
-
-
-                LogIn loginTask = new LogIn(getApplicationContext(), callback);
-                loginTask.execute(login, password);
+                logIn();
             }
         });
     }
@@ -160,5 +169,54 @@ public class LogInActivity extends Activity implements OnASyncTaskCompleted {
     @Override
     public void onASyncTaskCompleted(Object... value) {
         result = (String) value[0];
+    }
+
+    public void saveCheckbox(boolean isChecked)
+    {
+        checkbox_remember.setChecked(isChecked);
+        if (!isChecked) {
+            SharedPreferences.Editor pref = preferences.edit();
+            pref.putString("mail", "");
+            pref.putString("pass", "");
+            pref.putBoolean("rem", false);
+            pref.apply();
+        }
+
+    }
+    @Override
+    public void microCommandRun(int result) {
+        speechInterface.tell(result+"");
+        switch (result){
+            case 0:
+                saveCheckbox(!checkbox_remember.isChecked());
+                break;
+            case 1:
+                logIn();
+                break;
+            case 2:
+                guestLogIn();
+                break;
+            case 3:
+                register();
+                break;
+            case 4:
+                finish();
+                break;
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.listenMicro)
+        {
+            speechInterface.listenCommand();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        speechInterface.destroy();
+        super.onDestroy();
     }
 }

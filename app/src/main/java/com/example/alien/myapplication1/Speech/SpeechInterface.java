@@ -29,11 +29,23 @@ public class SpeechInterface{
     {
         if(prefs.getPreferencesBoolean("enableSynth"))
             speechSynthesis.speakOut(command);
+
     }
     public void listenCommand()
     {
         if(prefs.getPreferencesBoolean("enableRecogn"))
             speechRecognition.initRecognizer();
+        else{
+            Toast.makeText(act, "Rozpoznawanie komend głosowych jest wyłączone!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public String getStringParam()
+    {
+        return speechRecognition.getStringParam();
+    }
+    public int getIntParam()
+    {
+        return speechRecognition.getIntParam();
     }
     public void destroy()
     {

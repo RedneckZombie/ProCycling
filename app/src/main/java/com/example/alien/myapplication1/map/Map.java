@@ -269,6 +269,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                 .title(interestingPlace.getText().toString()));
     }
 
+
     public void saveMarker()
     {
         CheckingConnection check_conn = new CheckingConnection(getActivity());

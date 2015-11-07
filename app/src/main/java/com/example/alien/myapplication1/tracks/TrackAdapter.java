@@ -62,7 +62,7 @@ public class TrackAdapter extends ArrayAdapter<Track> {
         }
         else {
             String temp = object.getTrackName();
-            String trackName = "Trasa z "+temp.substring(6,8) + " " + temp.substring(4,6) + " " + temp.substring(0,4);
+            String trackName = pozycja+". Trasa z "+temp.substring(6,8) + " " + temp.substring(4,6) + " " + temp.substring(0,4);
             holder.row.setText(trackName + " " + object.getTime() + " " + object.getDistance());
         }
         return wiersz;

@@ -13,26 +13,45 @@ public class DictionaryFactory {
         switch(clazz){
             case "SideBar" :
                String[] komendy = {
-                        "Rejestruj trase",
-                        "Moje trasy",
-                        "Mapa",
-                        "Statystyki",
-                        "Rankingi",
-                        "Wyloguj",
-                        "Zamknij",
-                        "Zakończ rejestracje trasy",
-                        "Wykresy"
+                        "rejestruj trase",
+                        "moje trasy",
+                        "mapa",
+                        "statystyki",
+                        "rankingi",
+                        "wyloguj",
+                        "zamknij",
+                        "zakończ rejestracje trasy",
+                        "wykresy",
+                        "trasa param"
                 };
                 dict = new Dictionary(komendy);
                 break;
             case "ChartActivity" :
                 String[] komendy2 = {
-                        "Cofnij",
-                        "Wykres dzienny",
-                        "Wykres miesięczny",
-                        "Wykres roczny"
+                        "cofnij",
+                        "wykres dzienny",
+                        "wykres miesięczny",
+                        "wykres roczny"
                 };
                 dict = new Dictionary(komendy2);
+                break;
+            case "LogInActivity" :
+                String[] komendy3 = {
+                        "zapamiętaj",
+                        "zaloguj",
+                        "zaloguj jako gość",
+                        "rejestracja",
+                        "zamknij"
+                };
+                dict = new Dictionary(komendy3);
+                break;
+            case "RegistrationActivity" :
+                String[] komendy4 = {
+                        "zamknij",
+                        "rejestruj",
+                        "wyczyść"
+                };
+                dict = new Dictionary(komendy4);
                 break;
             default:
                 throw new Exception("Unknown dictionary");

@@ -58,6 +58,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
     boolean isRecognOn;
     private static RecordRoute rr;
     Map fr;
+    TrackList tl;
     SharedPreferences preferences;
     private Stats stats;
     private boolean doubleBackToExitPressedOnce = false;
@@ -150,7 +151,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
     {
         CheckingConnection cc = new CheckingConnection(getApplicationContext());
         cc.execute();
-        Fragment tl = new TrackList();
+        tl = new TrackList();
         Bundle b = new Bundle();
         b.putString("username", username);
         b.putString("userID", userID);
@@ -179,6 +180,15 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
     public void wyjdz()
     {
         finish();
+    }
+    public boolean isMyRoutesVisible()
+    {
+        boolean result = false;
+        if(tl!=null)
+            if(tl.isVisible())
+                result = true;
+        return result;
+
     }
     public void drawer()
     {
@@ -237,6 +247,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
                         case 0:    //rejestracja trasy
                             rejestracjaTrasy();
                             mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
                             break;
                         case 1:      //moje trasy
                             mojeTrasy();
@@ -251,10 +262,12 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
                         case 3:  //Statystyki
                             statystyki();
                             mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
                             break;
                         case 4:       //rankingi
                             rankingi();
                             mDrawerLayout.closeDrawer(mDrawerList);
+                            mDrawerList.setItemChecked(-1, true);
                             break;
                         case 5:   //wyloguj
                             wyloguj();
@@ -396,37 +409,67 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
         );
         mDrawerList.setAdapter(a);
     }
+    public void openRoute()
+    {
+        tl.openRoute(speechInterface.getIntParam());
+    }
     public void microCommandRun(int result)
     {
         speechInterface.tell(result + "");
-        switch(result){
-            case 0:
-                startRouteRecording();
-                break;
-            case 1:
-                mojeTrasy();
-                break;
-            case 2:
-                mapa();
-                break;
-            case 3:
-                statystyki();
-                break;
-            case 4:
-                rankingi();
-                break;
-            case 5:
-                wyloguj();
-                break;
-            case 6:
-                wyjdz();
-                break;
-            case 7:
-                stopRouteRecording();
-                break;
-            case 8:
-                chartsInStatistics();
-                break;
+        if (username != null) {
+            switch (result) {
+                case 0:
+                    startRouteRecording();
+                    break;
+                case 1:
+                    mojeTrasy();
+                    break;
+                case 2:
+                    mapa();
+                    break;
+                case 3:
+                    statystyki();
+                    break;
+                case 4:
+                    rankingi();
+                    break;
+                case 5:
+                    wyloguj();
+                    break;
+                case 6:
+                    wyjdz();
+                    break;
+                case 7:
+                    stopRouteRecording();
+                    break;
+                case 8:
+                    chartsInStatistics();
+                    break;
+                case 9:
+                    if(isMyRoutesVisible())
+                        openRoute();
+            }
+        }
+        else{
+            switch(result) {
+                case 0:
+                    startRouteRecording();
+                    break;
+                case 2:
+                    mapa();
+                    break;
+                case 5:
+                    wyloguj();
+                    break;
+                case 6:
+                    wyjdz();
+                case 7:
+                    stopRouteRecording();
+                    break;
+                default:
+                    Toast.makeText(this, "Niedozwolona komenda, najpierw zaloguj się!", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
     public void initCharts()
