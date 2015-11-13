@@ -46,7 +46,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".map.SideBar"
+            android:name=".map.SideBarActivity"
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait" >
         </activity>

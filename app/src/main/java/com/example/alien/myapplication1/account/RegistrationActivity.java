@@ -254,8 +254,17 @@ public class RegistrationActivity extends ActionBarActivity implements MicroList
             case 2:
                 clear();
                 break;
+            case 3:
+                showInfoDialog();
+                break;
         }
     }
+
+    @Override
+    public void showInfoDialog() {
+        speechInterface.showInfoDialog();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -268,6 +277,10 @@ public class RegistrationActivity extends ActionBarActivity implements MicroList
         if(id == R.id.listenMicro)
         {
             speechInterface.listenCommand();
+        }
+        else if(id==R.id.avaible_comands)
+        {
+            showInfoDialog();
         }
         return super.onOptionsItemSelected(item);
     }

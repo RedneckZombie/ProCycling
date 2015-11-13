@@ -1,9 +1,5 @@
 package com.example.alien.myapplication1.Speech;
 
-import com.example.alien.myapplication1.map.SideBar;
-
-import java.util.ArrayList;
-
 /**
  * Created by BotNaEasy on 2015-11-01.
  */
@@ -11,7 +7,7 @@ public class DictionaryFactory {
     public static Dictionary createDictionary(String clazz) throws Exception {
         Dictionary dict=null;
         switch(clazz){
-            case "SideBar" :
+            case "SideBarActivity" :
                String[] komendy = {
                         "rejestruj trase",
                         "moje trasy",
@@ -22,7 +18,13 @@ public class DictionaryFactory {
                         "zamknij",
                         "zakończ rejestracje trasy",
                         "wykresy",
-                        "trasa param"
+                        "trasa param",
+                        "opcje",
+                        "włącz markery",
+                        "wyłącz markery",
+                        "marker param",
+                        "komendy",
+                        "ja w rankingu"
                 };
                 dict = new Dictionary(komendy);
                 break;
@@ -31,7 +33,10 @@ public class DictionaryFactory {
                         "cofnij",
                         "wykres dzienny",
                         "wykres miesięczny",
-                        "wykres roczny"
+                        "wykres roczny",
+                        "wykres profilu",
+                        "wykres prędkości",
+                        "komendy"
                 };
                 dict = new Dictionary(komendy2);
                 break;
@@ -41,7 +46,8 @@ public class DictionaryFactory {
                         "zaloguj",
                         "zaloguj jako gość",
                         "rejestracja",
-                        "zamknij"
+                        "zamknij",
+                        "komendy"
                 };
                 dict = new Dictionary(komendy3);
                 break;
@@ -49,9 +55,24 @@ public class DictionaryFactory {
                 String[] komendy4 = {
                         "zamknij",
                         "rejestruj",
-                        "wyczyść"
+                        "wyczyść",
+                        "komendy"
                 };
                 dict = new Dictionary(komendy4);
+                break;
+            case "OptionsActivity" :
+                String[] komendy5 = {
+                        "zapisz",
+                        "wyjdź",
+                        "włącz markery",
+                        "wyłącz markery",
+                        "włącz rozpoznawanie komend",
+                        "wyłącz rozpoznawanie komend",
+                        "włącz wypowiedzi głosowe",
+                        "wyłącz wypowiedzi",
+                        "komendy"
+                };
+                dict = new Dictionary(komendy5);
                 break;
             default:
                 throw new Exception("Unknown dictionary");

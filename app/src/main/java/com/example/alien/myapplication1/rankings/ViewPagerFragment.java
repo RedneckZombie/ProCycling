@@ -8,12 +8,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Adams on 2015-05-24.
@@ -80,7 +82,10 @@ public class ViewPagerFragment extends Fragment implements OnASyncTaskCompleted 
         public int getCount() {
             return NUM_ITEMS;
         }
-
+    }
+    public List<Rank> getRankList()
+    {
+        return rankList;
     }
 }
 

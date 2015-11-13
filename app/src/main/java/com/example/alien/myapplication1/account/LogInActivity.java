@@ -18,7 +18,7 @@ import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
 import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.Speech.MicroListener;
 import com.example.alien.myapplication1.Speech.SpeechInterface;
-import com.example.alien.myapplication1.map.SideBar;
+import com.example.alien.myapplication1.map.SideBarActivity;
 
 public class LogInActivity extends ActionBarActivity implements OnASyncTaskCompleted, MicroListener {
     private EditText login_mail;
@@ -84,7 +84,7 @@ public class LogInActivity extends ActionBarActivity implements OnASyncTaskCompl
         }
 
         if (checkbox_remember.isChecked() && !username.equals("") && isLogged &&!userID.equals("")) {
-            Intent intent = new Intent(getApplicationContext(), SideBar.class);
+            Intent intent = new Intent(getApplicationContext(), SideBarActivity.class);
             intent.putExtra("username", username);
             intent.putExtra("userID", userID);
             intent.putExtra("isMarkerOn", markers);
@@ -97,7 +97,7 @@ public class LogInActivity extends ActionBarActivity implements OnASyncTaskCompl
 
     public void guestLogIn()
     {
-        Intent intent = new Intent(getApplicationContext(), SideBar.class);
+        Intent intent = new Intent(getApplicationContext(), SideBarActivity.class);
         startActivity(intent);
         finish();
     }
@@ -202,14 +202,27 @@ public class LogInActivity extends ActionBarActivity implements OnASyncTaskCompl
             case 4:
                 finish();
                 break;
+            case 5:
+                showInfoDialog();
+                break;
         }
     }
+
+    @Override
+    public void showInfoDialog() {
+        speechInterface.showInfoDialog();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.listenMicro)
         {
             speechInterface.listenCommand();
+        }
+        else if(id==R.id.avaible_comands)
+        {
+            showInfoDialog();
         }
         return super.onOptionsItemSelected(item);
     }

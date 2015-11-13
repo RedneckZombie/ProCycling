@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.Options.Preferences;
@@ -195,6 +196,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         mMap.getUiSettings().setTiltGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setMyLocationEnabled(true);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 13));
         if(latitude == 52.15182309 && longitude == 19.42829922)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 4));
@@ -229,14 +231,18 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         System.out.println("IsVisible: "+ isVisible);
         if(!isVisible)
         {
-            showObjects();
-            mapLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    380));
+            setScreen();
             ll=latLng;
         }
     }
 
+    private void setScreen()
+    {
+        showObjects();
+        mapLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                380));
+    }
     @Override
     public void onClick(View v) {
         switch(v.getId())
@@ -269,7 +275,6 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                 .title(interestingPlace.getText().toString()));
     }
 
-
     public void saveMarker()
     {
         CheckingConnection check_conn = new CheckingConnection(getActivity());
@@ -279,13 +284,13 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                 Thread.sleep(10);
             }catch(Exception e){}
         }
-        if(check_conn.isConnected())//jest net ->kod Artura
+        if(check_conn.isConnected())
         {
             SavePlace sp = new SavePlace(getActivity());
 
             sp.execute(userID, interestingPlace.getText().toString(), String.valueOf(ll.latitude), String.valueOf(ll.longitude));
         }
-        else{//ni ma neta-> kod Kamila
+        else{
             String temp;
             try {
                 FileOutputStream fos = getActivity().openFileOutput(userID+"", Context.MODE_APPEND);
@@ -296,6 +301,28 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
                 fos.close();
             } catch(IOException e){ e.printStackTrace();}
         }
+    }
+    public void setMarkersFromCurrentPosition(String param)
+    {
+        Location loc = mMap.getMyLocation();
+        if(loc==null) {
+            Toast.makeText(getActivity().getApplicationContext(), "Nie wykryto lokalizacji, sprawdź ustawienia.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        interestingPlace.setText(param);
+        if(param != null && param.length()>0)
+        {
+            //setMarker(loc.getLatitude(), loc.getLongitude(), interestingPlace.getText().toString());
+            ll = new LatLng(loc.getLatitude(), loc.getLongitude());
+            addMarker();
+            saveMarker();
+        }
+        else {
+            setScreen();
+        }
+
+
+
     }
 
 }

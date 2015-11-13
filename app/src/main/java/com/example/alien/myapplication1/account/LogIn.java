@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.example.alien.myapplication1.NetConnection.CheckingConnection;
 import com.example.alien.myapplication1.NetConnection.OnASyncTaskCompleted;
-import com.example.alien.myapplication1.map.SideBar;
+import com.example.alien.myapplication1.map.SideBarActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -121,7 +121,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
             case "1":
                 Toast.makeText(context, "Zalogowano!", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(context, SideBar.class);
+                Intent intent = new Intent(context, SideBarActivity.class);
                 intent.putExtra("username", username);
                 intent.putExtra("userID", userID);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

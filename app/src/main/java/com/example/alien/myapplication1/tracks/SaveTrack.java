@@ -1,11 +1,7 @@
 package com.example.alien.myapplication1.tracks;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.example.alien.myapplication1.map.SideBar;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -29,6 +28,7 @@ import com.example.alien.myapplication1.R;
 import com.example.alien.myapplication1.Speech.MicroListener;
 import com.example.alien.myapplication1.Speech.SpeechInterface;
 import com.example.alien.myapplication1.account.LogInActivity;
+import com.example.alien.myapplication1.rankings.Rank;
 import com.example.alien.myapplication1.rankings.ViewPagerFragment;
 import com.example.alien.myapplication1.tracks.AllStatsFragment;
 import com.example.alien.myapplication1.tracks.GetAllStats;
@@ -44,8 +44,10 @@ import org.joda.time.Period;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 
-public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, MicroListener {
+
+public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCompleted, MicroListener {
 
 
     DrawerLayout mDrawerLayout;
@@ -63,6 +65,7 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
     private Stats stats;
     private boolean doubleBackToExitPressedOnce = false;
     SpeechInterface speechInterface;
+    ViewPagerFragment vpf;
 
 
     @Override
@@ -354,8 +357,10 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
         }
         if(cc.isConnected())
         {
-            Fragment fr = new ViewPagerFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fr).commit();
+
+            //Fragment fr = new ViewPagerFragment();
+            vpf = new ViewPagerFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, vpf).commit();
         }
         else
         {
@@ -377,13 +382,6 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void updateAdapter()
-    {
-       ArrayAdapter aa = (ArrayAdapter) mDrawerList.getAdapter();
-
     }
 
     public void aktualizujAdapter(int n)
@@ -411,14 +409,28 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
     }
     public void openRoute()
     {
-        tl.openRoute(speechInterface.getIntParam());
+        mojeTrasy();
+        if(isMyRoutesVisible())
+            tl.openRoute(speechInterface.getIntParam());
+    }
+    public void meInRanks()
+    {
+        if(vpf==null||vpf.getRankList()==null)
+        {
+            Toast.makeText(this, "Komenda dostępna tylko po załadowaniu rankingów!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int position = Rank.getUserPosition(vpf.getRankList(),username.trim());
+        String result = "Jesteś na pozycji numer "+ (position+1);
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        speechInterface.tell(result);
     }
     public void microCommandRun(int result)
     {
-        speechInterface.tell(result + "");
         if (username != null) {
             switch (result) {
                 case 0:
+                    speechInterface.tell("Rozpoczęto rejestrację trasy");
                     startRouteRecording();
                     break;
                 case 1:
@@ -440,14 +452,33 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
                     wyjdz();
                     break;
                 case 7:
+                    speechInterface.tell("Zakończono rejestrację trasy");
                     stopRouteRecording();
                     break;
                 case 8:
                     chartsInStatistics();
                     break;
                 case 9:
-                    if(isMyRoutesVisible())
-                        openRoute();
+                    openRoute();
+                    break;
+                case 10:
+                    options();
+                    break;
+                case 11:
+                    markersOn();
+                    break;
+                case 12:
+                    markersOff();
+                    break;
+                case 13:
+                    addMarker();
+                    break;
+                case 14:
+                    showInfoDialog();
+                    break;
+                case 15:
+                    meInRanks();
+                    break;
             }
         }
         else{
@@ -466,11 +497,32 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
                 case 7:
                     stopRouteRecording();
                     break;
+                case 14:
+                    showInfoDialog();
+                    break;
                 default:
                     Toast.makeText(this, "Niedozwolona komenda, najpierw zaloguj się!", Toast.LENGTH_SHORT).show();
             }
 
         }
+    }
+
+    @Override
+    public void showInfoDialog() {
+        speechInterface.showInfoDialog();
+    }
+
+    private void addMarker()
+    {
+        fr.setMarkersFromCurrentPosition(speechInterface.getStringParam());
+    }
+    private void markersOn()
+    {
+        fr.onMarkers();
+    }
+    private void markersOff()
+    {
+        fr.offMarkers();
     }
     public void initCharts()
     {
@@ -484,15 +536,25 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
         if(stats!=null)
         {
             initCharts();
-        }else{
+        }else {
             statystyki();
             initCharts();
         }
+
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+    private void options()
+    {
+        Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
+        intent.putExtra("isMarkersOn", isMarkersOn);
+        intent.putExtra("isSynthOn", isSynthOn);
+        intent.putExtra("isRecognOn", isRecognOn);
+        startActivity(intent);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -500,15 +562,15 @@ public class SideBar extends ActionBarActivity implements OnASyncTaskCompleted, 
 
         if (id == R.id.options)
         {
-            Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
-            intent.putExtra("isMarkersOn", isMarkersOn);
-            intent.putExtra("isSynthOn", isSynthOn);
-            intent.putExtra("isRecognOn", isRecognOn);
-            startActivity(intent);
+            options();
         }
         else if(id==R.id.listenMicro)
         {
             speechInterface.listenCommand();
+        }
+        else if(id==R.id.avaible_comands)
+        {
+            showInfoDialog();
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;

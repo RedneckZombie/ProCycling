@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by BotNaEasy on 2015-11-01.
  */
-public class Dictionary {
+public class Dictionary{
     private String[] dictionary;
     public Dictionary(String[] dict)
     {
@@ -26,7 +26,8 @@ public class Dictionary {
         {
             for(int j=0;j<commands.size();j++)
             {
-                if(dictionary[i].equals(commands.get(j)))
+                String dict = dictionary[i].replace(" param", "");
+                if(dict.equals(commands.get(j)))
                     return i;
             }
         }
@@ -76,5 +77,15 @@ public class Dictionary {
     }
     public String[] getDictionary() {
         return dictionary;
+    }
+
+    @Override
+    public String toString() {
+        String result="";
+        for(int i=0;i<dictionary.length;i++)
+        {
+            result += i+1+". "+dictionary[i]+"\n";
+        }
+        return result;
     }
 }

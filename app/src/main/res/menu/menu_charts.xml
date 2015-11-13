@@ -4,4 +4,6 @@
     tools:context="com.example.alien.myapplication1.Charts.ChartActivity">
     <item android:id="@+id/listenMicro" android:icon="@drawable/micro" android:title="micro"
         android:orderInCategory="101" app:showAsAction="always" />
+    <item android:id="@+id/avaible_comands" android:title="Komendy"
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
 </menu>

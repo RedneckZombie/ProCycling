@@ -146,13 +146,11 @@ public class SpeechRecognition {
                 }
             }
         }*/
-        System.out.println("dojszedlem");
         for(int i=0;i<getResult().size();i++)
         {
             String[] splittedCommand = getResult().get(i).split(" ");
             if(splittedCommand.length==2)//komenda + parametr
             {
-                System.out.println("dojszedlem2");
                 try{
                     if(stringParam==null)
                         stringParam = splittedCommand[1];//parametr
@@ -182,9 +180,7 @@ public class SpeechRecognition {
         recogn.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
-                Toast.makeText(act.getApplication(),
-                        "Mów",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(act.getApplication(), "Mów", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -231,5 +227,9 @@ public class SpeechRecognition {
 
             }
         });
+    }
+    public Dictionary getDictionary()
+    {
+        return dictionary;
     }
 }

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.example.alien.myapplication1.R;
@@ -105,6 +106,21 @@ public class ChartActivity extends ActionBarActivity implements MicroListener{
         chartIndex=3;
         back.setText("Miesieczny");
         next.setText("Dzienny");
+        setChart();
+    }
+
+    public void setSpeedChart()
+    {
+        mode = 0;
+        chartIndex = 2;
+        next.setText("Profil trasy");
+        setChart();
+    }
+    public void setProfileChart()
+    {
+        mode = 0;
+        chartIndex = 1;
+        next.setText("Wykres prędkości");
         setChart();
     }
 
@@ -217,6 +233,24 @@ public class ChartActivity extends ActionBarActivity implements MicroListener{
     @Override
     public void microCommandRun(int result) {
         speechInterface.tell(result+"");
+        if(mode <1 )
+        {
+            switch(result) {
+                case 0:
+                    finish();
+                    break;
+                case 4:
+                    setProfileChart();
+                    break;
+                case 5:
+                    setSpeedChart();
+                    break;
+                default:
+                    Toast.makeText(this, "Komenda tymczasowo niedostępna!", Toast.LENGTH_SHORT).show();
+                    speechInterface.tell("Komenda tymczasowo niedostępna!");
+            }
+            return;
+        }
         switch(result){
             case 0:
                 finish();
@@ -230,7 +264,18 @@ public class ChartActivity extends ActionBarActivity implements MicroListener{
             case 3:
                 setYearlyChart();
                 break;
+            case 4:
+                showInfoDialog();
+                break;
+            default:
+                Toast.makeText(this, "Komenda tymczasowo niedostępna!", Toast.LENGTH_SHORT).show();
+                speechInterface.tell("Komenda tymczasowo niedostępna!");
         }
+    }
+
+    @Override
+    public void showInfoDialog() {
+        speechInterface.showInfoDialog();
     }
 
     @Override
@@ -245,6 +290,10 @@ public class ChartActivity extends ActionBarActivity implements MicroListener{
         if(id == R.id.listenMicro)
         {
             speechInterface.listenCommand();
+        }
+        else if(id==R.id.avaible_comands)
+        {
+            showInfoDialog();
         }
         return super.onOptionsItemSelected(item);
     }
