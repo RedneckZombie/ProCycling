@@ -38,6 +38,8 @@ public class TrackList extends Fragment {
 
     public  TrackList() {}
 
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_track_list, container, false);
         this.container = container;

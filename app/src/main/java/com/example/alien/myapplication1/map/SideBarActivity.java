@@ -150,7 +150,7 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
             podsumowanie();
         }
     }
-    public void mojeTrasy()
+    public boolean mojeTrasy()
     {
         CheckingConnection cc = new CheckingConnection(getApplicationContext());
         cc.execute();
@@ -172,6 +172,7 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
         tl.setArguments(b);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.content_frame, tl).commit();
+        return true;
     }
     public void wyloguj()
     {
@@ -409,12 +410,28 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
     }
     public void openRoute()
     {
-        mojeTrasy();
-        if(isMyRoutesVisible())
+
+        if(isMyRoutesVisible()) {
             tl.openRoute(speechInterface.getIntParam());
+        }
+        else {
+            Thread t = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    mojeTrasy();
+                    while (!isMyRoutesVisible()) {
+                    }
+                    tl.openRoute(speechInterface.getIntParam());
+                }
+            });
+            t.start();
+        }
+
     }
     public void meInRanks()
     {
+        /*
         if(vpf==null||vpf.getRankList()==null)
         {
             Toast.makeText(this, "Komenda dostępna tylko po załadowaniu rankingów!", Toast.LENGTH_SHORT).show();
@@ -423,6 +440,30 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
         int position = Rank.getUserPosition(vpf.getRankList(),username.trim());
         String result = "Jesteś na pozycji numer "+ (position+1);
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        speechInterface.tell(result);*/
+        if(vpf!=null&&vpf.getRankList()!=null)
+        {
+            resultMeInRanks();
+        }
+        else{
+            Thread t = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    rankingi();
+                    while (!vpf.isVisible()||vpf.getRankList()==null) {
+                    }
+                    resultMeInRanks();
+                }
+            });
+            t.start();
+        }
+    }
+    private void resultMeInRanks()
+    {
+        int position = Rank.getUserPosition(vpf.getRankList(),username.trim());
+        String result = "Jesteś na pozycji numer "+ (position+1);
+       // Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         speechInterface.tell(result);
     }
     public void microCommandRun(int result)
@@ -479,6 +520,9 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
                 case 15:
                     meInRanks();
                     break;
+                case 16:
+                    test();
+                    break;
             }
         }
         else{
@@ -507,6 +551,11 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
         }
     }
 
+    private void test()
+    {
+        String test = " To jest test";
+        speechInterface.tell(test);
+    }
     @Override
     public void showInfoDialog() {
         speechInterface.showInfoDialog();

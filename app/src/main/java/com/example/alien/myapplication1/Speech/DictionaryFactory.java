@@ -24,7 +24,8 @@ public class DictionaryFactory {
                         "wyłącz markery",
                         "marker param",
                         "komendy",
-                        "ja w rankingu"
+                        "ja w rankingu",
+                        "test"
                 };
                 dict = new Dictionary(komendy);
                 break;
