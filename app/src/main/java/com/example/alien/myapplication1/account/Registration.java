@@ -32,7 +32,7 @@ public class Registration extends AsyncTask<String,Void,String> {
             String sex = arg0[4];
             String city = arg0[5];
 
-            String link = "http://rommam.cba.pl/registration.php";
+            String link = "http://botnaeasy.cba.pl/registration.php";
             String data  = "email"
                     + "=" + email;
             data += "&" + "password"

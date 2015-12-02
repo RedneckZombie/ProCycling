@@ -38,7 +38,7 @@ public class GetTrackDetails extends AsyncTask<String,Void,String> {
         try {
             String track_id = arg0[0];
 
-            String link = "http://rommam.cba.pl/get_track_details.php";
+            String link = "http://botnaeasy.cba.pl/get_track_details.php";
             String data  = "track_id"
                     + "=" + track_id;
 

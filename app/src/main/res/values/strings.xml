@@ -13,7 +13,7 @@
     <string name="button_login_guest">Zaloguj jako gość</string>
     <string name="button_registration">Rejestracja</string>
     <string name="checkbox_remember">Zapamiętaj</string>
-    <string name="title_activity_registration">Registracja</string>
+    <string name="title_activity_registration">Rejestracja</string>
     <string name="signUp">Rejestracja</string>
     <string name="email">email</string>
     <string name="password">hasło</string>

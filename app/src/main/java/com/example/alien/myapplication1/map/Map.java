@@ -43,6 +43,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     private boolean ifShowsMarkers=true;
 
     private boolean isVisible=false;
+    boolean isReady = false;
 
     EditText interestingPlace;
     Button ok;
@@ -72,6 +73,7 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
         mapListeners();
         readUserId();
         ustawMarkery();
+        isReady = true;
         return rootView;
     }
     public void ustawDaneOpcji(boolean isMarkersOn)
@@ -165,12 +167,14 @@ public class Map extends Fragment implements GoogleMap.OnMapLongClickListener, V
     }
     public void onResume() {
         visible = true;
+        isReady = true;
         markers(prefs.getPreferencesBoolean("enableMarkers"));
         super.onResume();
     }
 
     public void onPause() {
         visible = false;
+        isReady = false;
         super.onPause();
     }
 

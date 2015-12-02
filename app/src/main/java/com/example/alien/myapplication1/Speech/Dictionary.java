@@ -52,11 +52,6 @@ public class Dictionary{
                             dictionaryPositionPoints[i]+=1;
                         }
                     }
-                    /*
-                    if(splittedDictionary[j].equals(commands.get(k)))
-                    {
-                        dictionaryPositionPoints[i]+=1;
-                    }*/
                 }
             }
         }

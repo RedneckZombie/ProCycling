@@ -29,7 +29,7 @@ public class SavePlace extends AsyncTask<String,Void,String> {
             String coord_x = arg0[2];
             String coord_y = arg0[3];
 
-            String link = "http://rommam.cba.pl/save_place.php";
+            String link = "http://botnaeasy.cba.pl/save_place.php";
             String data  = "account_id"
                     + "=" + account_id;
             data += "&" + "title"

@@ -30,7 +30,7 @@ public class SaveTrack extends AsyncTask<String,Void,String> {
             String time = (String)arg0[4];
             double average = Double.parseDouble((String)arg0[5]);
 
-            String link = "http://rommam.cba.pl/save_track.php";
+            String link = "http://botnaeasy.cba.pl/save_track.php";
             String data  = "account"
                     + "=" + account;
             data += "&" + "track_name"

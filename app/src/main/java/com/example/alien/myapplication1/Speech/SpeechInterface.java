@@ -2,7 +2,6 @@ package com.example.alien.myapplication1.Speech;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
@@ -31,6 +30,10 @@ public class SpeechInterface{
     }
     public void tell(String command)
     {
+        if(!isConncted()) {
+            Toast.makeText(act, "Brak połączenia z siecią!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(prefs.getPreferencesBoolean("enableSynth"))
             speechSynthesis.speakOut(command);
 

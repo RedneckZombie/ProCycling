@@ -31,7 +31,7 @@ public class GetRanking extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... arg0) {
         try {
-            String link = "http://rommam.cba.pl/get_ranking.php";
+            String link = "http://botnaeasy.cba.pl/get_ranking.php";
 
             URL url = new URL(link);
             URLConnection conn = url.openConnection();

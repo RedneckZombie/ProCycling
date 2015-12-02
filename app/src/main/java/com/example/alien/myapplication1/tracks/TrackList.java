@@ -61,6 +61,14 @@ public class TrackList extends Fragment {
 ///
     public void openRoute(int position)
     {
+        if(lista==null)
+        {
+            return;
+        }
+        if(position>=lista.size()||position<0)
+        {
+            return;
+        }
         String src = lista.get(position).getTrackName();
         if(src.equals("Brak tras"))
             return;

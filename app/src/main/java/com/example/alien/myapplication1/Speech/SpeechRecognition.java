@@ -17,9 +17,8 @@ import java.util.List;
  * Created by BotNaEasy on 2015-10-14.
  */
 public class SpeechRecognition {
-    protected static final int RESULT_SPEECH = 1;
     private Activity act;
-    private SpeechRecognizer recogn;
+    private SpeechRecognizer recognizer;
     private boolean isFinished;
     private ArrayList<String> result;
     private Dictionary dictionary;
@@ -30,7 +29,7 @@ public class SpeechRecognition {
     {
         this.micro=micro;
         this.act = act;
-        recogn = SpeechRecognizer.createSpeechRecognizer(act);
+        recognizer = SpeechRecognizer.createSpeechRecognizer(act);
         try {
             dictionary = DictionaryFactory.createDictionary(clazz);
         } catch (Exception e) {
@@ -45,7 +44,7 @@ public class SpeechRecognition {
         try{
             result = null;
             isFinished = false;
-            recogn.startListening(intent);
+            recognizer.startListening(intent);
         }catch(ActivityNotFoundException e) {
             Toast.makeText(act.getApplication(),
                     "To urządzenie nie ma wsparcia do zamiany mowy na tekst!",
@@ -55,24 +54,29 @@ public class SpeechRecognition {
     public int recognitionResult()
     {
         int result = dictionary.onPositionInDictionary(getResult());
-        if(result>=0)
+        if (result>=0) {
             return result;
+        }
+
         result = getSimmilarResult();
-        if(result>=0)
+        if (result>=0) {
             return result;
+        }
+
         result = dictionary.getIncludedWordResult(getResult());
         setParams();
-        if(result>=0)
+        if (result>=0) {
             return result;
-        else{
+        }
+        else {
             Toast.makeText(act, "Nie rozpoznano komendy!", Toast.LENGTH_SHORT).show();
             return -1;
         }
     }
     public void onDestroy()
     {
-        recogn.stopListening();
-        recogn.destroy();
+        recognizer.stopListening();
+        recognizer.destroy();
     }
     public boolean isFinished() {
         return isFinished;
@@ -177,37 +181,26 @@ public class SpeechRecognition {
     }
     private void initListener()
     {
-        recogn.setRecognitionListener(new RecognitionListener() {
+        recognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
                 Toast.makeText(act.getApplication(), "Mów", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onBeginningOfSpeech() {
-
             }
-
             @Override
             public void onRmsChanged(float rmsdB) {
-
             }
-
             @Override
             public void onBufferReceived(byte[] buffer) {
-
             }
-
             @Override
             public void onEndOfSpeech() {
-
             }
-
             @Override
             public void onError(int error) {
-
             }
-
             @Override
             public void onResults(Bundle results) {
                 result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -216,15 +209,12 @@ public class SpeechRecognition {
                 showParams();
                 micro.microCommandRun(recognitionResult());
             }
-
             @Override
             public void onPartialResults(Bundle partialResults) {
-
             }
 
             @Override
             public void onEvent(int eventType, Bundle params) {
-
             }
         });
     }

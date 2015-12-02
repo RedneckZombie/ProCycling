@@ -43,7 +43,7 @@ public class GetAllStats extends AsyncTask<String,Void,String> {
         try {
             String account_id = (String)arg0[0];
 
-            String link = "http://rommam.cba.pl/get_stats_all.php";
+            String link = "http://botnaeasy.cba.pl/get_stats_all.php";
             String data  = "account_id"
                     + "=" + account_id;
 

@@ -520,9 +520,6 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
                 case 15:
                     meInRanks();
                     break;
-                case 16:
-                    test();
-                    break;
             }
         }
         else{
@@ -563,7 +560,21 @@ public class SideBarActivity extends ActionBarActivity implements OnASyncTaskCom
 
     private void addMarker()
     {
-        fr.setMarkersFromCurrentPosition(speechInterface.getStringParam());
+        if(!fr.isVisible()) {
+            mapa();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (!isMyRoutesVisible()||!fr.isReady) {
+                    }
+                    fr.setMarkersFromCurrentPosition(speechInterface.getStringParam());
+                }
+            });
+            t.start();
+        }
+        else {
+            fr.setMarkersFromCurrentPosition(speechInterface.getStringParam());
+        }
     }
     private void markersOn()
     {

@@ -14,7 +14,7 @@ public class SpeechSynthesis implements TextToSpeech.OnInitListener{
 
     public SpeechSynthesis(Context ctx)
     {
-       tts= new TextToSpeech(ctx, this);
+        tts= new TextToSpeech(ctx, this);
         onInit(TextToSpeech.SUCCESS);
     }
     @Override
@@ -26,14 +26,13 @@ public class SpeechSynthesis implements TextToSpeech.OnInitListener{
             tts.setSpeechRate(1f);
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", "This Language is not supported");
+                Log.e("TTS", "Ten jêzyk nie jest wspierany!");
             }
         } else {
-            Log.e("TTS", "Initilization Failed!");
+            Log.e("TTS", "Inicjalizacja zakoñczona niepowodzeniem!");
         }
     }
     public void speakOut(String text) {
-
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
     public void onDestroy() {

@@ -8,7 +8,7 @@ public class DictionaryFactory {
         Dictionary dict=null;
         switch(clazz){
             case "SideBarActivity" :
-               String[] komendy = {
+               String[] commands = {
                         "rejestruj trase",
                         "moje trasy",
                         "mapa",
@@ -24,13 +24,12 @@ public class DictionaryFactory {
                         "wyłącz markery",
                         "marker param",
                         "komendy",
-                        "ja w rankingu",
-                        "test"
+                        "ja w rankingu"
                 };
-                dict = new Dictionary(komendy);
+                dict = new Dictionary(commands);
                 break;
             case "ChartActivity" :
-                String[] komendy2 = {
+                String[] commands2 = {
                         "cofnij",
                         "wykres dzienny",
                         "wykres miesięczny",
@@ -39,10 +38,10 @@ public class DictionaryFactory {
                         "wykres prędkości",
                         "komendy"
                 };
-                dict = new Dictionary(komendy2);
+                dict = new Dictionary(commands2);
                 break;
             case "LogInActivity" :
-                String[] komendy3 = {
+                String[] commands3 = {
                         "zapamiętaj",
                         "zaloguj",
                         "zaloguj jako gość",
@@ -50,19 +49,19 @@ public class DictionaryFactory {
                         "zamknij",
                         "komendy"
                 };
-                dict = new Dictionary(komendy3);
+                dict = new Dictionary(commands3);
                 break;
             case "RegistrationActivity" :
-                String[] komendy4 = {
+                String[] commands4 = {
                         "zamknij",
                         "rejestruj",
                         "wyczyść",
                         "komendy"
                 };
-                dict = new Dictionary(komendy4);
+                dict = new Dictionary(commands4);
                 break;
             case "OptionsActivity" :
-                String[] komendy5 = {
+                String[] commands5 = {
                         "zapisz",
                         "wyjdź",
                         "włącz markery",
@@ -73,7 +72,7 @@ public class DictionaryFactory {
                         "wyłącz wypowiedzi",
                         "komendy"
                 };
-                dict = new Dictionary(komendy5);
+                dict = new Dictionary(commands5);
                 break;
             default:
                 throw new Exception("Unknown dictionary");
