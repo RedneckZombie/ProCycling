@@ -7,4 +7,4 @@ public interface MicroListener{
     void microCommandRun(int result);
     void showInfoDialog();
 }
-//SpeechInterface speech = null;
+//

@@ -11,15 +11,6 @@ public class Dictionary{
     {
         this.dictionary = dict;
     }
-    public boolean isInDictionary(String command)
-    {
-        for(String com : dictionary)
-        {
-            if(com.equals(command))
-                return true;
-        }
-        return false;
-    }
     public int onPositionInDictionary(List<String> commands)
     {
         for(int i=0;i<dictionary.length;i++)

@@ -41,7 +41,7 @@ public class LogIn extends AsyncTask<String,Void,String> {
                 String email = arg0[0];
                 String password = arg0[1];
 
-                String link = "http://botnaeasy.cba.pl/login.php";
+                String link = "http://rommam.cba.pl/login.php";
                 String data = "email"
                         + "=" + email;
                 data += "&" + "password"

@@ -9,22 +9,22 @@ public class DictionaryFactory {
         switch(clazz){
             case "SideBarActivity" :
                String[] commands = {
-                        "rejestruj trase",
-                        "moje trasy",
-                        "mapa",
-                        "statystyki",
-                        "rankingi",
-                        "wyloguj",
-                        "zamknij",
-                        "zakończ rejestracje trasy",
-                        "wykresy",
-                        "trasa param",
-                        "opcje",
-                        "włącz markery",
-                        "wyłącz markery",
-                        "marker param",
-                        "komendy",
-                        "ja w rankingu"
+                       "rejestruj trase",
+                       "moje trasy",
+                       "mapa",
+                       "statystyki",
+                       "rankingi",
+                       "wyloguj",
+                       "zamknij",
+                       "zakończ rejestracje trasy",
+                       "wykresy",
+                       "trasa param",
+                       "opcje",
+                       "włącz markery",
+                       "wyłącz markery",
+                       "marker param",
+                       "komendy",
+                       "ja w rankingu"
                 };
                 dict = new Dictionary(commands);
                 break;
